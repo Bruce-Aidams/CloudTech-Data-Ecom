@@ -25,6 +25,7 @@
         </nav>
 
         <div class="flex items-center gap-4" x-data="{ mobileMenuOpen: false }">
+            
             <?php if (isset($component)) { $__componentOriginal2090438866f3dcdb76cd8b070bcc302d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal2090438866f3dcdb76cd8b070bcc302d = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.theme-toggle','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -69,7 +70,15 @@
                 <a href="<?php echo e(url('/')); ?>#pricing" @click="mobileMenuOpen = false"
                     class="text-sm font-bold text-slate-600 dark:text-slate-300 uppercase tracking-widest">Pricing</a>
                 <div class="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>
-                <?php if(auth()->guard()->guest()): ?>
+                <?php if(auth()->guard()->check()): ?>
+                    <a href="<?php echo e(url('/dashboard')); ?>"
+                        class="text-sm font-bold text-primary uppercase tracking-widest">Dashboard</a>
+                    <form method="POST" action="<?php echo e(route('logout')); ?>">
+                        <?php echo csrf_field(); ?>
+                        <button type="submit" class="text-sm font-bold text-rose-500 uppercase tracking-widest">Sign
+                            Out</button>
+                    </form>
+                <?php else: ?>
                     <a href="<?php echo e(url('/login')); ?>"
                         class="h-12 bg-primary text-white rounded-xl flex items-center justify-center font-bold uppercase tracking-widest text-xs">Login</a>
                     <a href="<?php echo e(url('/register')); ?>"
@@ -79,7 +88,7 @@
 
             <?php if(auth()->guard()->check()): ?>
                 
-                <div class="relative" x-data="{ open: false }">
+                <div class="relative hidden lg:block" x-data="{ open: false }">
                     <button @click="open = !open" @click.away="open = false"
                         class="flex items-center gap-3 p-1 pr-4 bg-slate-50/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl transition-all group outline-none">
                         <img src="https://ui-avatars.com/api/?name=<?php echo e(urlencode(auth()->user()->name)); ?>&background=696cff&color=fff"
@@ -150,7 +159,7 @@
                 </div>
             <?php else: ?>
                 <a href="<?php echo e(url('/login')); ?>"
-                    class="h-10 px-6 rounded-2xl text-[11px] font-black capitalize tracking-[0.2em] text-white bg-primary shadow-xl shadow-blue-900/10 hover:bg-blue-600 hover:shadow-primary/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center">
+                    class="hidden lg:flex h-10 px-6 rounded-2xl text-[11px] font-black capitalize tracking-[0.2em] text-white bg-primary shadow-xl shadow-blue-900/10 hover:bg-blue-600 hover:shadow-primary/30 transition-all hover:scale-105 active:scale-95 items-center justify-center">
                     Login
                 </a>
             <?php endif; ?>

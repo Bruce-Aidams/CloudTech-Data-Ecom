@@ -110,7 +110,7 @@
                             technologies to ensure your deals are handled with peak efficiency.</p>
                     </div>
 
-                    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">
                         <x-feature-card title="Automatic Fulfillment"
                             description="No waiting games. Our internal API engine processes your data requests the moment payment is confirmed.">
                             <x-slot name="icon">
@@ -145,8 +145,8 @@
                             description="Full support for MTN, Telecel, and AT networks with localized prefixes and validation.">
                             <x-slot name="icon">
                                 <svg class="w-6 h-6 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 002 2v14a2 2 0 002 2z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
                                 </svg>
                             </x-slot>
                         </x-feature-card>
@@ -184,10 +184,10 @@
                             money. Instant activation guaranteed.</p>
                     </div>
 
-                    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="grid grid-cols-2 gap-3 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
                         @foreach($bundles as $product)
                             <div
-                                class="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                                class="group relative bg-white dark:bg-slate-900 rounded-2xl md:rounded-[2.5rem] border border-slate-100 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
                                 {{-- Image Section --}}
                                 <div
                                     class="aspect-[4/3] bg-slate-50 dark:bg-slate-800/50 relative flex items-center justify-center overflow-hidden">
@@ -205,7 +205,7 @@
                                     @endif
 
                                     {{-- Network Badge --}}
-                                    <div class="absolute top-4 left-4">
+                                    <div class="absolute top-2 left-2 md:top-4 md:left-4">
                                         @php
                                             $net = strtoupper($product->network);
                                             $netColors = [
@@ -217,34 +217,38 @@
                                             $nc = $netColors[$net] ?? 'bg-slate-900 text-white';
                                         @endphp
                                         <span
-                                            class="px-3 py-1.5 rounded-xl text-[10px] font-black tracking-widest uppercase shadow-xl backdrop-blur-md {{ $nc }}">
+                                            class="px-1.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl text-[8px] md:text-[10px] font-black tracking-widest uppercase shadow-xl backdrop-blur-md {{ $nc }}">
                                             {{ $product->network }}
                                         </span>
                                     </div>
                                 </div>
 
-                                <div class="p-8 space-y-6">
+                                <div class="p-4 md:p-8 space-y-4 md:space-y-6">
                                     <div>
                                         <h3
-                                            class="text-xl font-black text-slate-900 dark:text-white leading-tight uppercase tracking-tight">
+                                            class="text-sm md:text-xl font-black text-slate-900 dark:text-white leading-tight uppercase tracking-tight truncate">
                                             {{ $product->name }}
                                         </h3>
-                                        <p class="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">
+                                        <p
+                                            class="text-[10px] md:text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest truncate">
                                             {{ $product->data_amount }} Data Allocation
                                         </p>
                                     </div>
 
                                     <div
-                                        class="pt-6 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
+                                        class="pt-4 md:pt-6 border-t border-slate-50 dark:border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-0">
                                         <div>
-                                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                                            <p
+                                                class="hidden md:block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
                                                 Price</p>
-                                            <p class="text-2xl font-black text-primary tracking-tighter tabular-nums">
+                                            <p
+                                                class="text-lg md:text-2xl font-black text-primary tracking-tighter tabular-nums">
                                                 ₵{{ number_format($product->price, 2) }}</p>
                                         </div>
                                         <a href="{{ url('/login?redirect=purchase&bundle=' . $product->id) }}"
-                                            class="h-12 px-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all shadow-xl shadow-slate-900/10 dark:shadow-none flex items-center justify-center">
-                                            Buy Now
+                                            class="w-full md:w-auto h-10 md:h-12 px-0 md:px-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl md:rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all shadow-xl shadow-slate-900/10 dark:shadow-none flex items-center justify-center">
+                                            Buy
+                                            <span class="hidden md:inline ml-1">Now</span>
                                         </a>
                                     </div>
                                 </div>

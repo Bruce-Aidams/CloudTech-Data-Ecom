@@ -30,6 +30,7 @@ Route::middleware('guest')->group(function () {
                 return redirect()->route('admin.verify');
             }
 
+            session()->flash('success', 'Welcome back, ' . $user->name . '!');
             return redirect()->intended('dashboard');
         }
 
@@ -64,7 +65,7 @@ Route::middleware('guest')->group(function () {
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
-            'role' => User::ROLE_RETAIL_SELLER,
+            'role' => User::ROLE_USER,
             'wallet_balance' => 0.00,
             'is_active' => true,
             'referral_code' => strtoupper(Str::random(10)),

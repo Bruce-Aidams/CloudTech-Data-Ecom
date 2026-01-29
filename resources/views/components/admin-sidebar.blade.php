@@ -42,14 +42,14 @@
 
     {{-- Logo Header --}}
     <div class="flex items-center h-20 border-b border-slate-50 dark:border-slate-800/50 relative overflow-hidden"
-        :class="isCollapsed ? 'justify-center' : 'px-6'">
+        :class="(isCollapsed && !sidebarOpen) ? 'justify-center' : 'px-6'">
         <a href="{{ url('/admin') }}"
             class="flex items-center gap-3 group/logo whitespace-nowrap overflow-hidden relative z-10">
             <div class="shrink-0">
                 <img src="{{ asset('favicon.ico') }}" alt="Logo"
                     class="w-8 h-8 rounded-lg shadow-sm group-hover/logo:scale-110 transition-all duration-500 bg-white p-1 ring-1 ring-slate-100 dark:ring-slate-800">
             </div>
-            <div x-show="!isCollapsed" x-cloak
+            <div x-show="!isCollapsed || sidebarOpen" x-cloak
                 class="flex flex-col animate-in fade-in slide-in-from-left-4 duration-500">
                 <span
                     class="font-bold text-lg tracking-tight text-slate-900 dark:text-white leading-none">CloudTech</span>
@@ -66,8 +66,8 @@
             @endphp
             <a href="{{ url($item['href']) }}"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group/nav relative {{ $isActive ? 'bg-primary/5 text-primary' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800' }}"
-                :class="isCollapsed && 'justify-center h-12 w-12 mx-auto'"
-                :title="isCollapsed ? '{{ $item['name'] }}' : ''">
+                :class="(isCollapsed && !sidebarOpen) && 'justify-center h-12 w-12 mx-auto'"
+                :title="(isCollapsed && !sidebarOpen) ? '{{ $item['name'] }}' : ''">
 
                 {{-- Icon --}}
                 <span
@@ -77,16 +77,16 @@
                 </span>
 
                 {{-- Label --}}
-                <span x-show="!isCollapsed" x-cloak
+                <span x-show="!isCollapsed || sidebarOpen" x-cloak
                     class="text-sm font-medium transition-all duration-200 truncate">{{ $item['name'] }}</span>
 
                 {{-- Notification Badge --}}
                 @if($item['icon'] === 'bell' && $unreadNotifications > 0)
-                    <span x-show="!isCollapsed" x-cloak
+                    <span x-show="!isCollapsed || sidebarOpen" x-cloak
                         class="ml-auto inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-rose-500 rounded-lg shadow-sm">
                         {{ $unreadNotifications > 9 ? '9+' : $unreadNotifications }}
                     </span>
-                    <span x-show="isCollapsed" x-cloak
+                    <span x-show="(isCollapsed && !sidebarOpen)" x-cloak
                         class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse"></span>
                 @endif
             </a>
@@ -99,13 +99,13 @@
             @csrf
             <button type="submit"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 hover:text-rose-600 dark:hover:text-rose-400 transition-all duration-200 w-full group overflow-hidden"
-                :class="isCollapsed ? 'justify-center h-12 w-12 mx-auto' : ''">
+                :class="(isCollapsed && !sidebarOpen) ? 'justify-center h-12 w-12 mx-auto' : ''">
                 <svg class="w-5 h-5 shrink-0 transition-transform group-hover:-translate-x-0.5" fill="none"
                     stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
-                <span x-show="!isCollapsed" x-cloak class="text-sm font-medium">Log out</span>
+                <span x-show="!isCollapsed || sidebarOpen" x-cloak class="text-sm font-medium">Log out</span>
             </button>
         </form>
     </div>

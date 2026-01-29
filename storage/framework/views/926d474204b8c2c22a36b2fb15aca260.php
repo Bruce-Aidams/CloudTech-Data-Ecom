@@ -1,11 +1,11 @@
-@extends('layouts.dashboard')
 
-@section('title', 'API Access')
 
-@section('content')
+<?php $__env->startSection('title', 'API Access'); ?>
+
+<?php $__env->startSection('content'); ?>
 <div class="max-w-7xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700"
     x-data="{ formOpen: false }">
-    @section('content')
+    <?php $__env->startSection('content'); ?>
             <div class="max-w-7xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700"
                 x-data="{ formOpen: false }">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -28,7 +28,7 @@
                 </div>
 
                 <!-- Alert: New Key Created -->
-                @if(session('new_key'))
+                <?php if(session('new_key')): ?>
                     <div
                         class="rounded-[3rem] border border-emerald-200/50 bg-emerald-50/50 backdrop-blur-xl dark:bg-emerald-900/10 dark:border-emerald-900/20 p-10 shadow-2xl shadow-emerald-200/10 dark:shadow-none animate-in zoom-in-95 duration-500">
                         <div class="flex flex-col space-y-4 pb-6 border-b border-emerald-100/50 dark:border-emerald-800/50">
@@ -49,7 +49,7 @@
                         <div class="pt-8 space-y-8">
                             <div
                                 class="flex items-center gap-4 bg-white/50 dark:bg-slate-900/50 p-4 rounded-2xl border border-emerald-100/50 dark:border-emerald-800/50">
-                                <input type="text" value="{{ session('new_key') }}" readonly id="newKeyInput"
+                                <input type="text" value="<?php echo e(session('new_key')); ?>" readonly id="newKeyInput"
                                     class="flex h-12 w-full bg-transparent border-none text-sm font-black tracking-tight text-foreground focus:ring-0 font-mono">
                                 <button onclick="copyToClipboard('newKeyInput')"
                                     class="inline-flex items-center justify-center rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 h-12 w-12 shrink-0 shadow-lg shadow-emerald-200/50 dark:shadow-none transition-all active:scale-95">
@@ -66,15 +66,15 @@
                             </button>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                @if(session('success') && !session('new_key'))
+                <?php if(session('success') && !session('new_key')): ?>
                     <div
                         class="rounded-2xl border border-border/10 bg-card/50 backdrop-blur-xl p-4 flex items-center gap-4 animate-in slide-in-from-top-4 duration-300">
                         <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-xl shadow-emerald-500/50 animate-pulse"></div>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-foreground">{{ session('success') }}</p>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-foreground"><?php echo e(session('success')); ?></p>
                     </div>
-                @endif
+                <?php endif; ?>
 
                 <!-- Create Form -->
                 <div x-show="formOpen" x-collapse x-cloak>
@@ -84,8 +84,8 @@
                             <h3 class="text-sm font-black uppercase tracking-[0.2em] text-slate-400">Generate New Key</h3>
                         </div>
                         <div class="pt-0">
-                            <form action="{{ route('api-keys.store') }}" method="POST" class="space-y-8">
-                                @csrf
+                            <form action="<?php echo e(route('api-keys.store')); ?>" method="POST" class="space-y-8">
+                                <?php echo csrf_field(); ?>
                                 <div class="grid gap-8 sm:grid-cols-2">
                                     <div class="space-y-3">
                                         <label class="text-[10px] font-black uppercase tracking-[0.2em] pl-1 text-slate-400">Key
@@ -132,7 +132,7 @@
                     </div>
 
                     <div class="p-0">
-                        @if($apiKeys->isEmpty())
+                        <?php if($apiKeys->isEmpty()): ?>
                             <div class="text-center py-24">
                                 <svg class="w-16 h-16 text-slate-200 dark:text-slate-800 mx-auto mb-6" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
@@ -141,7 +141,7 @@
                                 </svg>
                                 <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">No API keys found.</p>
                             </div>
-                        @else
+                        <?php else: ?>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left">
                                     <thead class="hidden md:table-header-group">
@@ -158,7 +158,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-border/10">
-                                        @foreach($apiKeys as $key)
+                                        <?php $__currentLoopData = $apiKeys; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr
                                                 class="block md:table-row group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-all border-b border-border/10 md:border-none">
                                                 <td class="flex justify-between items-center px-8 py-6 md:table-cell">
@@ -175,11 +175,11 @@
                                                         </div>
                                                         <div>
                                                             <span
-                                                                class="font-black text-foreground tracking-tight block">{{ $key->name }}</span>
-                                                            @if($key->expires_at && $key->expires_at->isPast())
+                                                                class="font-black text-foreground tracking-tight block"><?php echo e($key->name); ?></span>
+                                                            <?php if($key->expires_at && $key->expires_at->isPast()): ?>
                                                                 <span
                                                                     class="text-[8px] font-black uppercase tracking-widest text-rose-500">Expired</span>
-                                                            @endif
+                                                            <?php endif; ?>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -188,7 +188,8 @@
                                                         class="md:hidden text-[10px] font-black uppercase tracking-widest text-slate-400">Preview</span>
                                                     <code
                                                         class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-border/10 text-[10px] font-black text-slate-500 font-mono tracking-tighter">
-                                                                                {{ $key->key_preview }}
+                                                                                <?php echo e($key->key_preview); ?>
+
                                                                             </code>
                                                 </td>
                                                 <td class="flex flex-col md:table-cell px-8 py-6">
@@ -198,23 +199,25 @@
                                                         class="text-[9px] font-black uppercase tracking-widest text-slate-400 space-y-1">
                                                         <div class="flex items-center gap-2">
                                                             <div class="w-1.5 h-1.5 rounded-full bg-slate-400"></div>
-                                                            Created: {{ $key->created_at->format('M d, Y') }}
+                                                            Created: <?php echo e($key->created_at->format('M d, Y')); ?>
+
                                                         </div>
-                                                        @if($key->last_used_at)
+                                                        <?php if($key->last_used_at): ?>
                                                             <div class="flex items-center gap-2 text-indigo-500">
                                                                 <div class="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>
-                                                                Used: {{ $key->last_used_at->format('M d, Y') }}
+                                                                Used: <?php echo e($key->last_used_at->format('M d, Y')); ?>
+
                                                             </div>
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </div>
                                                 </td>
                                                 <td class="flex justify-between items-center px-8 py-6 md:table-cell md:text-right">
                                                     <span
                                                         class="md:hidden text-[10px] font-black uppercase tracking-widest text-slate-400">Actions</span>
                                                     <div class="flex items-center justify-end gap-3">
-                                                        <form action="{{ route('api-keys.regenerate', $key->id) }}" method="POST"
+                                                        <form action="<?php echo e(route('api-keys.regenerate', $key->id)); ?>" method="POST"
                                                             class="inline">
-                                                            @csrf
+                                                            <?php echo csrf_field(); ?>
                                                             <button type="submit"
                                                                 onclick="return confirm('Note: Regenerating this key will invalidate the old one. Continue?')"
                                                                 class="w-10 h-10 rounded-xl border border-border/10 flex items-center justify-center text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-primary transition-all active:scale-95">
@@ -227,9 +230,9 @@
                                                                 </svg>
                                                             </button>
                                                         </form>
-                                                        <form action="{{ route('api-keys.destroy', $key->id) }}" method="POST"
+                                                        <form action="<?php echo e(route('api-keys.destroy', $key->id)); ?>" method="POST"
                                                             class="inline">
-                                                            @csrf @method('DELETE')
+                                                            <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
                                                             <button type="submit"
                                                                 onclick="return confirm('Are you sure you want to delete this key?')"
                                                                 class="w-10 h-10 rounded-xl border border-border/10 flex items-center justify-center text-slate-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 hover:text-rose-500 transition-all active:scale-95">
@@ -245,11 +248,11 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
                                 </table>
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -314,10 +317,10 @@
                                         class="bg-slate-950 rounded-2xl p-5 border border-slate-800/50 shadow-inner group relative">
                                         <div
                                             class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <button onclick="navigator.clipboard.writeText('{{ config('app.url') }}/api')"
+                                            <button onclick="navigator.clipboard.writeText('<?php echo e(config('app.url')); ?>/api')"
                                                 class="text-xs font-bold text-slate-500 hover:text-white bg-slate-800/50 px-2 py-1 rounded-lg transition-colors">Copy</button>
                                         </div>
-                                        <code class="text-xs font-mono text-indigo-400">{{ config('app.url') }}/api</code>
+                                        <code class="text-xs font-mono text-indigo-400"><?php echo e(config('app.url')); ?>/api</code>
                                     </div>
                                 </div>
                             </div>
@@ -388,7 +391,7 @@
                                                 class="text-xs font-bold text-slate-500 hover:text-white bg-slate-800/50 px-2 py-1 rounded-lg transition-colors">Copy</button>
                                         </div>
                                         <pre class="text-[10px] font-mono leading-relaxed overflow-x-auto text-slate-300">
-        <span class="text-purple-400">curl</span> -X POST {{ config('app.url') }}/api/orders \
+        <span class="text-purple-400">curl</span> -X POST <?php echo e(config('app.url')); ?>/api/orders \
         -H <span class="text-green-400">"Authorization: Bearer YOUR_API_KEY"</span> \
         -H <span class="text-green-400">"Content-Type: application/json"</span> \
         -d <span class="text-yellow-300">'{
@@ -431,7 +434,7 @@
                                                 class="text-xs font-bold text-slate-500 hover:text-white bg-slate-800/50 px-2 py-1 rounded-lg transition-colors">Copy</button>
                                         </div>
                                         <pre class="text-[10px] font-mono leading-relaxed overflow-x-auto text-slate-300">
-        <span class="text-purple-400">curl</span> {{ config('app.url') }}/api/user/me \
+        <span class="text-purple-400">curl</span> <?php echo e(config('app.url')); ?>/api/user/me \
         -H <span class="text-green-400">"Authorization: Bearer YOUR_API_KEY"</span></pre>
                                     </div>
                                 </div>
@@ -454,4 +457,5 @@
                     });
                 }
             </script>
-    @endsection
+    <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.dashboard', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Bruce\Desktop\Projects\Megaai2\Megaai\cloudtech\resources\views/dashboard/api-keys.blade.php ENDPATH**/ ?>

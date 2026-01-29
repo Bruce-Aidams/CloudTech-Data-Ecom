@@ -40,7 +40,7 @@
        ]">
 
     <div class="flex items-center h-20 border-b border-slate-50 dark:border-slate-800/50 relative overflow-hidden"
-        :class="isCollapsed ? 'justify-center' : 'px-8'">
+        :class="(isCollapsed && !sidebarOpen) ? 'justify-center' : 'px-8'">
         <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-50"></div>
         <a href="{{ url('/dashboard') }}"
             class="flex items-center gap-4 group/logo whitespace-nowrap overflow-hidden relative z-10">
@@ -48,7 +48,7 @@
                 <img src="{{ asset('favicon.ico') }}" alt="Logo"
                     class="w-8 h-8 rounded-lg shadow-sm group-hover/logo:scale-110 transition-all duration-500 bg-white p-1 ring-1 ring-slate-100 dark:ring-slate-800">
             </div>
-            <div x-show="!isCollapsed" x-cloak
+            <div x-show="!isCollapsed || sidebarOpen" x-cloak
                 class="flex flex-col animate-in fade-in slide-in-from-left-4 duration-500">
                 <span
                     class="font-bold text-lg tracking-tight text-slate-900 dark:text-slate-100 leading-none group-hover/logo:text-primary transition-colors">CloudTech</span>
@@ -69,21 +69,21 @@
             @endphp
             <a href="{{ url($item['href']) }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group/nav {{ $isActive ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent' }}"
-                :class="isCollapsed && 'justify-center px-0 h-12 w-12 mx-auto'"
-                :title="isCollapsed ? '{{ $item['name'] }}' : ''">
+                :class="(isCollapsed && !sidebarOpen) && 'justify-center px-0 h-12 w-12 mx-auto'"
+                :title="(isCollapsed && !sidebarOpen) ? '{{ $item['name'] }}' : ''">
                 <span
                     class="shrink-0 transition-all duration-300 group-hover/nav:scale-110 {{ $isActive ? 'text-white' : 'text-slate-400 group-hover/nav:text-primary' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         {!! $icons[$item['icon']] !!}
                     </svg>
                 </span>
-                <span x-show="!isCollapsed" x-cloak
+                <span x-show="!isCollapsed || sidebarOpen" x-cloak
                     class="text-[11px] font-bold uppercase tracking-wider transition-all duration-300 animate-in slide-in-from-left-2">{{ $item['name'] }}</span>
             </a>
 
             {{-- Dividers --}}
             @if($loop->index === 1 || $loop->index === 5 || $loop->index === 9)
-                <div x-show="!isCollapsed" class="px-5 pt-6 pb-2">
+                <div x-show="!isCollapsed || sidebarOpen" class="px-5 pt-6 pb-2">
                     <div class="h-px bg-slate-100 dark:bg-slate-800 flex-1"></div>
                 </div>
             @endif
@@ -96,13 +96,13 @@
             @csrf
             <button type="submit"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 dark:text-slate-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 hover:text-rose-600 dark:hover:text-rose-400 transition-all duration-300 w-full group overflow-hidden border border-transparent font-bold text-[10px] uppercase tracking-widest"
-                :class="isCollapsed ? 'justify-center px-0 h-12 w-12 mx-auto' : ''">
+                :class="(isCollapsed && !sidebarOpen) ? 'justify-center px-0 h-12 w-12 mx-auto' : ''">
                 <svg class="w-5 h-5 shrink-0 transition-transform group-hover:scale-110" fill="none"
                     stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
-                <span x-show="!isCollapsed" x-cloak>Sign Out</span>
+                <span x-show="!isCollapsed || sidebarOpen" x-cloak>Sign Out</span>
             </button>
         </form>
     </div>

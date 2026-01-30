@@ -127,7 +127,7 @@
                         </path>
                     </svg>
                 </a>
-                <a href="https://t.me/cloudtech" target="_blank"
+                <a href="https://t.me/+KUnX1Gs5cvQ5NDE8" target=""
                     class="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-indigo-500 hover:bg-indigo-500/5 hover:scale-110 transition-all duration-300 shadow-sm">
                     <span class="sr-only">Telegram</span>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"

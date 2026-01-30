@@ -91,4 +91,34 @@ class ResellerHubController extends Controller
 
         return back()->with('success', 'Store price updated successfully.');
     }
+    public function toggleStoreStatus()
+    {
+        $user = Auth::user();
+        if (!$user->isReseller())
+            abort(403);
+
+        $user->store_active = !$user->store_active;
+        $user->save();
+
+        $status = $user->store_active ? 'enabled' : 'disabled';
+        return back()->with('success', "Your store is now {$status}.");
+    }
+
+    public function regenerateStoreLink()
+    {
+        $user = Auth::user();
+        if (!$user->isReseller())
+            abort(403);
+
+        $newCode = strtoupper(\Illuminate\Support\Str::random(10));
+
+        while (\App\Models\User::where('referral_code', $newCode)->exists()) {
+            $newCode = strtoupper(\Illuminate\Support\Str::random(10));
+        }
+
+        $user->referral_code = $newCode;
+        $user->save();
+
+        return back()->with('success', 'Your store link has been regenerated. Old links will no longer work.');
+    }
 }

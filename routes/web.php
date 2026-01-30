@@ -11,4 +11,8 @@ Route::get('/store/{referral_code}', [\App\Http\Controllers\StorefrontController
 
 Route::post('/webhooks/paystack', [\App\Http\Controllers\PaystackWebhookController::class, 'handle'])->name('webhooks.paystack');
 
+// Storefront Payment Routes
+Route::post('/store/purchase', [\App\Http\Controllers\StorefrontPaymentController::class, 'initialize'])->name('store.purchase');
+Route::get('/store/payment/callback', [\App\Http\Controllers\StorefrontPaymentController::class, 'callback'])->name('store.callback');
+
 require __DIR__ . '/auth.php';

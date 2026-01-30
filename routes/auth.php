@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
     })->name('transactions.index');
 
     Route::get('/dashboard/orders/new', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.new');
+    Route::get('/dashboard/notifications/poll', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.poll');
     Route::get('/products', [\App\Http\Controllers\OrderController::class, 'getBundles'])->name('api.bundles');
     Route::get('/networks', [\App\Http\Controllers\OrderController::class, 'getNetworks'])->name('api.networks');
 
@@ -160,6 +161,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/reseller-hub', [\App\Http\Controllers\ResellerHubController::class, 'index'])->name('reseller.hub');
     Route::get('/dashboard/reseller-hub/store', [\App\Http\Controllers\ResellerHubController::class, 'manageStore'])->name('reseller.store.manage');
     Route::post('/dashboard/reseller-hub/store/prices', [\App\Http\Controllers\ResellerHubController::class, 'updatePrice'])->name('reseller.store.update-price');
+    Route::post('/dashboard/reseller-hub/store/toggle', [\App\Http\Controllers\ResellerHubController::class, 'toggleStoreStatus'])->name('reseller.store.toggle');
+    Route::post('/dashboard/reseller-hub/store/regenerate', [\App\Http\Controllers\ResellerHubController::class, 'regenerateStoreLink'])->name('reseller.store.regenerate');
 
     Route::get('/dashboard/analytics', function (Request $request) {
         $user = Auth::user();
@@ -233,6 +236,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/profile/2fa', [App\Http\Controllers\UserController::class, 'toggle2FA'])->name('profile.toggle2fa');
 
     Route::post('/dashboard/orders/bulk', [App\Http\Controllers\OrderController::class, 'bulkStore'])->name('orders.bulk.store');
+    // Notifications
+    Route::get('/dashboard/notifications', [\App\Http\Controllers\NotificationController::class, 'userIndex'])->name('notifications.index');
+    Route::post('/dashboard/notifications/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.read_all');
+    Route::post('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::delete('/notifications/{id}', [\App\Http\Controllers\NotificationController::class, 'destroy'])->name('notifications.destroy');
+
     Route::get('/dashboard/paystack/initialize', [\App\Http\Controllers\PaystackController::class, 'initializePayment'])->name('paystack.initialize');
 
     // Admin Routes
@@ -254,11 +263,21 @@ Route::middleware('auth')->group(function () {
         Route::post('/users/{user}/toggle-status', [\App\Http\Controllers\UserController::class, 'toggleStatus'])->name('admin.users.toggle-status');
         Route::post('/users/{id}/wallet', [\App\Http\Controllers\AdminController::class, 'adjustWallet'])->name('admin.users.wallet');
 
+        // Reseller Management
+        Route::get('/resellers', [\App\Http\Controllers\AdminResellerController::class, 'index'])->name('admin.resellers.index');
+        Route::post('/resellers/{id}/commission', [\App\Http\Controllers\AdminResellerController::class, 'adjustCommission'])->name('admin.resellers.commission');
+        Route::post('/resellers/{id}/toggle-store', [\App\Http\Controllers\AdminResellerController::class, 'toggleStoreStatus'])->name('admin.resellers.toggle-store');
+
         // Referral Management
         Route::get('/referrals', [\App\Http\Controllers\ReferralController::class, 'adminIndex'])->name('admin.referrals');
 
         // Orders Management
         Route::get('/orders', [\App\Http\Controllers\OrderController::class, 'adminIndex'])->name('admin.orders');
+        Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'adminCreate'])->name('admin.orders.create');
+        Route::post('/orders/store', [\App\Http\Controllers\OrderController::class, 'adminStore'])->name('admin.orders.store');
+        Route::get('/orders/{order}/edit', [\App\Http\Controllers\OrderController::class, 'adminEdit'])->name('admin.orders.edit');
+        Route::put('/orders/{order}/update', [\App\Http\Controllers\OrderController::class, 'adminUpdate'])->name('admin.orders.update_v2');
+        Route::delete('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'destroy'])->name('admin.orders.destroy');
         Route::get('/orders/export', [\App\Http\Controllers\OrderController::class, 'export'])->name('admin.orders.export');
         Route::put('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('admin.orders.update');
         Route::post('/orders/cleanup', [\App\Http\Controllers\AdminController::class, 'deleteOldOrders'])->name('admin.orders.cleanup');

@@ -8,20 +8,35 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
                 <h2
-                    class="text-3xl font-black tracking-tight text-foreground bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-600 uppercase">
-                    Manage E-Store</h2>
-                <p class="text-sm text-muted-foreground font-medium mt-1">Set your custom prices and maximize your profit
-                    margins.</p>
+                    class="text-3xl font-black tracking-tight text-foreground dark:text-white bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-600 uppercase">
+                    Manage E-Store
+                </h2>
+                <p class="text-sm text-muted-foreground dark:text-slate-400 font-medium mt-1">Set your custom prices and
+                    maximize your profit margins.</p>
             </div>
 
-            <a href="<?php echo e(route('reseller.hub')); ?>"
-                class="h-12 px-6 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-95 shadow-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Back to Hub
-            </a>
+            <div class="flex items-center gap-4">
+                
+                <form action="<?php echo e(route('reseller.store.toggle')); ?>" method="POST"
+                    class="flex items-center gap-3 bg-white dark:bg-slate-900 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <?php echo csrf_field(); ?>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Store Status</span>
+                    <button type="submit"
+                        class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors <?php echo e($user->store_active ? 'bg-emerald-500' : 'bg-slate-200 dark:bg-slate-700'); ?>">
+                        <span
+                            class="inline-block h-4 w-4 transform rounded-full bg-white transition <?php echo e($user->store_active ? 'translate-x-6' : 'translate-x-1'); ?>"></span>
+                    </button>
+                </form>
+
+                <a href="<?php echo e(route('reseller.hub')); ?>"
+                    class="h-10 px-6 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-95 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back to Hub
+                </a>
+            </div>
         </div>
 
         
@@ -36,7 +51,7 @@
                 </svg>
             </div>
 
-            <div class="relative z-10 p-10 space-y-6">
+            <div class="relative z-10 p-8 md:p-10 space-y-6">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-1 bg-primary rounded-full"></div>
                     <h3 class="text-primary font-black uppercase tracking-[0.3em] text-[10px]">Your Digital Storefront</h3>
@@ -51,113 +66,141 @@
                             </svg>
                         </div>
                         <div
-                            class="w-full h-16 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-primary/20 rounded-3xl pl-14 pr-6 flex items-center text-sm font-mono font-bold text-foreground overflow-hidden shadow-inner">
+                            class="w-full h-14 md:h-16 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-primary/20 rounded-2xl md:rounded-3xl pl-14 pr-6 flex items-center text-xs md:text-sm font-mono font-bold text-foreground dark:text-white overflow-hidden shadow-inner">
                             <span class="truncate"><?php echo e(route('store.show', $user->referral_code)); ?></span>
                         </div>
                     </div>
-                    <button onclick="copyToClipboard('<?php echo e(route('store.show', $user->referral_code)); ?>')"
-                        class="h-16 px-10 bg-primary text-white rounded-3xl font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/30 active:scale-95 transition-all whitespace-nowrap hover:bg-primary/90 flex items-center gap-3">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                        Copy Link
-                    </button>
-                    <a href="<?php echo e(route('store.show', $user->referral_code)); ?>" target="_blank"
-                        class="h-16 px-8 bg-white dark:bg-slate-800 text-foreground border border-slate-200 dark:border-slate-700 rounded-3xl font-black text-xs uppercase tracking-widest shadow-lg active:scale-95 transition-all whitespace-nowrap hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-3">
-                        Preview
-                    </a>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                        <button onclick="copyToClipboard('<?php echo e(route('store.show', $user->referral_code)); ?>')"
+                            class="flex-1 lg:flex-none h-14 md:h-16 px-6 bg-primary text-white rounded-2xl md:rounded-3xl font-black text-[10px] md:text-xs uppercase tracking-widest shadow-xl shadow-primary/30 active:scale-95 transition-all whitespace-nowrap hover:bg-primary-focus flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <a href="<?php echo e(route('store.show', $user->referral_code)); ?>" target="_blank"
+                            class="flex-1 lg:flex-none h-14 md:h-16 px-6 bg-white dark:bg-slate-800 text-foreground dark:text-white border border-slate-200 dark:border-slate-700 rounded-2xl md:rounded-3xl font-black text-[10px] md:text-xs uppercase tracking-widest shadow-lg active:scale-95 transition-all whitespace-nowrap hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2">
+                            <span>Preview</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                        </a>
+                        <form action="<?php echo e(route('reseller.store.regenerate')); ?>" method="POST"
+                            onsubmit="return confirm('Are you sure you want to regenerate your store link? Old links will stop working immediately!')"
+                            class="flex-1 lg:flex-none">
+                            <?php echo csrf_field(); ?>
+                            <button type="submit"
+                                class="w-full h-14 md:h-16 px-6 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 rounded-2xl md:rounded-3xl font-black text-[10px] md:text-xs uppercase tracking-widest shadow hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 transition-all flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Regenerate
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                <p class="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-relaxed max-w-2xl">
-                    Share this link with your customers. Any purchase made through your storefront will use your customized
-                    pricing, and profits will be credited to your commission balance automatically.</p>
             </div>
         </div>
 
         
-        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3">
             <?php $__currentLoopData = $bundles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bundle): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div
-                    class="group relative bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl border border-white/20 dark:border-slate-800/50 rounded-[3rem] overflow-hidden shadow-2xl shadow-slate-200/20 dark:shadow-none hover:shadow-primary/10 transition-all duration-500">
+                    class="group relative bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-100 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     
                     <div
-                        class="aspect-[4/3] bg-slate-50 dark:bg-slate-800/50 relative flex items-center justify-center overflow-hidden">
+                        class="aspect-[16/9] bg-slate-50 dark:bg-slate-800/50 relative flex items-center justify-center overflow-hidden">
+                        
+                        <div class="absolute top-4 left-4 z-10">
+                            <?php
+                                $net = strtoupper($bundle->network);
+                                $netColors = [
+                                    'MTN' => 'bg-yellow-400 text-yellow-950',
+                                    'TELECEL' => 'bg-red-500 text-white',
+                                    'AT' => 'bg-blue-600 text-white',
+                                    'AIRTELTIGO' => 'bg-blue-600 text-white',
+                                ];
+                                $nc = $netColors[$net] ?? 'bg-slate-900 text-white';
+                            ?>
+                            <span
+                                class="px-3 py-1 rounded-xl text-[10px] font-black tracking-widest uppercase shadow-lg backdrop-blur-md <?php echo e($nc); ?>">
+                                <?php echo e($bundle->network); ?>
+
+                            </span>
+                        </div>
+
                         <?php if($bundle->image_url): ?>
                             <img src="<?php echo e($bundle->image_url); ?>"
-                                class="w-full h-full object-cover transition-transform group-hover:scale-110 duration-1000">
+                                class="w-full h-full object-cover transition-transform group-hover:scale-110 duration-700">
                         <?php else: ?>
-                            <div
-                                class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center">
-                                <span
-                                    class="text-6xl font-black opacity-[0.03] select-none"><?php echo e(strtoupper($bundle->network)); ?></span>
-                                <svg class="absolute w-20 h-20 text-slate-300 dark:text-slate-700 opacity-50" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex flex-col items-center gap-2 text-slate-300 dark:text-slate-600">
+                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             </div>
                         <?php endif; ?>
 
-                        <div class="absolute top-6 left-6">
-                            <span
-                                class="px-4 py-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl border border-white/20 dark:border-slate-800/50 text-primary">
-                                <?php echo e($bundle->network); ?>
-
-                            </span>
-                        </div>
-
-                        <div class="absolute bottom-6 right-6 text-right">
-                            <p class="text-[9px] font-black uppercase text-muted-foreground mb-1 tracking-widest">Base Cost</p>
-                            <div class="flex items-baseline justify-end gap-1">
-                                <span class="text-[10px] font-black opacity-40 uppercase">GHC</span>
-                                <p class="text-xl font-black text-foreground tabular-nums">
-                                    GHC <?php echo e(number_format($bundle->cost_to_reseller, 2)); ?></p>
+                        <div
+                            class="absolute bottom-3 right-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur px-3 py-1 rounded-lg border border-slate-100 dark:border-slate-700">
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-[9px] font-bold text-slate-400 uppercase">Cost</span>
+                                <span
+                                    class="text-sm font-black text-slate-900 dark:text-white tabular-nums">₵<?php echo e(number_format($bundle->cost_to_reseller, 2)); ?></span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="p-8 space-y-8">
+                    <div class="p-6 space-y-6">
                         <div>
-                            <h4 class="text-lg font-black text-foreground uppercase tracking-tight leading-none">
+                            <h4 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight leading-none line-clamp-1"
+                                title="<?php echo e($bundle->name); ?>">
                                 <?php echo e($bundle->name); ?>
 
                             </h4>
-                            <p class="text-[10px] font-black text-primary mt-2 uppercase tracking-[0.2em]">
-                                <?php echo e($bundle->data_amount); ?> ALLOCATION
+                            <p class="text-[10px] font-bold text-primary mt-1.5 uppercase tracking-wider">
+                                <?php echo e($bundle->data_amount); ?> Data
                             </p>
                         </div>
 
-                        <form action="<?php echo e(route('reseller.store.update-price')); ?>" method="POST" class="space-y-6">
+                        <form action="<?php echo e(route('reseller.store.update-price')); ?>" method="POST" class="space-y-4">
                             <?php echo csrf_field(); ?>
                             <input type="hidden" name="bundle_id" value="<?php echo e($bundle->id); ?>">
 
-                            <div class="space-y-3">
-                                <div class="flex items-center justify-between px-1">
-                                    <label class="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Store
-                                        Price</label>
-                                    <div
-                                        class="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 text-emerald-600 rounded-xl border border-emerald-500/10">
-                                        <span class="text-[9px] font-black uppercase tracking-tight">Net Profit:</span>
-                                        <span
-                                            class="text-[11px] font-black tabular-nums">GHC <?php echo e(number_format($bundle->profit_per_unit, 2)); ?></span>
-                                    </div>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Your Price
+                                        (GHS)</label>
+                                    <?php if($bundle->profit_per_unit > 0): ?>
+                                        <div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                            </svg>
+                                            <span class="text-[10px] font-black uppercase tracking-wide">Profit:
+                                                ₵<?php echo e(number_format($bundle->profit_per_unit, 2)); ?></span>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
+
                                 <div class="relative group/field">
-                                    <div
-                                        class="absolute left-5 top-1/2 -translate-y-1/2 font-black text-slate-300 group-focus-within/field:text-primary transition-colors">
-                                        GHC</div>
                                     <input type="number" step="0.01" name="price"
                                         value="<?php echo e(number_format($bundle->custom_price, 2, '.', '')); ?>" required
-                                        class="w-full h-15 bg-slate-50 dark:bg-slate-800/50 border-none rounded-2xl text-lg font-black tabular-nums focus:ring-2 focus:ring-primary/20 text-foreground px-10 shadow-inner group-hover/field:bg-slate-100 dark:group-hover/field:bg-slate-800 transition-colors">
+                                        class="w-full h-12 pl-4 pr-4 bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-lg font-black tabular-nums focus:ring-2 focus:ring-primary/20 text-slate-900 dark:text-white shadow-inner transition-colors">
                                 </div>
                             </div>
 
                             <button type="submit"
-                                class="w-full h-14 bg-foreground dark:bg-white text-background dark:text-foreground rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all shadow-xl active:scale-95 shadow-slate-900/10 dark:shadow-none flex items-center justify-center gap-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                                class="w-full h-10 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all shadow-lg shadow-slate-900/10 dark:shadow-none flex items-center justify-center gap-2 group/btn">
+                                <span>Save</span>
+                                <svg class="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>
-                                Save Pricing
                             </button>
                         </form>
                     </div>
@@ -168,8 +211,11 @@
 
     
     <div id="copy-confirm"
-        class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-8 py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-2xl transition-all duration-500 translate-y-20 opacity-0 pointer-events-none">
-        Store link copied to clipboard
+        class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-2xl transition-all duration-300 translate-y-20 opacity-0 pointer-events-none flex items-center gap-3">
+        <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+        </svg>
+        Link copied to clipboard
     </div>
 
     <script>

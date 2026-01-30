@@ -140,50 +140,46 @@
                         <p class="text-[10px] font-black uppercase tracking-[.25em]">No referrals found yet</p>
                     </div>
                 @else
-                    <table class="w-full text-left">
-                        <thead
-                            class="hidden md:table-header-group bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
-                            <tr>
-                                <th class="px-10 py-5 text-[9px] font-black uppercase tracking-widest text-slate-400">User</th>
-                                <th class="px-10 py-5 text-[9px] font-black uppercase tracking-widest text-slate-400">Email
-                                    Address</th>
-                                <th
-                                    class="px-10 py-5 text-[9px] font-black uppercase tracking-widest text-slate-400 text-right">
-                                    Joined On</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-50 dark:divide-slate-800">
-                            @foreach($referrals as $referral)
-                                <tr
-                                    class="block md:table-row group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-all border-b border-slate-50 dark:border-slate-800 md:border-none">
-                                    <td class="flex justify-between items-center px-10 py-6 md:table-cell">
-                                        <span
-                                            class="md:hidden text-[9px] font-black uppercase tracking-widest text-slate-400">User</span>
-                                        <div class="flex items-center gap-4">
-                                            <div
-                                                class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 flex items-center justify-center font-black text-[10px] uppercase shadow-sm group-hover:bg-primary group-hover:text-white transition-all">
-                                                {{ strtoupper(substr($referral->name, 0, 1)) }}
-                                            </div>
-                                            <span
-                                                class="font-bold text-slate-900 dark:text-white uppercase tracking-tight">{{ $referral->name }}</span>
-                                        </div>
-                                    </td>
-                                    <td class="flex justify-between items-center px-10 py-6 md:table-cell">
-                                        <span
-                                            class="md:hidden text-[9px] font-black uppercase tracking-widest text-slate-400">Email</span>
-                                        <span
-                                            class="text-xs font-mono font-bold text-slate-400 group-hover:text-primary transition-colors">{{ $referral->email }}</span>
-                                    </td>
-                                    <td class="flex justify-between items-center px-10 py-6 md:table-cell md:text-right">
-                                        <span
-                                            class="md:hidden text-[9px] font-black uppercase tracking-widest text-slate-400">Joined</span>
-                                        <span
-                                            class="text-[9px] font-black text-slate-400 uppercase tracking-widest tabular-nums">{{ $referral->created_at->format('M d, Y') }}</span>
-                                    </td>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left min-w-[700px]">
+                            <thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+                                <tr>
+                                    <th class="px-10 py-5 text-[9px] font-black uppercase tracking-widest text-slate-400">User
+                                    </th>
+                                    <th class="px-10 py-5 text-[9px] font-black uppercase tracking-widest text-slate-400">Email
+                                        Address</th>
+                                    <th
+                                        class="px-10 py-5 text-[9px] font-black uppercase tracking-widest text-slate-400 text-right">
+                                        Joined On</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody class="divide-y divide-slate-50 dark:divide-slate-800">
+                                @foreach($referrals as $referral)
+                                    <tr
+                                        class="group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-all border-b border-slate-50 dark:border-slate-800 md:border-none">
+                                        <td class="px-10 py-6">
+                                            <div class="flex items-center gap-4">
+                                                <div
+                                                    class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 flex items-center justify-center font-black text-[10px] uppercase shadow-sm group-hover:bg-primary group-hover:text-white transition-all">
+                                                    {{ strtoupper(substr($referral->name, 0, 1)) }}
+                                                </div>
+                                                <span
+                                                    class="font-bold text-slate-900 dark:text-white uppercase tracking-tight">{{ $referral->name }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-10 py-6">
+                                            <span
+                                                class="text-xs font-mono font-bold text-slate-400 group-hover:text-primary transition-colors">{{ $referral->email }}</span>
+                                        </td>
+                                        <td class="px-10 py-6 text-right">
+                                            <span
+                                                class="text-[9px] font-black text-slate-400 uppercase tracking-widest tabular-nums">{{ $referral->created_at->format('M d, Y') }}</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 @endif
             </div>
 

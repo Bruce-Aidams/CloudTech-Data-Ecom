@@ -15,6 +15,10 @@ class StorefrontController extends Controller
             ->whereIn('role', ['agent', 'dealer', 'super_agent'])
             ->firstOrFail();
 
+        if (!$reseller->store_active) {
+            return view('reseller.store.disabled', compact('reseller'));
+        }
+
         // Store in session for referral attribution
         session(['referred_by_code' => $referral_code]);
 

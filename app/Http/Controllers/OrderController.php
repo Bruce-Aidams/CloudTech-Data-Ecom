@@ -534,7 +534,6 @@ class OrderController extends Controller
         }
 
         return redirect()->route('orders.index')->with('success', count($orders) . ' orders placed successfully.');
-
         session()->forget('cart');
         return redirect()->route('orders.index')->with('success', count($orders) . ' orders placed successfully.');
     }
@@ -548,5 +547,106 @@ class OrderController extends Controller
             }
         }
         return $bundle->price;
+    }
+
+    /**
+     * Admin: Show Create Form
+     */
+    public function adminCreate()
+    {
+        $users = \App\Models\User::orderBy('name')->get();
+        $bundles = Bundle::with('network')->get()->groupBy('network');
+        return view('admin.orders.create', compact('users', 'bundles'));
+    }
+
+    /**
+     * Admin: Store Manual Order
+     */
+    public function adminStore(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'bundle_id' => 'required|exists:bundles,id',
+            'recipient_phone' => ['required', 'string', new GhanaPhoneValidation()],
+            'status' => 'required|in:pending,processing,completed,failed',
+        ]);
+
+        $user = \App\Models\User::findOrFail($request->user_id);
+        $bundle = Bundle::findOrFail($request->bundle_id);
+        $price = $this->getPriceForUser($bundle, $user);
+
+        $order = DB::transaction(function () use ($user, $bundle, $request, $price) {
+            $order = Order::create([
+                'user_id' => $user->id,
+                'bundle_id' => $bundle->id,
+                'recipient_phone' => $request->recipient_phone,
+                'cost' => $price,
+                'cost_price' => $bundle->cost_price ?? 0,
+                'status' => $request->status,
+                'reference' => 'ORD-ADM-' . strtoupper(Str::random(12)),
+            ]);
+
+            if ($request->status === 'completed') {
+                $order->complete(['method' => 'admin_manual']);
+            }
+
+            return $order;
+        });
+
+        if ($order->status === 'pending' || $order->status === 'processing') {
+            ProcessOrder::dispatch($order);
+        }
+
+        return redirect()->route('admin.orders')->with('success', 'Manual order created successfully.');
+    }
+
+    /**
+     * Admin: Show Edit Form
+     */
+    public function adminEdit(Order $order)
+    {
+        $order->load(['user', 'bundle']);
+        $bundles = Bundle::all()->groupBy('network');
+        return view('admin.orders.edit', compact('order', 'bundles'));
+    }
+
+    /**
+     * Admin: Update Order Details
+     */
+    public function adminUpdate(Request $request, Order $order)
+    {
+        $request->validate([
+            'recipient_phone' => ['required', 'string', new GhanaPhoneValidation()],
+            'status' => 'required|in:pending,processing,completed,failed',
+            'cost' => 'required|numeric|min:0',
+        ]);
+
+        $oldStatus = $order->status;
+
+        $order->update([
+            'recipient_phone' => $request->recipient_phone,
+            'status' => $request->status,
+            'cost' => $request->cost,
+        ]);
+
+        if ($request->status === 'completed' && $oldStatus !== 'completed') {
+            $order->complete(['method' => 'admin_update']);
+        }
+
+        return redirect()->route('admin.orders')->with('success', 'Order updated successfully.');
+    }
+
+    /**
+     * Admin: Delete Order
+     */
+    public function destroy(Order $order)
+    {
+        DB::transaction(function () use ($order) {
+            // Delete associated transactions if any
+            $order->transactions()->delete();
+            $order->delete();
+        });
+
+        return response()->json(['message' => 'Order deleted successfully.']);
     }
 }

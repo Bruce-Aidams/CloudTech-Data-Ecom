@@ -4,6 +4,7 @@
         ['name' => 'Orders', 'href' => '/admin/orders', 'icon' => 'shopping-cart'],
         ['name' => 'Inventory', 'href' => '/admin/bundles', 'icon' => 'signal'],
         ['name' => 'Users', 'href' => '/admin/users', 'icon' => 'users'],
+        ['name' => 'Resellers', 'href' => '/admin/resellers', 'icon' => 'user-group'],
         ['name' => 'Referrals', 'href' => '/admin/referrals', 'icon' => 'user-group'],
         ['name' => 'API Management', 'href' => '/admin/api-management', 'icon' => 'server'],
         ['name' => 'Analytics', 'href' => '/admin/analytics', 'icon' => 'activity'],

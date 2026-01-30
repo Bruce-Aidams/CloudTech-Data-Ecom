@@ -18,6 +18,9 @@ class Order extends Model
         'cost_price',
         'profit',
         'reference',
+        'payment_method',
+        'payment_reference',
+        'source',
         'response_data',
     ];
 

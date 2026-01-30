@@ -53,7 +53,40 @@
         <x-theme-toggle />
 
         {{-- Notifications Dropdown --}}
-        <div class="relative" x-data="{ open: false }">
+        <div class="relative" x-data="{ 
+            open: false, 
+            unreadCount: {{ $unreadCount }},
+            notifications: @js($unreadNotifications->map(fn($n) => [
+                'id' => $n->id,
+                'title' => $n->title,
+                'message' => $n->message,
+                'type' => $n->type,
+                'time_pretty' => $n->created_at->diffForHumans()
+            ])),
+            markNotificationAsRead(id, element) {
+                fetch(`/notifications/${id}/read`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name=" csrf-token"]').content, 'Content-Type'
+            : 'application/json' , 'Accept' : 'application/json' } }).then(response=> {
+            if (response.ok) {
+            // Reactively remove from list and decrement count
+            this.notifications = this.notifications.filter(n => n.id !== id);
+            this.unreadCount = Math.max(0, this.unreadCount - 1);
+            }
+            });
+            },
+            init() {
+            setInterval(() => {
+            fetch('{{ route('notifications.poll') }}')
+            .then(response => response.json())
+            .then(data => {
+            this.unreadCount = data.unreadCount;
+            this.notifications = data.notifications;
+            });
+            }, 30000); // Poll every 30 seconds
+            }
+            }">
             <button @click="open = !open" @click.outside="open = false"
                 class="p-2.5 bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 hover:text-primary rounded-xl transition-all relative group">
                 <svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor"
@@ -61,13 +94,13 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
-                @if($unreadCount > 0)
+                <template x-if="unreadCount > 0">
                     <span class="absolute top-2 right-2 flex h-2 w-2">
                         <span
                             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
                     </span>
-                @endif
+                </template>
             </button>
 
             <!-- Notification Panel -->
@@ -80,49 +113,55 @@
                     <div>
                         <h4 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">
                             Notifications</h4>
-                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Recent updates</p>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Recent updates
+                        </p>
                     </div>
                 </div>
 
                 <div class="space-y-1 max-h-[350px] overflow-y-auto custom-scrollbar">
-                    @forelse($unreadNotifications as $notification)
+                    <template x-for="notification in notifications" :key="notification.id">
                         <div class="p-4 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group/item cursor-pointer"
-                            onclick="markNotificationAsRead({{ $notification->id }}, this)">
+                            @click="markNotificationAsRead(notification.id, $el)">
                             <div class="flex gap-4">
-                                <div class="w-1.5 h-1.5 rounded-full mt-2 bg-primary"></div>
+                                <template x-if="notification.type === 'success'">
+                                    <div class="w-1.5 h-1.5 rounded-full mt-2 bg-emerald-500"></div>
+                                </template>
+                                <template x-if="notification.type !== 'success'">
+                                    <div class="w-1.5 h-1.5 rounded-full mt-2 bg-primary"></div>
+                                </template>
                                 <div class="flex-1 min-w-0">
-                                    <h5
-                                        class="text-[11px] font-black text-slate-800 dark:text-slate-200 uppercase tracking-tight leading-none">
-                                        {{ $notification->title }}</h5>
-                                    <p
-                                        class="text-[10px] text-slate-500 dark:text-slate-400 font-bold mt-1 line-clamp-2 leading-relaxed">
-                                        {{ $notification->message }}</p>
-                                    <p
-                                        class="text-[8px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest mt-2">
-                                        {{ $notification->created_at->diffForHumans() }}</p>
+                                    <h5 class="text-[11px] font-black text-slate-800 dark:text-slate-200 uppercase tracking-tight leading-none"
+                                        x-text="notification.title"></h5>
+                                    <p class="text-[10px] text-slate-500 dark:text-slate-400 font-bold mt-1 line-clamp-2 leading-relaxed"
+                                        x-text="notification.message"></p>
+                                    <p class="text-[8px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest mt-2"
+                                        x-text="notification.time_pretty"></p>
                                 </div>
                             </div>
                         </div>
-                    @empty
+                    </template>
+
+                    <template x-if="notifications.length === 0">
                         <div class="py-12 flex flex-col items-center justify-center text-center">
-                            <svg class="w-12 h-12 text-slate-100 dark:text-slate-800 mb-4" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg class="w-12 h-12 text-slate-100 dark:text-slate-800 mb-4" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No notifications</p>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">No notifications
+                            </p>
                         </div>
-                    @endforelse
+                    </template>
                 </div>
 
-                @if($unreadCount > 0)
+                <template x-if="unreadCount > 0">
                     <div class="mt-2 pt-2 border-t border-slate-50 dark:border-slate-800">
                         <a href="{{ url('/dashboard/notifications') }}"
                             class="flex items-center justify-center py-2 text-[9px] font-black text-primary uppercase tracking-[0.2em] hover:bg-primary/5 rounded-xl transition-all">
                             View all notifications
                         </a>
                     </div>
-                @endif
+                </template>
             </div>
         </div>
 
@@ -145,9 +184,11 @@
                 class="absolute right-0 mt-4 w-64 bg-white dark:bg-slate-900 rounded-3xl p-3 shadow-2xl border border-slate-100 dark:border-slate-800 z-50">
                 <div class="p-4 border-b border-slate-50 dark:border-slate-800 mb-2">
                     <p class="font-bold text-sm text-slate-900 dark:text-white truncate uppercase tracking-tight">
-                        {{ auth()->user()->name }}</p>
+                        {{ auth()->user()->name }}
+                    </p>
                     <p class="text-[10px] font-bold text-slate-400 truncate mt-0.5 uppercase tracking-wider">
-                        {{ auth()->user()->email }}</p>
+                        {{ auth()->user()->email }}
+                    </p>
                 </div>
 
                 <div class="space-y-1">
@@ -174,21 +215,3 @@
         </div>
     </div>
 </header>
-
-<script>
-    function markNotificationAsRead(id, element) {
-        fetch(`/notifications/${id}/read`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        }).then(response => {
-            if (response.ok) {
-                element.style.opacity = '0.5';
-                element.style.pointerEvents = 'none';
-            }
-        });
-    }
-</script>

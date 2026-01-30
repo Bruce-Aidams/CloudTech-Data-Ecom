@@ -14,6 +14,15 @@
 
             <div class="flex items-center gap-3 w-full md:w-auto">
                 
+                <a href="<?php echo e(route('admin.orders.create')); ?>"
+                    class="h-11 px-6 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 active:scale-95 transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                    </svg>
+                    New Order
+                </a>
+
+                
                 <a href="<?php echo e(route('admin.orders.export', request()->all())); ?>"
                     class="h-11 px-6 bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-emerald-200/50 hover:bg-emerald-700 active:scale-95 transition-all flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +82,7 @@
                 ?>
                 <?php $__currentLoopData = ['all', 'awaiting_transfer', 'pending', 'processing', 'completed', 'failed']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <button onclick="filterBy('status', '<?php echo e($s); ?>')" class="px-4 py-2 rounded-lg text-xs font-bold capitalize transition-all whitespace-nowrap
-                                                                                                                        <?php echo e(request('status', 'all') == $s
+                                                                                                                                                            <?php echo e(request('status', 'all') == $s
                     ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                     : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'); ?>">
                             <?php echo e($statusMap[$s]); ?>
@@ -88,14 +97,14 @@
                 <div
                     class="flex gap-2 p-1 bg-slate-100 dark:bg-slate-800/50 rounded-xl w-fit overflow-x-auto scrollbar-hide">
                     <button onclick="filterBy('network', 'all')" class="px-4 py-2 rounded-lg text-xs font-bold capitalize transition-all whitespace-nowrap
-                                                                        <?php echo e(request('network', 'all') == 'all'
+                                                                                    <?php echo e(request('network', 'all') == 'all'
         ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
         : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'); ?>">
                         All Networks
                     </button>
                     <?php $__currentLoopData = $networks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $network): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <button onclick="filterBy('network', '<?php echo e($network); ?>')" class="px-4 py-2 rounded-lg text-xs font-bold uppercase transition-all whitespace-nowrap
-                                                                                                                        <?php echo e(request('network') == $network
+                                                                                                                                                                        <?php echo e(request('network') == $network
                         ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
                         : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'); ?>">
                                     <?php echo e($network); ?>
@@ -179,95 +188,9 @@
                 </svg>
             </div>
 
-            <!-- Mobile: Card View (2-Column Grid) -->
-            <div class="grid grid-cols-2 md:hidden gap-3 p-4">
-                <?php $__empty_1 = true; $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                    <?php
-                        $net = $order->bundle->network ?? '';
-                        $netCardColors = [
-                            'MTN' => 'bg-amber-50/50 border-amber-200/50 dark:bg-amber-900/5 dark:border-amber-800/30',
-                            'Telecel' => 'bg-rose-50/50 border-rose-200/50 dark:bg-rose-900/5 dark:border-rose-800/30',
-                            'AT' => 'bg-sky-50/50 border-sky-200/50 dark:bg-sky-900/5 dark:border-sky-800/30',
-                            'AirtelTigo' => 'bg-sky-50/50 border-sky-200/50 dark:bg-sky-900/5 dark:border-sky-800/30',
-                        ];
-                        $ncc = $netCardColors[$net] ?? 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800';
-
-                        $statuses = [
-                            'pending' => 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 border-amber-200 dark:border-amber-800',
-                            'processing' => 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400 border-blue-200 dark:border-blue-800',
-                            'completed' => 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800',
-                            'failed' => 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-400 border-rose-200 dark:border-rose-800',
-                        ];
-                        $sc = $statuses[$order->status] ?? 'bg-slate-100 text-slate-700 border-slate-200';
-                    ?>
-                    <div class="<?php echo e($ncc); ?> p-4 rounded-2xl border shadow-sm space-y-3 relative overflow-hidden group">
-                        <div class="flex items-center justify-between">
-                            <span class="font-mono text-[9px] font-black text-slate-400 tracking-tighter uppercase">Ref:
-                                <?php echo e(substr($order->reference, 0, 8)); ?></span>
-                            <span
-                                class="text-[9px] font-black text-slate-400 uppercase tracking-widest"><?php echo e($order->created_at->format('M d, H:i')); ?></span>
-                        </div>
-
-                        <div class="space-y-1">
-                            <div class="flex items-center gap-2">
-                                <div
-                                    class="w-6 h-6 rounded bg-slate-900 dark:bg-white flex items-center justify-center text-white dark:text-slate-900 font-black text-[10px]">
-                                    <?php echo e(strtoupper(substr($order->user->name ?? '?', 0, 1))); ?>
-
-                                </div>
-                                <p
-                                    class="text-[11px] font-black text-slate-900 dark:text-white uppercase truncate leading-none">
-                                    <?php echo e($order->user->name); ?>
-
-                                </p>
-                            </div>
-                            <div class="flex items-center justify-between pt-1">
-                                <p class="text-[10px] font-black text-slate-500 truncate"><?php echo e($order->bundle->name); ?></p>
-                                <span
-                                    class="px-1.5 py-0.5 rounded text-[8px] font-black uppercase <?php echo e($nc ?? ''); ?>"><?php echo e($net); ?></span>
-                            </div>
-                            <p class="text-xs font-black tracking-tighter text-slate-900 dark:text-white">
-                                ₵<?php echo e(number_format($order->cost, 2)); ?></p>
-                        </div>
-
-                        <div
-                            class="w-full text-center py-2 rounded-xl <?php echo e($sc); ?> text-[8px] font-black uppercase tracking-[0.2em] border shadow-sm">
-                            <?php echo e($statusLabels[$order->status] ?? $order->status); ?>
-
-                        </div>
-
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" @click.outside="open = false"
-                                class="w-full h-9 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-black text-[9px] uppercase active:scale-95 transition-all shadow-lg shadow-slate-900/10 dark:shadow-none">Manage
-                                Protocol</button>
-                            <div x-show="open" x-cloak
-                                class="absolute right-0 bottom-full mb-3 w-40 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 z-30 p-1.5 animate-in slide-in-from-bottom-2 duration-200">
-                                <?php $__currentLoopData = ['pending', 'processing', 'completed', 'failed']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $st): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <button onclick="updateStatus(<?php echo e($order->id); ?>, '<?php echo e($st); ?>')"
-                                        class="w-full text-left px-4 py-2.5 rounded-xl text-[9px] font-black uppercase hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors <?php echo e($order->status === $st ? 'text-primary' : 'text-slate-500'); ?>">
-                                        Mark as <?php echo e($statusLabels[$st] ?? $st); ?>
-
-                                    </button>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                    <div class="col-span-2 text-center py-12">
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">No activity found</p>
-                    </div>
-                <?php endif; ?>
-            </div>
-
-            <?php if($orders->hasPages()): ?>
-                <div class="pt-4">
-                    <?php echo e($orders->links()); ?>
-
-                </div>
-            <?php endif; ?>
-            <!-- Desktop: Table View -->
+            <!-- Table View -->
             <div
-                class="hidden md:block bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+                class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
@@ -372,96 +295,142 @@
                                                 </button>
 
                                                 <div x-show="open" x-cloak
-                                                    class="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 z-10 p-1 animate-in slide-in-from-top-2 duration-200">
-                                                    <?php $__currentLoopData = ['pending', 'processing', 'completed', 'failed']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $st): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                        <button onclick="updateStatus(<?php echo e($order->id); ?>, '<?php echo e($st); ?>')"
-                                                            class="w-full text-left px-3 py-2 rounded-lg text-xs font-bold capitalize hover:bg-slate-50 dark:hover:bg-slate-800 border-none <?php echo e($order->status === $st ? 'text-primary' : 'text-slate-600 dark:text-slate-400'); ?>">
-                                                            Mark as <?php echo e($statusLabels[$st] ?? $st); ?>
+                                                    class="absolute right-0 mt-2 w-52 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 z-10 p-1 animate-in slide-in-from-top-2 duration-200">
+                                                            <div class="px-3 py-2 border-b border-slate-50 dark:border-slate-800 mb-1">
+                                                                <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">Status Protocol</p>
+                                                            </div>
+                                                            <?php $__currentLoopData = ['pending', 'processing', 'completed', 'failed']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $st): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <button onclick="updateStatus(<?php echo e($order->id); ?>, '<?php echo e($st); ?>')"
+                                                                    class="w-full text-left px-3 py-2 rounded-lg text-xs font-bold capitalize hover:bg-slate-50 dark:hover:bg-slate-800 border-none <?php echo e($order->status === $st ? 'text-primary' : 'text-slate-600 dark:text-slate-400'); ?>">
+                                                                    Mark as <?php echo e($statusLabels[$st] ?? $st); ?>
 
-                                                        </button>
-                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                </button>
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                                            <div class="my-1 border-t border-slate-50 dark:border-slate-800"></div>
+
+                                                            <a href="<?php echo e(route('admin.orders.edit', $order->id)); ?>"
+                                                                class="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                                </svg>
+                                                                Edit Order
+                                                            </a>
+
+                                                            <button onclick="deleteOrder(<?php echo e($order->id); ?>)"
+                                                                class="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/10 transition-colors border-none">
+                                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                                </svg>
+                                                                Delete Order
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </td>
+                                        </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                <tr>
-                                    <td colspan="6" class="px-6 py-24 text-center">
-                                        <div class="flex flex-col items-center gap-3 text-slate-400 dark:text-slate-600">
-                                            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                            </svg>
-                                            <p class="font-medium">No order activity recorded</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                                    <tr>
+                                        <td colspan="6" class="px-6 py-24 text-center">
+                                            <div class="flex flex-col items-center gap-3 text-slate-400 dark:text-slate-600">
+                                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                                </svg>
+                                                <p class="font-medium">No order activity recorded</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
+            <?php if($orders->isNotEmpty()): ?>
+                <div
+                    class="px-6 py-4 border-t border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20 flex items-center justify-between">
+                    <div class="text-xs font-bold text-slate-500 dark:text-slate-500 uppercase tracking-widest italic">Global
+                        Stream: <?php echo e($orders->total()); ?> Records</div>
+                    <div><?php echo e($orders->links()); ?></div>
+                </div>
+            <?php endif; ?>
+        </div>
         </div>
 
-        <?php if($orders->isNotEmpty()): ?>
-            <div
-                class="px-6 py-4 border-t border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20 flex items-center justify-between">
-                <div class="text-xs font-bold text-slate-500 dark:text-slate-500 uppercase tracking-widest italic">Global
-                    Stream: <?php echo e($orders->total()); ?> Records</div>
-                <div><?php echo e($orders->links()); ?></div>
-            </div>
-        <?php endif; ?>
-    </div>
-    </div>
-
-    <?php $__env->startPush('scripts'); ?>
-        <script>
-            function filterBy(key, value) {
-                const url = new URL(window.location.href);
-                if (value === 'all') {
-                    url.searchParams.delete(key);
-                } else {
-                    url.searchParams.set(key, value);
-                }
-                // Reset page on filter change
-                url.searchParams.delete('page');
-                window.location.href = url.href;
-            }
-
-            async function updateStatus(orderId, status) {
-                if (!confirm(`Update order #${orderId} to ${status}?`)) return;
-
-                try {
-                    const response = await fetch(`<?php echo e(url('admin/orders')); ?>/${orderId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({ status })
-                    });
-
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        const data = await response.json();
-                        alert(data.message || 'Verification Error');
-                    }
-                } catch (e) {
-                    alert('Network Communication Error');
-                }
-            }
-
-            document.getElementById('searchInput').addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
+        <?php $__env->startPush('scripts'); ?>
+            <script>
+                function filterBy(key, value) {
                     const url = new URL(window.location.href);
-                    url.searchParams.set('search', this.value);
+                    if (value === 'all') {
+                        url.searchParams.delete(key);
+                    } else {
+                        url.searchParams.set(key, value);
+                    }
+                    // Reset page on filter change
+                    url.searchParams.delete('page');
                     window.location.href = url.href;
                 }
-            });
-        </script>
-    <?php $__env->stopPush(); ?>
+
+                async function updateStatus(orderId, status) {
+                    if (!confirm(`Update order #${orderId} to ${status}?`)) return;
+
+                    try {
+                        const response = await fetch(`<?php echo e(url('admin/orders')); ?>/${orderId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ status })
+                        });
+
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            const data = await response.json();
+                            alert(data.message || 'Verification Error');
+                        }
+                    } catch (e) {
+                        alert('Network Communication Error');
+                    }
+                }
+
+                async function deleteOrder(orderId) {
+                    if (!confirm('Are you absolutely sure you want to delete this order? This action cannot be undone and will delete associated transactions.')) return;
+
+                    try {
+                        const response = await fetch(`<?php echo e(url('admin/orders')); ?>/${orderId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            // Instead of alert, maybe we could use a toast if available, but for now:
+                            window.location.reload();
+                        } else {
+                            const data = await response.json();
+                            alert(data.message || 'Deletion Error');
+                        }
+                    } catch (e) {
+                        alert('Network Communication Error');
+                    }
+                }
+
+                document.getElementById('searchInput').addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('search', this.value);
+                        window.location.href = url.href;
+                    }
+                });
+            </script>
+        <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Bruce\Desktop\Projects\Megaai2\Megaai\cloudtech\resources\views/admin/orders/index.blade.php ENDPATH**/ ?>

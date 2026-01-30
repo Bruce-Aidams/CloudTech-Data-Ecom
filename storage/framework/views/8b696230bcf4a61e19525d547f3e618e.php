@@ -48,6 +48,10 @@
                 </div>
             </div>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        
+        <a href="<?php echo e(route('notifications.index')); ?>" class="block text-center py-2 text-[10px] font-black text-slate-500 hover:text-primary uppercase tracking-widest bg-white/50 backdrop-blur-md rounded-xl hover:bg-white/80 transition-all">
+            See All Notifications
+        </a>
     </div>
 
     <script>

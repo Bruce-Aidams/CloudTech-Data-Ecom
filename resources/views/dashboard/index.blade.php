@@ -89,8 +89,8 @@
                     <div>
                         <p class="text-[9px] md:text-xs font-black text-slate-400 uppercase tracking-widest">Wallet Balance
                         </p>
-                        <h3 class="text-xl md:text-3xl font-black text-slate-800 dark:text-white mt-1 tabular-nums">
-                            ₵{{ number_format($balance, 2) }}</h3>
+                        <h3 class="text-xl md:text-3xl font-black text-blue-600 dark:text-white mt-1 tabular-nums">
+                            GH₵{{ number_format($balance, 2) }}</h3>
                     </div>
                     <div
                         class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 flex items-center justify-center">
@@ -102,7 +102,7 @@
                     </div>
                 </div>
                 <a href="{{ route('wallet.index') }}"
-                    class="w-full h-9 md:h-11 flex items-center justify-center gap-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[8px] md:text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all">
+                    class="w-full h-9 md:h-11 flex items-center justify-center gap-2 rounded-xl bg-blue-600 dark:bg-white text-white dark:text-slate-900 text-[8px] md:text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all">
                     <span>Top up</span>
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path>
@@ -146,6 +146,19 @@
                         <span
                             class="text-[9px] md:text-xs font-black text-slate-700 dark:text-slate-200 uppercase tracking-tighter">Refer</span>
                     </a>
+                    <a href="{{ route('notifications.index') }}"
+                        class="flex items-center gap-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-transparent hover:border-primary/20 transition-all">
+                        <div
+                            class="w-7 h-7 rounded-lg bg-pink-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                </path>
+                            </svg>
+                        </div>
+                        <span
+                            class="text-[9px] md:text-xs font-black text-slate-700 dark:text-slate-200 uppercase tracking-tighter">Alerts</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -166,78 +179,106 @@
             </div>
 
             {{-- Integrated Responsive Table --}}
-            <div class="p-0">
-                <table class="w-full text-left border-collapse">
-                    <thead class="hidden md:table-header-group">
-                        <tr
-                            class="text-[10px] text-muted-foreground uppercase bg-slate-50/50 dark:bg-slate-950/20 border-b border-slate-200/50 dark:border-white/5">
-                            <th class="px-8 py-4 font-black tracking-widest">Reference</th>
-                            <th class="px-6 py-4 font-black tracking-widest">Package</th>
-                            <th class="px-6 py-4 font-black tracking-widest">Recipient</th>
-                            <th class="px-6 py-4 font-black tracking-widest">Price</th>
-                            <th class="px-8 py-4 font-black tracking-widest text-right">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100/30 dark:divide-slate-800/30">
-                        @forelse($recentOrders as $order)
+            <div class="relative">
+                <!-- Desktop View (md+) -->
+                <div class="hidden md:block overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
                             <tr
-                                class="block md:table-row group hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors border-b border-slate-100/50 dark:border-slate-800/50 md:border-none">
-                                <td class="flex justify-between items-center px-6 py-4 md:table-cell md:px-8">
-                                    <span
-                                        class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ref</span>
-                                    <span
-                                        class="font-mono text-[10px] font-black text-primary tracking-tighter uppercase">#{{ strtoupper(substr($order->reference, 0, 8)) }}</span>
-                                </td>
-                                <td class="flex justify-between items-center px-6 py-4 md:table-cell md:px-6">
-                                    <span
-                                        class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Package</span>
-                                    <span
-                                        class="text-[11px] font-black text-slate-900 dark:text-white uppercase">{{ $order->bundle->name ?? 'Bundle' }}</span>
-                                </td>
-                                <td class="flex justify-between items-center px-6 py-4 md:table-cell md:px-6">
-                                    <span
-                                        class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Recipient</span>
-                                    <span
-                                        class="font-mono text-[11px] text-slate-400 font-bold">{{ $order->recipient_phone }}</span>
-                                </td>
-                                <td class="flex justify-between items-center px-6 py-4 md:table-cell md:px-6">
-                                    <span
-                                        class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Price</span>
-                                    <span
-                                        class="text-xs font-black text-slate-900 dark:text-white">₵{{ number_format($order->cost, 2) }}</span>
-                                </td>
-                                <td class="flex justify-between items-center px-6 py-4 md:table-cell text-right md:px-8">
-                                    <span
-                                        class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Status</span>
-                                    @php
-                                        $statuses = [
-                                            'completed' => 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500',
-                                            'pending' => 'bg-amber-50 dark:bg-amber-500/10 text-amber-500',
-                                            'processing' => 'bg-blue-50 dark:bg-blue-500/10 text-blue-500',
-                                            'failed' => 'bg-rose-50 dark:bg-rose-500/10 text-rose-500',
-                                        ];
-                                        $statusLabels = [
-                                            'completed' => 'Delivered',
-                                            'pending' => 'Validating',
-                                            'processing' => 'Processing',
-                                            'failed' => 'Failed',
-                                        ];
-                                        $sc = $statuses[$order->status] ?? 'bg-slate-50 dark:bg-slate-800 text-slate-600';
-                                        $label = $statusLabels[$order->status] ?? ucfirst($order->status);
-                                    @endphp
-                                    <span
-                                        class="inline-flex items-center px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest {{ $sc }}">{{ $label }}</span>
-                                </td>
+                                class="text-[10px] text-muted-foreground uppercase bg-slate-50/50 dark:bg-slate-950/20 border-b border-slate-200/50 dark:border-white/5">
+                                <th class="px-8 py-5 font-black tracking-widest text-slate-400">Reference</th>
+                                <th class="px-6 py-5 font-black tracking-widest text-slate-400">Package</th>
+                                <th class="px-6 py-5 font-black tracking-widest text-slate-400">Recipient</th>
+                                <th class="px-6 py-5 font-black tracking-widest text-slate-400">Price</th>
+                                <th class="px-8 py-5 font-black tracking-widest text-right text-slate-400">Status</th>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="py-12 text-center opacity-20">
-                                    <p class="text-[10px] font-black uppercase tracking-widest">No activity</p>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100/30 dark:divide-slate-800/30">
+                            @forelse($recentOrders as $order)
+                                <tr
+                                    class="group hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors border-b border-slate-100/50 dark:border-slate-800/50">
+                                    <td class="px-8 py-5">
+                                        <span
+                                            class="font-mono text-[10px] font-black text-primary tracking-tighter uppercase whitespace-nowrap bg-primary/5 px-2 py-1 rounded-md border border-primary/10">
+                                            #{{ strtoupper(substr($order->reference, 0, 8)) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <span
+                                            class="text-[11px] font-black text-slate-900 dark:text-white uppercase">{{ $order->bundle->name ?? 'Bundle' }}</span>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <span
+                                            class="font-mono text-[11px] text-slate-400 font-bold tracking-widest">{{ $order->recipient_phone }}</span>
+                                    </td>
+                                    <td class="px-6 py-5 whitespace-nowrap">
+                                        <span
+                                            class="text-xs font-black text-slate-900 dark:text-white tabular-nums">₵{{ number_format($order->cost, 2) }}</span>
+                                    </td>
+                                    <td class="px-8 py-5 text-right">
+                                        @php
+                                            $statuses = [
+                                                'completed' => 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 border-emerald-100 dark:border-emerald-500/20',
+                                                'pending' => 'bg-amber-50 dark:bg-amber-500/10 text-amber-500 border-amber-100 dark:border-amber-500/20',
+                                                'processing' => 'bg-blue-50 dark:bg-blue-500/10 text-blue-500 border-blue-100 dark:border-blue-500/20',
+                                                'failed' => 'bg-rose-50 dark:bg-rose-500/10 text-rose-500 border-rose-100 dark:border-rose-500/20',
+                                            ];
+                                            $statusLabels = [
+                                                'completed' => 'Delivered',
+                                                'pending' => 'Validating',
+                                                'processing' => 'Processing',
+                                                'failed' => 'Failed',
+                                            ];
+                                            $sc = $statuses[$order->status] ?? 'bg-slate-50 dark:bg-slate-800 text-slate-600 border-slate-100 dark:border-slate-700';
+                                            $label = $statusLabels[$order->status] ?? ucfirst($order->status);
+                                        @endphp
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest border {{ $sc }}">{{ $label }}</span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="py-12 text-center opacity-20">
+                                        <p class="text-[10px] font-black uppercase tracking-widest">No activity</p>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile View (md-) -->
+                <div class="md:hidden divide-y divide-slate-50 dark:divide-slate-800/50">
+                    @forelse($recentOrders as $order)
+                        <div
+                            class="p-4 space-y-3 relative overflow-hidden group active:bg-slate-50 dark:active:bg-slate-800/50 transition-all">
+                            <div class="flex items-center justify-between relative">
+                                <span
+                                    class="font-mono text-[9px] font-black text-primary">#{{ strtoupper(substr($order->reference, 0, 8)) }}</span>
+                                @php
+                                    $sc = $statuses[$order->status] ?? 'bg-slate-50 dark:bg-slate-800 text-slate-600 border-slate-100 dark:border-slate-700';
+                                    $label = $statusLabels[$order->status] ?? ucfirst($order->status);
+                                @endphp
+                                <span
+                                    class="text-[8px] font-black uppercase tracking-[0.15em] {{ $sc }} px-2 py-0.5 rounded-md border">{{ $label }}</span>
+                            </div>
+                            <div class="flex items-end justify-between relative">
+                                <div class="space-y-0.5">
+                                    <h4 class="text-[11px] font-black text-slate-900 dark:text-white uppercase">
+                                        {{ $order->bundle->name ?? 'Bundle' }}</h4>
+                                    <p class="text-[10px] font-bold text-slate-400 font-mono tracking-tighter">
+                                        {{ $order->recipient_phone }}</p>
+                                </div>
+                                <span
+                                    class="text-xs font-black text-slate-900 dark:text-white tabular-nums">₵{{ number_format($order->cost, 2) }}</span>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="py-12 text-center opacity-20">
+                            <p class="text-[10px] font-black uppercase tracking-widest">No activity</p>
+                        </div>
+                    @endforelse
+                </div>
             </div>
         </div>
     </div>

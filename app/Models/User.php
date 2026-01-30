@@ -37,6 +37,7 @@ class User extends Authenticatable
         'referred_by_id',
         'settings',
         'is_active',
+        'store_active',
         'two_factor_enabled',
         'two_factor_code',
     ];
@@ -120,6 +121,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'settings' => 'array',
             'is_active' => 'boolean',
+            'store_active' => 'boolean',
         ];
     }
 }

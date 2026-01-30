@@ -8,10 +8,43 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    // User: Get my notifications
+    // User: Get my notifications (JSON for polling)
     public function index(Request $request)
     {
-        return $request->user()->notifications()->latest()->take(20)->get();
+        $user = $request->user();
+        $unreadCount = $user->notifications()->where('is_read', false)->count();
+        $notifications = $user->notifications()
+            ->where('is_read', false)
+            ->latest()
+            ->take(5)
+            ->get()
+            ->map(function ($n) {
+                return [
+                    'id' => $n->id,
+                    'title' => $n->title,
+                    'message' => $n->message,
+                    'type' => $n->type,
+                    'time_pretty' => $n->created_at->diffForHumans()
+                ];
+            });
+
+        return response()->json([
+            'unreadCount' => $unreadCount,
+            'notifications' => $notifications
+        ]);
+    }
+
+    // User: View all notifications page
+    public function userIndex(Request $request)
+    {
+        $notifications = $request->user()->notifications()->latest()->paginate(15);
+        return view('dashboard.notifications.index', compact('notifications'));
+    }
+
+    public function markAllAsRead(Request $request)
+    {
+        $request->user()->notifications()->where('is_read', false)->update(['is_read' => true]);
+        return back()->with('success', 'All notifications marked as read');
     }
 
     // Admin: Get all notifications
@@ -49,7 +82,7 @@ class NotificationController extends Controller
         ]);
 
         if ($request->user_id === 'all') {
-            $users = User::where('role', 'user')->get();
+            $users = User::where('role', '!=', 'admin')->get();
             foreach ($users as $user) {
                 Notification::create([
                     'user_id' => $user->id,

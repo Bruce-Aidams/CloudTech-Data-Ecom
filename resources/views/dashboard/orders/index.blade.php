@@ -20,49 +20,52 @@
             </a>
         </div>
 
-        <div class="rounded-xl border bg-card text-card-foreground shadow-sm border-none overflow-hidden"
+        <div class="rounded-2xl md:rounded-[2.5rem] border border-slate-100 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 shadow-sm overflow-hidden"
             x-data="{ showFilters: false }">
             <!-- Filter Section -->
-            <div class="p-4 md:p-6 border-b border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-slate-900/50">
+            <div class="p-4 md:p-8 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <div class="flex items-center justify-between mb-4 md:hidden">
                     <button @click="showFilters = !showFilters"
-                        class="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-primary">
+                        class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary">
                         <svg class="w-4 h-4 transition-transform duration-300" :class="{'rotate-180': showFilters}"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7">
                             </path>
                         </svg>
-                        <span x-text="showFilters ? 'Hide Filters' : 'Filters'"></span>
+                        <span x-text="showFilters ? 'Hide Protocols' : 'Filter Protocols'"></span>
                     </button>
                     @if(request()->anyFilled(['search', 'status', 'network', 'start_date', 'end_date']))
                         <a href="{{ route('orders.index') }}"
-                            class="text-[10px] font-black text-rose-500 uppercase tracking-widest bg-rose-50 dark:bg-rose-900/20 px-3 py-1 rounded-lg">Reset</a>
+                            class="text-[9px] font-black text-rose-500 uppercase tracking-widest bg-rose-50 dark:bg-rose-900/20 px-3 py-1.5 rounded-lg border border-rose-100 dark:border-rose-900/20">Reset
+                            System</a>
                     @endif
                 </div>
 
                 <form action="{{ route('orders.index') }}" method="GET"
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end"
-                    x-show="window.innerWidth > 768 || showFilters" x-cloak>
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 items-end"
+                    x-show="window.innerWidth > 768 || showFilters" x-cloak x-transition>
                     <!-- Search -->
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Search</label>
-                        <div class="relative">
-                            <svg class="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
+                        <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Search
+                            ID/Phone</label>
+                        <div class="relative group">
+                            <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
-                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Ref or Phone..."
-                                class="flex h-10 w-full rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 px-3 py-1 text-sm shadow-inner transition-colors placeholder:text-muted-foreground focus:ring-1 focus:ring-primary pl-10">
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Reference code..."
+                                class="w-full h-11 md:h-12 pl-11 pr-4 rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary/20 transition-all">
                         </div>
                     </div>
 
                     <!-- Status -->
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Status</label>
+                        <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Lifecycle
+                            Status</label>
                         <select name="status"
-                            class="h-10 w-full rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 px-3 py-1 text-sm shadow-inner transition-colors focus:ring-1 focus:ring-primary">
-                            <option value="all">All Status</option>
+                            class="w-full h-11 md:h-12 px-4 rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer">
+                            <option value="all">System: All</option>
                             <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Delivered
                             </option>
                             <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Validating</option>
@@ -74,10 +77,11 @@
 
                     <!-- Network -->
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Network</label>
+                        <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Network
+                            Protocol</label>
                         <select name="network"
-                            class="h-10 w-full rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 px-3 py-1 text-sm shadow-inner transition-colors focus:ring-1 focus:ring-primary">
-                            <option value="all">All Networks</option>
+                            class="w-full h-11 md:h-12 px-4 rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer">
+                            <option value="all">Carrier: All</option>
                             @foreach($networks as $network)
                                 <option value="{{ $network }}" {{ request('network') == $network ? 'selected' : '' }}>
                                     {{ strtoupper($network) }}</option>
@@ -86,231 +90,224 @@
                     </div>
 
                     <!-- Date Range -->
-                    <div class="lg:col-span-2 grid grid-cols-2 gap-2">
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">From</label>
+                    <div class="lg:col-span-2 grid grid-cols-2 gap-3 items-end">
+                        <div class="space-y-2 text-left">
+                            <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">From</label>
                             <input type="date" name="start_date" value="{{ request('start_date') }}"
-                                class="flex h-10 w-full rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 px-3 py-1 text-sm shadow-inner transition-colors focus:ring-1 focus:ring-primary">
+                                class="w-full h-11 md:h-12 px-4 rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary/20 transition-all">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">To</label>
+                            <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">To</label>
                             <div class="flex gap-2">
                                 <input type="date" name="end_date" value="{{ request('end_date') }}"
-                                    class="flex h-10 w-full rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 px-3 py-1 text-sm shadow-inner transition-colors focus:ring-1 focus:ring-primary">
+                                    class="flex-1 h-11 md:h-12 px-4 rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary/20 transition-all">
                                 <button type="submit"
-                                    class="h-10 px-4 flex items-center justify-center rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20">
+                                    class="h-11 md:h-12 w-11 md:w-12 shrink-0 flex items-center justify-center rounded-xl bg-primary text-white hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-primary/20">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                     </svg>
                                 </button>
-                                @if(request()->anyFilled(['search', 'status', 'network', 'start_date', 'end_date']))
-                                    <a href="{{ route('orders.index') }}"
-                                        class="h-10 px-4 md:flex hidden items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-rose-500 transition-all shadow-inner"
-                                        title="Clear Filters">
-                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                d="M6 18L18 6M6 6l12 12"></path>
-                                        </svg>
-                                    </a>
-                                @endif
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
 
-            <!-- Responsive Table -->
-            <div class="p-0">
-                <table class="w-full text-left border-collapse">
-                    <thead class="hidden md:table-header-group">
-                        <tr
-                            class="text-[10px] text-muted-foreground uppercase bg-slate-50/50 dark:bg-slate-950/20 border-b border-slate-200/50 dark:border-white/5">
-                            <th class="px-6 py-6 font-black tracking-widest">Order Info</th>
-                            <th class="px-6 py-6 font-black tracking-widest">Package</th>
-                            <th
-                                class="px-6 py-6 font-black tracking-widest border-x border-slate-100/50 dark:border-white/5">
-                                Recipient</th>
-                            <th class="px-6 py-6 font-black tracking-widest text-right">Amount</th>
-                            <th class="px-6 py-6 font-black tracking-widest text-center">Status</th>
-                            <th class="px-6 py-6 font-black tracking-widest text-right">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100/30 dark:divide-slate-800/30">
-                        @forelse($orders as $order)
+            <!-- Dashboard Optimized Layouts -->
+            <div class="relative">
+                <!-- Desktop Table View (Hidden on Mobile) -->
+                <div class="hidden md:block overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
                             <tr
-                                class="block md:table-row group hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors border-b border-slate-100/50 dark:border-slate-800/50 md:border-none">
-                                <td class="flex justify-between items-center px-6 py-4 md:table-cell">
-                                    <span
-                                        class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Order</span>
-                                    <div class="flex flex-col">
+                                class="text-[10px] text-slate-400 dark:text-slate-500 uppercase bg-slate-50/50 dark:bg-slate-950/20 border-b border-slate-200/50 dark:border-white/5">
+                                <th class="px-8 py-5 font-black tracking-[0.2em]">Reference</th>
+                                <th class="px-6 py-5 font-black tracking-[0.2em]">Package Info</th>
+                                <th
+                                    class="px-6 py-5 font-black tracking-[0.2em] border-x border-slate-100/50 dark:border-white/5 text-center">
+                                    Recipient</th>
+                                <th class="px-6 py-5 font-black tracking-[0.2em] text-right">Amount</th>
+                                <th class="px-6 py-5 font-black tracking-[0.2em] text-center">Status</th>
+                                <th class="px-6 py-5 font-black tracking-[0.2em] text-right">Timestamp</th>
+                                <th class="px-8 py-5 font-black tracking-[0.2em] text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100/30 dark:divide-slate-800/30">
+                            @forelse($orders as $order)
+                                <tr
+                                    class="group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-all border-b border-slate-100/50 dark:border-slate-800/50">
+                                    <td class="px-8 py-5">
                                         <span
-                                            class="font-mono text-[10px] font-black text-primary tracking-tighter uppercase">#{{ strtoupper(substr($order->reference, 0, 10)) }}</span>
+                                            class="font-mono text-[11px] font-black text-primary tracking-tighter uppercase whitespace-nowrap bg-primary/5 px-2 py-1 rounded-md border border-primary/10">
+                                            #{{ strtoupper(substr($order->reference, 0, 10)) }}...
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <div class="flex flex-col">
+                                            <span
+                                                class="text-sm font-black text-slate-900 dark:text-white">{{ $order->bundle->name ?? 'Data Bundle' }}</span>
+                                            <span
+                                                class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">{{ $order->bundle->network ?? 'GSM' }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5 border-x border-slate-100/50 dark:border-white/5 text-center">
                                         <span
-                                            class="md:hidden text-xs font-black text-slate-900 dark:text-white mt-1">{{ $order->bundle->name ?? 'Data Bundle' }}</span>
+                                            class="text-sm font-black text-slate-900 dark:text-white font-mono tracking-widest">{{ $order->recipient_phone }}</span>
+                                    </td>
+                                    <td class="px-6 py-5 text-right whitespace-nowrap">
+                                        <span
+                                            class="text-sm font-black text-slate-900 dark:text-white tabular-nums">₵{{ number_format($order->cost, 2) }}</span>
+                                    </td>
+                                    <td class="px-6 py-5 text-center">
+                                        @php
+                                            $statusConfig = [
+                                                'completed' => ['bg' => 'bg-emerald-500/10', 'text' => 'text-emerald-600', 'label' => 'Delivered'],
+                                                'failed' => ['bg' => 'bg-rose-500/10', 'text' => 'text-rose-600', 'label' => 'Failed'],
+                                                'processing' => ['bg' => 'bg-blue-500/10', 'text' => 'text-blue-600', 'label' => 'Processing'],
+                                                'pending' => ['bg' => 'bg-amber-500/10', 'text' => 'text-amber-600', 'label' => 'Validating'],
+                                            ];
+                                            $conf = $statusConfig[$order->status] ?? ['bg' => 'bg-slate-500/10', 'text' => 'text-slate-600', 'label' => $order->status];
+                                        @endphp
+                                        <span
+                                            class="inline-flex items-center px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-tight {{ $conf['bg'] }} {{ $conf['text'] }} border border-transparent group-hover:border-current/20 transition-all">
+                                            {{ $conf['label'] }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-5 text-right">
+                                        <div class="flex flex-col items-end">
+                                            <span
+                                                class="text-[10px] font-black text-slate-900 dark:text-white uppercase">{{ $order->created_at->format('M d, Y') }}</span>
+                                            <span
+                                                class="text-[9px] font-medium text-slate-400 mt-0.5">{{ $order->created_at->format('h:i A') }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-5 text-center">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <a href="{{ route('orders.show', $order->id) }}"
+                                                class="h-9 w-9 flex items-center justify-center bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-xl hover:bg-primary hover:text-white transition-all active:scale-90 border border-slate-100 dark:border-slate-800"
+                                                title="View Ledger">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                        d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </a>
+                                            @if($order->status === 'completed')
+                                                <a href="{{ route('billing.invoice', $order->id) }}"
+                                                    class="h-9 w-9 flex items-center justify-center bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-xl hover:bg-emerald-600 hover:text-white transition-all active:scale-90 border border-slate-100 dark:border-slate-800"
+                                                    title="View Invoice">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                    </svg>
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="px-8 py-24 text-center">
+                                        <p class="text-[11px] font-black uppercase tracking-[0.3em] text-slate-300">Zero
+                                            Transmission History</p>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile Card View (Hidden on Desktop) -->
+                <div class="md:hidden p-4 space-y-4">
+                    @forelse($orders as $order)
+                        <div
+                            class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-5 space-y-4 shadow-sm relative overflow-hidden group active:scale-[0.98] transition-all">
+                            <div
+                                class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full pointer-events-none transition-transform group-hover:scale-110">
+                            </div>
+
+                            <div class="flex items-center justify-between relative">
+                                <span
+                                    class="font-mono text-[10px] font-black text-primary bg-primary/10 px-2.5 py-1 rounded-lg border border-primary/10">
+                                    #{{ strtoupper(substr($order->reference, 0, 10)) }}
+                                </span>
+                                @php
+                                    $conf = $statusConfig[$order->status] ?? ['bg' => 'bg-slate-500/10', 'text' => 'text-slate-600', 'label' => $order->status];
+                                @endphp
+                                <span
+                                    class="text-[9px] font-black uppercase tracking-widest {{ $conf['bg'] }} {{ $conf['text'] }} px-2 py-1 rounded-lg">
+                                    {{ $conf['label'] }}
+                                </span>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="flex items-end justify-between">
+                                    <div class="space-y-1">
+                                        <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Data Package
+                                        </p>
+                                        <h4 class="text-sm font-black text-slate-900 dark:text-white">
+                                            {{ $order->bundle->name ?? 'Bundle' }}</h4>
+                                        <p class="text-[9px] font-bold text-primary uppercase tracking-wider">
+                                            {{ $order->bundle->network ?? 'GSM' }}</p>
                                     </div>
-                                </td>
-                                <td class="hidden md:table-cell px-6 py-4">
-                                    <div class="flex flex-col">
+                                    <div class="text-right">
+                                        <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Cost</p>
                                         <span
-                                            class="text-sm font-black text-slate-900 dark:text-white">{{ $order->bundle->name ?? 'Data Bundle' }}</span>
-                                        <span
-                                            class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">{{ $order->bundle->network ?? 'GSM' }}</span>
+                                            class="text-lg font-black text-slate-900 dark:text-white tabular-nums">₵{{ number_format($order->cost, 2) }}</span>
                                     </div>
-                                </td>
-                                <td
-                                    class="flex justify-between items-center px-6 py-4 md:table-cell md:border-x border-slate-100/50 dark:border-white/5">
-                                    <span
-                                        class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Recipient</span>
-                                    <div class="flex flex-col md:items-start items-end">
-                                        <span
-                                            class="text-sm font-black text-slate-900 dark:text-white">{{ $order->recipient_phone }}</span>
-                                        <span
-                                            class="md:hidden text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">{{ $order->bundle->network ?? 'GSM' }}</span>
-                                    </div>
-                                </td>
-                                <td class="flex justify-between items-center px-6 py-4 md:table-cell text-right">
-                                    <span
-                                        class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Amount</span>
-                                    <span
-                                        class="text-sm font-black text-slate-900 dark:text-white tabular-nums">₵{{ number_format($order->cost, 2) }}</span>
-                                </td>
-                                <td class="flex justify-between items-center px-6 py-4 md:table-cell text-center">
-                                    <span
-                                        class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</span>
-                                    <div class="flex items-center gap-2 justify-end md:justify-center">
+                                </div>
+
+                                <div
+                                    class="pt-3 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
                                         <div
-                                            class="h-1.5 w-1.5 rounded-full {{ $order->status === 'completed' ? 'bg-emerald-500' : ($order->status === 'failed' ? 'bg-rose-500' : 'bg-amber-500') }}">
+                                            class="w-7 h-7 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                            </svg>
                                         </div>
                                         <span
-                                            class="text-[10px] font-black uppercase tracking-widest {{ $order->status === 'completed' ? 'text-emerald-600' : ($order->status === 'failed' ? 'text-rose-600' : 'text-amber-600') }}">
-                                            {{ $order->status === 'completed' ? 'Delivered' : ($order->status === 'failed' ? 'Failed' : 'Validating') }}
-                                        </span>
+                                            class="text-xs font-black text-slate-600 dark:text-slate-400 font-mono">{{ $order->recipient_phone }}</span>
                                     </div>
-                                </td>
-                                <td class="flex justify-between items-center px-6 py-4 md:table-cell text-right">
-                                    <span
-                                        class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Date</span>
-                                    <span
-                                        class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ $order->created_at->format('M d, Y') }}</span>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="px-6 py-20 text-center">
-                                    <div
-                                        class="w-16 h-16 bg-slate-50 dark:bg-slate-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                        <svg class="w-8 h-8 text-slate-200 dark:text-slate-800" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
-                                            </path>
-                                        </svg>
+                                    <div class="flex items-center gap-2">
+                                        <a href="{{ route('orders.show', $order->id) }}"
+                                            class="h-9 w-9 flex items-center justify-center bg-slate-50 dark:bg-slate-800 text-slate-500 rounded-xl active:bg-primary active:text-white border border-slate-100 dark:border-slate-800">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </a>
+                                        @if($order->status === 'completed')
+                                            <a href="{{ route('billing.invoice', $order->id) }}"
+                                                class="h-9 w-9 flex items-center justify-center bg-slate-50 dark:bg-slate-800 text-slate-500 rounded-xl active:bg-emerald-600 active:text-white border border-slate-100 dark:border-slate-800">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                            </a>
+                                        @endif
                                     </div>
-                                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">No records found
-                                    </p>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            <td class="p-4 align-middle">
-                <div class="h-4 w-24 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>
-            </td>
-            <td class="p-4 align-middle text-right">
-                <div class="h-8 w-8 bg-gray-100 dark:bg-gray-800 rounded ml-auto animate-pulse">
-                </div>
-            </td>
-            </tr>
-            </template>
-            </template>
-            <template x-if="!loading">
-                @forelse($orders as $order)
-                    <tr
-                        class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted border-gray-100 dark:border-gray-700 hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
-                        <td class="p-4 align-middle font-mono text-xs font-semibold">#{{ $order->reference }}
-                        </td>
-                        <td class="p-4 align-middle">
-                            <div class="flex flex-col">
-                                <span
-                                    class="font-medium text-gray-900 dark:text-gray-100">{{ $order->bundle->name ?? 'Bundle' }}</span>
-                                <span
-                                    class="text-[10px] text-muted-foreground uppercase">{{ $order->bundle->network ?? 'Network' }}</span>
-                            </div>
-                        </td>
-                        <td class="p-4 align-middle font-medium">{{ $order->recipient_phone }}</td>
-                        <td class="p-4 align-middle font-semibold">GHS {{ number_format($order->cost, 2) }}</td>
-                        <td class="p-4 align-middle">
-                            @if($order->status === 'completed')
-                                <div
-                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-green-500/15 text-green-700 dark:text-green-400 hover:bg-green-500/25">
-                                    Delivered</div>
-                            @elseif($order->status === 'pending')
-                                <div
-                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-blue-500/15 text-blue-700 dark:text-blue-400 hover:bg-blue-500/25">
-                                    Validating</div>
-                            @elseif($order->status === 'failed')
-                                <div
-                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive/15 text-destructive dark:text-red-400 hover:bg-destructive/25">
-                                    Failed</div>
-                            @else
-                                <div
-                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                    {{ ucfirst($order->status) }}
                                 </div>
-                            @endif
-                        </td>
-                        <td class="p-4 align-middle text-muted-foreground text-xs">
-                            {{ $order->created_at->format('M d, Y h:i A') }}
-                        </td>
-                        <td class="p-4 align-middle text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                @if($order->status === 'completed')
-                                    <a href="{{ route('orders.show', $order->id) }}"
-                                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 w-8 text-muted-foreground"
-                                        title="View Invoice">
-                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                @endif
-                                <a href="{{ route('orders.show', $order->id) }}"
-                                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 w-8 text-muted-foreground"
-                                    title="View Details">
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                                        </path>
-                                    </svg>
-                                </a>
                             </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="p-4 align-middle text-center py-10">
-                            <div class="flex flex-col items-center justify-center text-muted-foreground">
-                                <svg class="w-10 h-10 opacity-20 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
-                                    </path>
-                                </svg>
-                                <p>No orders found matching your criteria.</p>
-                            </div>
-                        </td>
-                    </tr>
-                @endforelse
-            </template>
-            </tbody>
-            </table>
-        </div>
-        @if($orders->hasPages())
-            <div class="flex items-center justify-end space-x-2 py-4 px-4 border-t border-gray-100 dark:border-gray-700">
-                {{ $orders->appends(request()->query())->links() }}
+                        </div>
+                    @empty
+                        <div class="py-12 text-center text-[10px] font-black uppercase text-slate-300 tracking-widest">Zero
+                            Transmission History</div>
+                    @endforelse
+                </div>
             </div>
-        @endif
-    </div>
+
+            @if($orders->hasPages())
+                <div class="px-6 py-8 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02]">
+                    <div class="md:hidden">
+                        {{ $orders->links('pagination::simple-tailwind') }}
+                    </div>
+                    <div class="hidden md:block">
+                        {{ $orders->appends(request()->query())->links() }}
+                    </div>
+                </div>
+            @endif
+        </div>
     </div>
 @endsection

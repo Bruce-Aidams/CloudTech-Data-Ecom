@@ -3,8 +3,7 @@
 @section('title', 'My Wallet')
 
 @section('content')
-    <div class="relative max-w-full pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700"
-        x-data="wallet">
+    <div class="relative max-w-full pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700" x-data="wallet">
 
         {{-- Mesh Gradient Decorations --}}
         {{-- Subtle SaaS Background --}}
@@ -30,14 +29,17 @@
                 <div
                     class="relative overflow-hidden bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-8 shadow-2xl shadow-slate-200/50 dark:shadow-none hover:shadow-primary/20 hover:-translate-y-2 transition-all duration-500 group/card animate-in fade-in zoom-in slide-in-from-bottom-4 duration-700">
                     {{-- Decorative Gradient --}}
-                    <div class="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl group-hover/card:bg-primary/20 transition-colors"></div>
-                    
+                    <div
+                        class="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl group-hover/card:bg-primary/20 transition-colors">
+                    </div>
+
                     <div class="relative z-10">
                         <div class="flex items-center justify-between mb-6">
                             <span
                                 class="text-[11px] font-black uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">Available
                                 Balance</span>
-                            <div class="p-2.5 bg-primary/10 rounded-xl text-primary group-hover/card:scale-110 transition-transform">
+                            <div
+                                class="p-2.5 bg-primary/10 rounded-xl text-primary group-hover/card:scale-110 transition-transform">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -46,14 +48,19 @@
                         </div>
                         <div class="flex items-baseline gap-1.5">
                             <span class="text-sm font-bold text-slate-400">GHS</span>
-                            <h3 class="text-4xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums group-hover/card:text-primary transition-colors">
+                            <h3
+                                class="text-4xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums group-hover/card:text-primary transition-colors">
                                 {{ number_format($balance, 2) }}
                             </h3>
                         </div>
                         <div class="mt-6 flex items-center gap-2">
                             <div class="flex -space-x-1.5 overflow-hidden">
-                                <div class="inline-block h-4 w-4 rounded-full ring-2 ring-white dark:ring-slate-900 bg-emerald-500"></div>
-                                <div class="inline-block h-4 w-4 rounded-full ring-2 ring-white dark:ring-slate-900 bg-sky-500"></div>
+                                <div
+                                    class="inline-block h-4 w-4 rounded-full ring-2 ring-white dark:ring-slate-900 bg-emerald-500">
+                                </div>
+                                <div
+                                    class="inline-block h-4 w-4 rounded-full ring-2 ring-white dark:ring-slate-900 bg-sky-500">
+                                </div>
                             </div>
                             <span class="text-[9px] font-bold text-slate-400 uppercase tracking-tight">Secured Wallet</span>
                         </div>
@@ -64,12 +71,14 @@
                 <div
                     class="relative overflow-hidden bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-8 shadow-2xl shadow-slate-200/50 dark:shadow-none hover:shadow-emerald-500/20 hover:-translate-y-2 transition-all duration-500 group/card animate-in fade-in zoom-in slide-in-from-bottom-4 delay-150 duration-700">
                     <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl"></div>
-                    
+
                     <div class="relative z-10">
                         <div class="flex items-center justify-between mb-4">
                             <span
-                                class="text-[11px] font-black uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">Total Inflow</span>
-                            <div class="p-2.5 bg-emerald-500/10 rounded-xl text-emerald-500 group-hover/card:rotate-12 transition-transform">
+                                class="text-[11px] font-black uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">Total
+                                Inflow</span>
+                            <div
+                                class="p-2.5 bg-emerald-500/10 rounded-xl text-emerald-500 group-hover/card:rotate-12 transition-transform">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -78,7 +87,8 @@
                         </div>
                         <div class="flex items-baseline gap-1.5">
                             <span class="text-sm font-bold text-slate-400">GHS</span>
-                            <h3 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight tabular-nums group-hover/card:text-emerald-500 transition-colors">
+                            <h3
+                                class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight tabular-nums group-hover/card:text-emerald-500 transition-colors">
                                 {{ number_format($transactions->where('type', 'credit')->where('status', 'success')->sum('amount'), 2) }}
                             </h3>
                         </div>
@@ -93,8 +103,10 @@
                     <div class="relative z-10">
                         <div class="flex items-center justify-between mb-4">
                             <span
-                                class="text-[11px] font-black uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">Total Outflow</span>
-                            <div class="p-2.5 bg-rose-500/10 rounded-xl text-rose-500 group-hover/card:-rotate-12 transition-transform">
+                                class="text-[11px] font-black uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">Total
+                                Outflow</span>
+                            <div
+                                class="p-2.5 bg-rose-500/10 rounded-xl text-rose-500 group-hover/card:-rotate-12 transition-transform">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -103,7 +115,8 @@
                         </div>
                         <div class="flex items-baseline gap-1.5">
                             <span class="text-sm font-bold text-slate-400">GHS</span>
-                            <h3 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight tabular-nums group-hover/card:text-rose-500 transition-colors">
+                            <h3
+                                class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight tabular-nums group-hover/card:text-rose-500 transition-colors">
                                 {{ number_format($transactions->where('type', 'debit')->where('status', 'success')->sum('amount'), 2) }}
                             </h3>
                         </div>
@@ -234,7 +247,8 @@
                                     <div
                                         class="flex items-center justify-between p-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-lg">
                                         <p class="text-lg font-black tracking-widest text-primary">
-                                            {{ $publicSettings['bank_account_number'] ?? 'N/A' }}</p>
+                                            {{ $publicSettings['bank_account_number'] ?? 'N/A' }}
+                                        </p>
                                         <button
                                             @click="copyText('{{ $publicSettings['bank_account_number'] ?? '' }}', 'Copied!')"
                                             class="p-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 rounded transition-all text-slate-400 hover:text-primary">
@@ -336,8 +350,8 @@
                 </div>
 
                 <div class="overflow-x-auto min-h-[300px]">
-                    <table class="w-full text-left border-collapse">
-                        <thead class="hidden md:table-header-group">
+                    <table class="w-full text-left border-collapse min-w-[800px]">
+                        <thead>
                             <tr
                                 class="text-[10px] text-slate-400 uppercase bg-slate-50/30 dark:bg-slate-900/30 border-b border-slate-200/50 dark:border-slate-800/50">
                                 <th class="px-8 py-6 font-black tracking-[0.2em]">Action</th>
@@ -349,9 +363,9 @@
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800/50">
                             @forelse($transactions as $trx)
-                                <tr class="block md:table-row group hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-all duration-300 border-b border-slate-100 dark:border-slate-800 md:border-none">
-                                    <td class="flex justify-between items-center px-6 py-4 md:table-cell">
-                                        <span class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Type</span>
+                                <tr
+                                    class="group hover:bg-slate-50/50 dark:hover:bg-primary/5 transition-all duration-300 border-b border-slate-100 dark:border-slate-800 md:border-none">
+                                    <td class="px-6 py-4 md:px-8">
                                         <div class="flex items-center gap-3">
                                             <div
                                                 class="w-7 h-7 rounded-lg flex items-center justify-center {{ $trx->type === 'credit' ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500' : 'bg-rose-50 dark:bg-rose-500/10 text-rose-500' }}">
@@ -369,33 +383,33 @@
                                                 class="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-tight">{{ $trx->type }}</span>
                                         </div>
                                     </td>
-                                    <td class="flex justify-between items-center px-6 py-4 md:table-cell">
-                                        <span class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Reference</span>
-                                        <span class="font-mono text-[10px] font-bold text-slate-400">#{{ substr($trx->reference, 0, 8) }}</span>
+                                    <td class="px-6 py-4 md:px-8">
+                                        <span
+                                            class="font-mono text-[10px] font-bold text-slate-400">#{{ substr($trx->reference, 0, 8) }}</span>
                                     </td>
-                                    <td class="flex flex-col md:table-cell px-6 py-4">
-                                        <span class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Details</span>
+                                    <td class="px-6 py-4 md:px-8">
                                         <p class="text-xs font-medium text-slate-600 dark:text-slate-400">
-                                            {{ $trx->description }}</p>
+                                            {{ $trx->description }}
+                                        </p>
                                         <div class="mt-1.5">
                                             <span
                                                 class="inline-flex items-center px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest {{ $trx->status === 'success' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : ($trx->status === 'pending' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20' : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20') }}">
-                                                <span class="w-1.5 h-1.5 rounded-full mr-1.5 {{ $trx->status === 'success' ? 'bg-emerald-500' : ($trx->status === 'pending' ? 'bg-amber-500' : 'bg-rose-500') }} animate-pulse"></span>
+                                                <span
+                                                    class="w-1.5 h-1.5 rounded-full mr-1.5 {{ $trx->status === 'success' ? 'bg-emerald-500' : ($trx->status === 'pending' ? 'bg-amber-500' : 'bg-rose-500') }} animate-pulse"></span>
                                                 {{ $trx->status }}
                                             </span>
                                         </div>
                                     </td>
-                                    <td class="flex justify-between items-center px-6 py-4 md:table-cell md:text-right">
-                                        <span class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Amount</span>
+                                    <td class="px-6 py-4 md:px-8 text-right">
                                         <p
                                             class="text-sm font-bold {{ $trx->type === 'credit' ? 'text-emerald-600' : 'text-rose-600' }}">
                                             {{ $trx->type === 'credit' ? '+' : '-' }}GHS {{ number_format($trx->amount, 2) }}
                                         </p>
                                     </td>
-                                    <td class="flex justify-between items-center px-6 py-4 md:table-cell md:text-right">
-                                        <span class="md:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest">Date</span>
+                                    <td class="px-6 py-4 md:px-8 text-right">
                                         <p class="text-[10px] font-bold text-slate-400">
-                                            {{ $trx->created_at->format('M d, H:i') }}</p>
+                                            {{ $trx->created_at->format('M d, H:i') }}
+                                        </p>
                                     </td>
                                 </tr>
                             @empty

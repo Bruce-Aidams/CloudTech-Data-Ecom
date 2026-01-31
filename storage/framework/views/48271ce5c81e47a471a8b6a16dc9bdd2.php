@@ -1,18 +1,19 @@
 <?php
     $menuItems = [
-        ['name' => 'Dashboard', 'href' => '/dashboard', 'icon' => 'layout-dashboard'],
-        ['name' => 'Reseller Hub', 'href' => '/dashboard/reseller-hub', 'icon' => 'globe', 'reseller_only' => true],
-        ['name' => 'Usage Reports', 'href' => '/dashboard/analytics', 'icon' => 'activity'],
-        ['name' => 'Buy Data', 'href' => '/dashboard/orders/new', 'icon' => 'shopping-cart'],
-        ['name' => 'Order History', 'href' => '/dashboard/orders', 'icon' => 'package'],
-        ['name' => 'My Wallet', 'href' => '/dashboard/wallet', 'icon' => 'wallet'],
-        ['name' => 'Billing & History', 'href' => '/dashboard/billing', 'icon' => 'credit-card'],
-        ['name' => 'Refer & Earn', 'href' => '/dashboard/referrals', 'icon' => 'users'],
-        ['name' => 'Referral Earnings', 'href' => '/dashboard/commissions', 'icon' => 'gift'],
-        ['name' => 'Transactions', 'href' => '/dashboard/transactions', 'icon' => 'history'],
-        ['name' => 'API Access', 'href' => '/dashboard/api-keys', 'icon' => 'key'],
-        ['name' => 'My Profile', 'href' => '/dashboard/profile', 'icon' => 'user'],
-        ['name' => 'Settings', 'href' => '/dashboard/settings', 'icon' => 'settings'],
+        ['name' => 'Dashboard', 'href' => '/dashboard', 'icon' => 'layout-dashboard', 'color' => 'indigo'],
+        ['name' => 'Reseller Hub', 'href' => '/dashboard/reseller-hub', 'icon' => 'globe', 'color' => 'indigo', 'reseller_only' => true],
+        ['name' => 'Customer Orders', 'href' => '/dashboard/reseller-hub/customer-orders', 'icon' => 'clipboard-list', 'color' => 'emerald', 'reseller_only' => true],
+        ['name' => 'Usage Reports', 'href' => '/dashboard/analytics', 'icon' => 'bar-chart', 'color' => 'indigo'],
+        ['name' => 'Buy Data', 'href' => '/dashboard/orders/new', 'icon' => 'shopping-cart', 'color' => 'orange'],
+        ['name' => 'Order History', 'href' => '/dashboard/orders', 'icon' => 'clipboard-list', 'color' => 'blue'],
+        ['name' => 'My Wallet', 'href' => '/dashboard/wallet', 'icon' => 'credit-card', 'color' => 'emerald'],
+        ['name' => 'Billing & History', 'href' => '/dashboard/billing', 'icon' => 'credit-card', 'color' => 'emerald'],
+        ['name' => 'Refer & Earn', 'href' => '/dashboard/referrals', 'icon' => 'users', 'color' => 'pink'],
+        ['name' => 'Referral Earnings', 'href' => '/dashboard/commissions', 'icon' => 'activity', 'color' => 'amber'],
+        ['name' => 'Transactions', 'href' => '/dashboard/transactions', 'icon' => 'clipboard-list', 'color' => 'amber'],
+        ['name' => 'API Access', 'href' => '/dashboard/api-keys', 'icon' => 'key', 'color' => 'cyan'],
+        ['name' => 'My Profile', 'href' => '/dashboard/profile', 'icon' => 'user', 'color' => 'teal'],
+        ['name' => 'Settings', 'href' => '/dashboard/settings', 'icon' => 'settings', 'color' => 'rose'],
     ];
 
     $icons = [
@@ -29,6 +30,8 @@
         'key' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>',
         'user' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>',
         'settings' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>',
+        'clipboard-list' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>',
+        'bar-chart' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"/>',
     ];
 ?>
 
@@ -66,13 +69,17 @@
             <?php endif; ?>
             <?php
                 $isActive = request()->is(ltrim($item['href'], '/')) || (request()->is('dashboard') && $item['href'] === '/dashboard');
+                // Active Colors Mapping
+                $activeBgClass = 'bg-' . $item['color'] . '-500/10';
+                $activeTextClass = 'text-' . $item['color'] . '-500';
+                $activeShadowClass = 'shadow-lg shadow-' . $item['color'] . '-500/20';
             ?>
             <a href="<?php echo e(url($item['href'])); ?>"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group/nav <?php echo e($isActive ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent'); ?>"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group/nav <?php echo e($isActive ? $activeBgClass . ' ' . $activeTextClass . ' ' . $activeShadowClass : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent'); ?>"
                 :class="(isCollapsed && !sidebarOpen) && 'justify-center px-0 h-12 w-12 mx-auto'"
                 :title="(isCollapsed && !sidebarOpen) ? '<?php echo e($item['name']); ?>' : ''">
                 <span
-                    class="shrink-0 transition-all duration-300 group-hover/nav:scale-110 <?php echo e($isActive ? 'text-white' : 'text-slate-400 group-hover/nav:text-primary'); ?>">
+                    class="shrink-0 transition-all duration-300 group-hover/nav:scale-110 <?php echo e($isActive ? $activeTextClass : 'text-slate-400 group-hover/nav:text-' . $item['color'] . '-500'); ?>">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <?php echo $icons[$item['icon']]; ?>
 

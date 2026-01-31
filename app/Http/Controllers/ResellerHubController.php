@@ -27,19 +27,40 @@ class ResellerHubController extends Controller
 
         $referralIds = User::where('referred_by_id', $user->id)->pluck('id');
 
+        // Stats Logic
         $stats = [
             'referral_count' => $referralIds->count(),
-            'total_commission' => Commission::where('user_id', $user->id)->sum('amount'),
-            'managed_orders' => Order::whereIn('user_id', $referralIds)->count(),
             'wallet_balance' => $user->wallet_balance,
+            'total_sales' => Order::where(function ($q) use ($user, $referralIds) {
+                $q->whereIn('user_id', $referralIds)
+                    ->orWhere(function ($sub) use ($user) {
+                        $sub->where('user_id', $user->id)->where('source', 'storefront');
+                    });
+            })->where('status', 'completed')->count(),
+
+            'storefront_profit' => Order::where('user_id', $user->id)
+                ->where('source', 'storefront')
+                ->where('status', 'completed')
+                ->sum('profit'),
+
+            'referral_earnings' => Commission::where('user_id', $user->id)->sum('amount'),
         ];
+
+        $stats['total_earnings'] = $stats['storefront_profit'] + $stats['referral_earnings'];
+
+        $recentOrders = Order::where(function ($q) use ($user, $referralIds) {
+            $q->whereIn('user_id', $referralIds)
+                ->orWhere(function ($sub) use ($user) {
+                    $sub->where('user_id', $user->id)->where('source', 'storefront');
+                });
+        })->with(['user', 'bundle'])->latest()->limit(5)->get();
 
         $recentReferrals = User::where('referred_by_id', $user->id)
             ->latest()
             ->limit(5)
             ->get();
 
-        return view('dashboard.reseller.index', compact('stats', 'recentReferrals', 'user'));
+        return view('dashboard.reseller.index', compact('stats', 'recentReferrals', 'recentOrders', 'user'));
     }
 
     public function manageStore()
@@ -120,5 +141,61 @@ class ResellerHubController extends Controller
         $user->save();
 
         return back()->with('success', 'Your store link has been regenerated. Old links will no longer work.');
+    }
+
+    public function customerOrders(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user->isReseller()) {
+            abort(403);
+        }
+
+        $referralIds = User::where('referred_by_id', $user->id)->pluck('id');
+
+        // Capture both: 
+        // 1. Orders from registered referred users
+        // 2. Guest storefront purchases (where user_id is the reseller's ID and source is storefront)
+        $query = Order::where(function ($q) use ($user, $referralIds) {
+            $q->whereIn('user_id', $referralIds)
+                ->orWhere(function ($sub) use ($user) {
+                    $sub->where('user_id', $user->id)
+                        ->where('source', 'storefront');
+                });
+        });
+
+        // Search Filter (Reference or Phone)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('reference', 'like', "%$search%")
+                    ->orWhere('recipient_phone', 'like', "%$search%");
+            });
+        }
+
+        // Status Filter
+        if ($request->filled('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        // Network Filter
+        if ($request->filled('network') && $request->network !== 'all') {
+            $query->whereHas('bundle', function ($q) use ($request) {
+                $q->where('network', $request->network);
+            });
+        }
+
+        // Date Range Filter
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('created_at', [$request->start_date . ' 00:00:00', $request->end_date . ' 23:59:59']);
+        }
+
+        $orders = $query->with(['user', 'bundle'])
+            ->latest()
+            ->paginate($request->input('per_page', 10))
+            ->withQueryString();
+
+        $networks = Bundle::distinct()->pluck('network');
+
+        return view('dashboard.reseller.customer-orders', compact('orders', 'networks'));
     }
 }

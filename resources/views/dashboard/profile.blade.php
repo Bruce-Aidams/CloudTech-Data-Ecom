@@ -7,11 +7,20 @@
         x-data="{ isEditing: false, toggle() { if (this.isEditing) { document.getElementById('profile-form').submit(); } this.isEditing = !this.isEditing; } }">
 
         <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div class="text-center sm:text-left">
-                <h2
-                    class="text-3xl font-black tracking-tight text-foreground bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-500">
-                    Profile Settings</h2>
-                <p class="text-muted-foreground font-medium">Manage your personal information and account security.</p>
+            <div class="flex items-center gap-4 text-left">
+                <div
+                    class="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-500 ring-1 ring-teal-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">Profile Settings
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Manage your personal information
+                        and account security.</p>
+                </div>
             </div>
 
             <button @click="toggle()"

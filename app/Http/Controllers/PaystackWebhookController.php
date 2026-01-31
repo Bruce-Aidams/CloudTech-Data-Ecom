@@ -69,30 +69,37 @@ class PaystackWebhookController extends Controller
                     ]);
 
                     $reseller = User::findOrFail($meta['reseller_id']);
-                    $profit = $order->profit;
 
-                    // Credit Reseller Commission
-                    if ($profit > 0) {
-                        $reseller->increment('commission_balance', $profit);
-                        Transaction::create([
-                            'user_id' => $reseller->id,
-                            'type' => 'credit',
-                            'amount' => $profit,
-                            'status' => 'success',
-                            'reference' => 'COM-' . \Illuminate\Support\Str::random(10),
-                            'description' => "Commission for Order #{$order->id} (Storefront Guest Purchase - Webhook)",
-                            'metadata' => ['order_id' => $order->id]
-                        ]);
+                    // Business Logic: Reseller Facilitates Sale
+                    // 1. Deduct Wholesale Cost from Reseller Wallet
+                    if ($order->cost_price > 0) {
+                        if ($reseller->wallet_balance >= $order->cost_price) {
+                            $reseller->decrement('wallet_balance', $order->cost_price);
+
+                            Transaction::create([
+                                'user_id' => $reseller->id,
+                                'type' => 'debit',
+                                'amount' => $order->cost_price,
+                                'status' => 'success',
+                                'reference' => 'WHS-' . \Illuminate\Support\Str::random(10),
+                                'description' => "Wholesale Cost for Order #{$order->id} (Storefront Guest Purchase - Webhook)",
+                                'metadata' => ['order_id' => $order->id]
+                            ]);
+                        } else {
+                            Log::error("Webhook Critical: Reseller {$reseller->id} balance low during storefront settlement for order #{$order->id}");
+                        }
                     }
 
-                    // Log Main Payment Transaction
+                    // 2. Credit Full Storefront Payment to Reseller Wallet (Covers Cost + Profit)
+                    $reseller->increment('wallet_balance', $order->cost);
+
                     Transaction::create([
                         'user_id' => $reseller->id,
                         'type' => 'credit',
-                        'amount' => $data['amount'] / 100,
+                        'amount' => $order->cost,
                         'status' => 'success',
                         'reference' => $reference,
-                        'description' => "Storefront Payment Received for Order #{$order->id} (Webhook Verified)",
+                        'description' => "Storefront Revenue for Order #{$order->id} (Webhook Verified)",
                         'metadata' => json_encode($data)
                     ]);
 

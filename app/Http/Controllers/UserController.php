@@ -29,7 +29,7 @@ class UserController extends Controller
             $query->where('role', $request->role);
         }
 
-        $users = $query->latest()->paginate(20);
+        $users = $query->latest()->paginate($request->input('per_page', 10));
 
         // If this is an admin route, return the view
         if ($request->is('admin/*')) {

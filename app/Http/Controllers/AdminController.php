@@ -47,7 +47,7 @@ class AdminController extends Controller
         $todayDataGb = round($todayDataGb, 2);
 
         // 5. Total Agents
-        $totalAgents = User::whereIn('role', ['agent', 'super_agent', 'dealer'])->count();
+        $totalAgents = User::whereIn('role', ['retail_seller', 'super_agent', 'dealer'])->count();
 
         // 6. Today's Topups
         $todayTopups = Transaction::where('type', 'credit')
@@ -56,7 +56,7 @@ class AdminController extends Controller
             ->sum('amount');
 
         // 7. Total Agent Balance
-        $totalAgentBalance = User::whereIn('role', ['agent', 'super_agent', 'dealer'])->sum('wallet_balance');
+        $totalAgentBalance = User::whereIn('role', ['retail_seller', 'super_agent', 'dealer'])->sum('wallet_balance');
 
         // 8. Pending Data (GB)
         $pendingOrders = Order::with('bundle')->where('status', 'pending')->get();
@@ -87,7 +87,7 @@ class AdminController extends Controller
         ];
 
         // Top Performing Agents
-        $topAgents = User::whereIn('role', ['agent', 'super_agent', 'dealer'])
+        $topAgents = User::whereIn('role', ['retail_seller', 'super_agent', 'dealer'])
             ->withCount([
                 'orders as total_orders',
                 'orders as completed_orders' => function ($query) {
@@ -178,17 +178,30 @@ class AdminController extends Controller
         $range = [$startDate, $endDate];
 
         $totalRevenue = Order::where('status', 'completed')->sum('cost');
-        $totalExpenses = Order::where('status', 'completed')->sum('cost_price'); // Assuming cost_price exists, or 0 if not
-        $netProfit = Order::where('status', 'completed')->sum('profit');
+        $totalExpenses = Order::where('status', 'completed')->sum('cost_price');
+        $grossProfit = Order::where('status', 'completed')->sum('profit');
+
+        // Calculate Total Gateway Charges from transaction metadata
+        $transactions = Transaction::where('status', 'success')->whereNotNull('metadata')->get();
+        $totalCharges = 0;
+        foreach ($transactions as $t) {
+            $totalCharges += (float) ($t->metadata['charge'] ?? 0);
+        }
+
+        $totalCommissions = \App\Models\Commission::sum('amount');
+        $netProfit = $grossProfit + $totalCharges - $totalCommissions;
 
         $stats = [
             'total_revenue' => $totalRevenue,
-            'total_expenses' => $totalExpenses, // Or calculate explicitly if needed
+            'total_expenses' => $totalExpenses,
+            'gross_profit' => $grossProfit,
+            'total_charges' => $totalCharges,
+            'total_commissions' => $totalCommissions,
             'net_profit' => $netProfit
         ];
 
         // Monthly Data for the table
-        $monthlyData = Order::selectRaw($this->getDateFormat('%Y-%m') . ' as month, SUM(cost) as revenue')
+        $monthlyData = Order::selectRaw($this->getDateFormat('%Y-%m') . ' as month, SUM(cost) as revenue, SUM(profit) as profit')
             ->where('status', 'completed')
             ->where('created_at', '>=', now()->subMonths(6))
             ->groupBy('month')
@@ -286,7 +299,7 @@ class AdminController extends Controller
             });
         }
 
-        $resellers = $usersQuery->latest()->paginate(50)->withQueryString();
+        $resellers = $usersQuery->latest()->paginate($request->input('per_page', 10))->withQueryString();
 
         return view('admin.analytics.index', compact(
             'totalRevenue',
@@ -490,7 +503,7 @@ class AdminController extends Controller
             });
         }
 
-        return $query->latest()->paginate(20);
+        return $query->latest()->paginate($request->input('per_page', 20));
     }
 
     public function deleteOldOrders(Request $request)

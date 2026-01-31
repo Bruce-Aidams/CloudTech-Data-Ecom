@@ -5,21 +5,35 @@
 @section('content')
     <div class="space-y-6 animate-fade-in-up">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h4 class="text-xl font-bold text-[#566a7f] dark:text-[#d5d6e0] tracking-tight uppercase">Notification Terminal</h4>
-                <p class="text-sm text-[#a1acb8] dark:text-[#7071a4] mt-1 font-medium">Monitoring system alerts and secure broadcasts.</p>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 ring-1 ring-amber-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">Notification Terminal</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Monitoring system alerts and secure broadcasts.</p>
+                </div>
             </div>
-            @if($notifications->where('is_read', false)->count() > 0)
-                <form action="{{ route('notifications.read_all') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="px-5 py-2.5 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all active:scale-95 flex items-center gap-2 border border-primary/20">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        Normalize All Protocols
-                    </button>
+            <div class="flex items-center gap-4">
+                <form action="{{ route('notifications.user_index') }}" method="GET" class="relative min-w-[120px]">
+                    <select name="per_page" onchange="this.form.submit()" class="w-full h-10 px-4 bg-white dark:bg-[#2b2c40] border border-slate-100 dark:border-[#444564] rounded-xl text-[10px] font-black uppercase tracking-[0.2em] outline-none focus:ring-2 focus:ring-primary/20 transition-all dark:text-[#a3a4cc] appearance-none cursor-pointer shadow-sm">
+                        @foreach([15, 30, 50, 100] as $val)
+                            <option value="{{ $val }}" {{ request('per_page', 15) == $val ? 'selected' : '' }}>{{ $val }} Per Page</option>
+                        @endforeach
+                    </select>
                 </form>
-            @endif
+                @if($notifications->where('is_read', false)->count() > 0)
+                    <form action="{{ route('notifications.read_all') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="px-5 py-2.5 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all active:scale-95 flex items-center gap-2 border border-primary/20 whitespace-nowrap">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Normalize All Protocols
+                        </button>
+                    </form>
+                @endif
+            </div>
         </div>
 
         <div class="bg-white dark:bg-[#2b2c40] rounded-[2rem] border border-slate-100 dark:border-[#444564] shadow-sm overflow-hidden">

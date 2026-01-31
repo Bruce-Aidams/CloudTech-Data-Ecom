@@ -6,13 +6,20 @@
     <div class="space-y-8 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
         {{-- Header --}}
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <h2
-                    class="text-3xl font-black tracking-tight text-foreground dark:text-white bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-600 uppercase">
-                    Manage E-Store
-                </h2>
-                <p class="text-sm text-muted-foreground dark:text-slate-400 font-medium mt-1">Set your custom prices and
-                    maximize your profit margins.</p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 ring-1 ring-purple-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">Manage E-Store
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Set your custom prices and
+                        maximize your profit margins.</p>
+                </div>
             </div>
 
             <div class="flex items-center gap-4">
@@ -155,7 +162,7 @@
 
                     <div class="p-6 space-y-6">
                         <div>
-                            <h4 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight leading-none line-clamp-1"
+                            <h4 class="text-base font-black text-blue-900 dark:text-white uppercase tracking-tight leading-none line-clamp-1"
                                 title="{{ $bundle->name }}">
                                 {{ $bundle->name }}
                             </h4>

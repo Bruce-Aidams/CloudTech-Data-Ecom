@@ -4,123 +4,123 @@
 
 @section('content')
     <div x-data="{
-                                                    paymentMethod: 'momo',
-                                                    totalAmount: {{ $totalAmount }},
-                                                    userEmail: '{{ auth()->user()->email ?? '' }}',
-                                                    chargeType: '{{ $publicSettings['charge_type'] ?? 'percentage' }}',
-                                                    chargeValue: {{ $publicSettings['charge_value'] ?? 0 }},
-                                                    isLoading: false,
-                                                    errorMessage: '',
+                                                        paymentMethod: 'momo',
+                                                        totalAmount: {{ $totalAmount }},
+                                                        userEmail: '{{ auth()->user()->email ?? '' }}',
+                                                        chargeType: '{{ $publicSettings['charge_type'] ?? 'percentage' }}',
+                                                        chargeValue: {{ $publicSettings['charge_value'] ?? 0 }},
+                                                        isLoading: false,
+                                                        errorMessage: '',
 
-                                                    enablePaystack: '{{ $publicSettings['enable_paystack'] ?? '1' }}' === '1',
-                                                    enableMomo: '{{ $publicSettings['enable_momo_deposits'] ?? '1' }}' === '1',
-                                                    enableManualTransfer: '{{ $publicSettings['enable_manual_transfer'] ?? '1' }}' === '1',
+                                                        enablePaystack: '{{ $publicSettings['enable_paystack'] ?? '1' }}' === '1',
+                                                        enableMomo: '{{ $publicSettings['enable_momo_deposits'] ?? '1' }}' === '1',
+                                                        enableManualTransfer: '{{ $publicSettings['enable_manual_transfer'] ?? '1' }}' === '1',
 
-                                                    init() {
-                                                        if (!this.enableMomo) {
-                                                            if (this.enablePaystack) this.paymentMethod = 'paystack';
-                                                            else if (this.enableManualTransfer) this.paymentMethod = 'transfer';
-                                                        }
-                                                    },
+                                                        init() {
+                                                            if (!this.enableMomo) {
+                                                                if (this.enablePaystack) this.paymentMethod = 'paystack';
+                                                                else if (this.enableManualTransfer) this.paymentMethod = 'transfer';
+                                                            }
+                                                        },
 
-                                                    validateEmail(email) {
-                                                        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-                                                    },
-                                                    get chargeAmount() {
-                                                        if (this.paymentMethod === 'transfer') return 0;
-                                                        if (this.chargeType === 'percentage') {
-                                                            return this.totalAmount * (this.chargeValue / 100);
-                                                        }
-                                                        return this.chargeValue;
-                                                    },
-                                                    get grandTotal() {
-                                                        return this.totalAmount + this.chargeAmount;
-                                                    },
-                                                    getNetworkColor(network) {
-                                                        network = network.toLowerCase();
-                                                        if (network.includes('mtn')) return 'from-[#FFCC00] to-[#E5B800] text-black shadow-[#FFCC00]/20';
-                                                        if (network.includes('telecel') || network.includes('vodafone')) return 'from-[#E60000] to-[#B30000] text-white shadow-red-500/20';
-                                                        if (network.includes('airteltigo') || network.includes('at')) return 'from-[#0051A3] to-[#003D7A] text-white shadow-blue-500/20';
-                                                        return 'from-slate-700 to-slate-900 text-white shadow-slate-500/20';
-                                                    },
+                                                        validateEmail(email) {
+                                                            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+                                                        },
+                                                        get chargeAmount() {
+                                                            if (this.paymentMethod === 'transfer') return 0;
+                                                            if (this.chargeType === 'percentage') {
+                                                                return this.totalAmount * (this.chargeValue / 100);
+                                                            }
+                                                            return this.chargeValue;
+                                                        },
+                                                        get grandTotal() {
+                                                            return this.totalAmount + this.chargeAmount;
+                                                        },
+                                                        getNetworkColor(network) {
+                                                            network = network.toLowerCase();
+                                                            if (network.includes('mtn')) return 'from-[#FFCC00] to-[#E5B800] text-black shadow-[#FFCC00]/20';
+                                                            if (network.includes('telecel') || network.includes('vodafone')) return 'from-[#E60000] to-[#B30000] text-white shadow-red-500/20';
+                                                            if (network.includes('airteltigo') || network.includes('at')) return 'from-[#0051A3] to-[#003D7A] text-white shadow-blue-500/20';
+                                                            return 'from-slate-700 to-slate-900 text-white shadow-slate-500/20';
+                                                        },
 
-                                                    async handleCheckout(e) {
-                                                        if (this.paymentMethod === 'transfer') {
-                                                            e.target.submit();
-                                                            return;
-                                                        }
-
-                                                        if (!this.validateEmail(this.userEmail)) {
-                                                            alert('Please update your profile with a valid email address first.');
-                                                            return;
-                                                        }
-
-                                                        this.isLoading = true;
-                                                        this.errorMessage = '';
-
-                                                        try {
-                                                            const res = await fetch('{{ route('orders.bulk') }}', {
-                                                                method: 'POST',
-                                                                headers: {
-                                                                    'Content-Type': 'application/json',
-                                                                    'Accept': 'application/json',
-                                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                                                },
-                                                                body: JSON.stringify({
-                                                                    payment_method: this.paymentMethod
-                                                                })
-                                                            });
-
-                                                            const data = await res.json();
-
-                                                            if (!res.ok) {
-                                                                throw new Error(data.message || 'Checkout failed');
+                                                        async handleCheckout(e) {
+                                                            if (this.paymentMethod === 'transfer') {
+                                                                e.target.submit();
+                                                                return;
                                                             }
 
-                                                            // Inline Paystack
-                                                            if (window.PaystackPop && data.status) {
-                                                                const handler = PaystackPop.setup({
-                                                                    key: '{{ $publicSettings['paystack_public'] ?? config('services.paystack.public_key') }}',
-                                                                    access_code: data.data.access_code,
-                                                                    callback: (response) => {
-                                                                        this.isLoading = true;
-                                                                        window.location.href = `{{ route('paystack.verify') }}?reference=${response.reference}`;
+                                                            if (!this.validateEmail(this.userEmail)) {
+                                                                alert('Please update your profile with a valid email address first.');
+                                                                return;
+                                                            }
+
+                                                            this.isLoading = true;
+                                                            this.errorMessage = '';
+
+                                                            try {
+                                                                const res = await fetch('{{ route('orders.bulk') }}', {
+                                                                    method: 'POST',
+                                                                    headers: {
+                                                                        'Content-Type': 'application/json',
+                                                                        'Accept': 'application/json',
+                                                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                                                     },
-                                                                    onClose: () => {
-                                                                        this.isLoading = false;
-                                                                    }
+                                                                    body: JSON.stringify({
+                                                                        payment_method: this.paymentMethod
+                                                                    })
                                                                 });
-                                                                handler.openIframe();
-                                                            } else {
-                                                                // Fallback to URL if popup fails
-                                                                window.location.href = data.data.authorization_url;
+
+                                                                const data = await res.json();
+
+                                                                if (!res.ok) {
+                                                                    throw new Error(data.message || 'Checkout failed');
+                                                                }
+
+                                                                // Inline Paystack
+                                                                if (window.PaystackPop && data.status) {
+                                                                    const handler = PaystackPop.setup({
+                                                                        key: '{{ $publicSettings['paystack_public'] ?? config('services.paystack.public_key') }}',
+                                                                        access_code: data.data.access_code,
+                                                                        callback: (response) => {
+                                                                            this.isLoading = true;
+                                                                            window.location.href = `{{ route('paystack.verify') }}?reference=${response.reference}`;
+                                                                        },
+                                                                        onClose: () => {
+                                                                            this.isLoading = false;
+                                                                        }
+                                                                    });
+                                                                    handler.openIframe();
+                                                                } else {
+                                                                    // Fallback to URL if popup fails
+                                                                    window.location.href = data.data.authorization_url;
+                                                                }
+                                                            } catch (err) {
+                                                                console.error('Checkout Error:', err);
+                                                                alert(err.message || 'Connection failed. Please try again.');
+                                                                this.isLoading = false;
                                                             }
-                                                        } catch (err) {
-                                                            console.error('Checkout Error:', err);
-                                                            alert(err.message || 'Connection failed. Please try again.');
-                                                            this.isLoading = false;
                                                         }
-                                                    }
-                                                }"
+                                                    }"
         class="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-1000">
 
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 px-4">
-            <div>
-                <h2 class="text-4xl font-black tracking-tight text-foreground flex items-center gap-3">
-                    <span class="bg-primary/10 p-2.5 rounded-2xl">
-                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                    </span>
-                    <span
-                        class="bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/80 to-foreground/50">My
-                        Cart</span>
-                </h2>
-                <p class="text-muted-foreground font-medium mt-2 ml-14">You have <span
-                        class="text-foreground font-bold">{{ count($cartItems) }}</span>
-                    item{{ count($cartItems) !== 1 ? 's' : '' }} ready for checkout.</p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500 ring-1 ring-orange-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                        </path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">My Cart</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">You have <span
+                            class="text-slate-900 dark:text-white font-bold">{{ count($cartItems) }}</span>
+                        item{{ count($cartItems) !== 1 ? 's' : '' }} ready for checkout.</p>
+                </div>
             </div>
         </div>
 

@@ -5,11 +5,16 @@
 @section('content')
     <div class="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         {{-- Header --}}
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Referral Management</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Monitor and manage user referrals</p>
-            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-pink-500/10 flex items-center justify-center text-pink-500 ring-1 ring-pink-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">Referral Management</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Monitor and manage user referrals</p>
+                </div>
             </div>
             
             {{-- Stats Cards --}}
@@ -149,6 +154,32 @@
                             </div>
                         </div>
                     </div>
+
+            {{-- Search & Filters --}}
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm">
+                <form action="{{ route('admin.referrals') }}" method="GET" class="flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-1 group">
+                        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" name="search" placeholder="Search by name or email..."
+                            value="{{ request('search') }}"
+                            class="h-11 w-full pl-10 pr-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-medium outline-none focus:ring-4 focus:ring-primary/10 transition-all dark:text-white">
+                    </div>
+
+                    <div class="relative min-w-[140px]">
+                        <select name="per_page" onchange="this.form.submit()"
+                            class="h-11 w-full px-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold uppercase tracking-widest outline-none focus:ring-4 focus:ring-primary/10 transition-all dark:text-slate-400 appearance-none cursor-pointer">
+                            @foreach([10, 20, 50, 100, 200] as $val)
+                                <option value="{{ $val }}" {{ request('per_page', 10) == $val ? 'selected' : '' }}>{{ $val }} Per
+                                    Page</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </form>
+            </div>
 
             {{-- Referrals Table --}}
             <div

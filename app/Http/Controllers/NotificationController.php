@@ -37,7 +37,10 @@ class NotificationController extends Controller
     // User: View all notifications page
     public function userIndex(Request $request)
     {
-        $notifications = $request->user()->notifications()->latest()->paginate(15);
+        $notifications = $request->user()->notifications()
+            ->latest()
+            ->paginate($request->input('per_page', 15));
+
         return view('dashboard.notifications.index', compact('notifications'));
     }
 
@@ -50,7 +53,7 @@ class NotificationController extends Controller
     // Admin: Get all notifications
     public function adminIndex(Request $request)
     {
-        $notifications = Notification::with('user')->latest()->paginate(20);
+        $notifications = Notification::with('user')->latest()->paginate($request->input('per_page', 10));
 
         if ($request->expectsJson() || $request->is('api/*')) {
             return $notifications;

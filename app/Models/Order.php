@@ -12,6 +12,7 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'bundle_id',
+        'guest_email',
         'recipient_phone',
         'status',
         'cost',
@@ -61,8 +62,10 @@ class Order extends Model
                 $rolePrices = $bundle->role_prices ?: [];
                 $resellerCost = $rolePrices[$referrer->role] ?? $bundle->price;
 
-                // Commission is the difference between what the customer paid and the reseller's cost
-                $commissionAmount = $this->cost - $resellerCost;
+                // Commission is the difference between the selling price and the reseller's cost
+                // If this is a storefront order, the "selling price" relative to the parent is the reseller's cost_price
+                $basePrice = ($this->source === 'storefront') ? $this->cost_price : $this->cost;
+                $commissionAmount = $basePrice - $resellerCost;
 
                 // Ensure it's not negative (safety check)
                 $commissionAmount = max(0, $commissionAmount);
@@ -80,7 +83,7 @@ class Order extends Model
                     'status' => 'earned',
                 ]);
 
-                $referrer->increment('commission_balance', $commissionAmount);
+                $referrer->increment('wallet_balance', $commissionAmount);
 
                 $referrer->transactions()->create([
                     'amount' => $commissionAmount,

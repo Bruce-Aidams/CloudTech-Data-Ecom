@@ -125,7 +125,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Buy Data Bundle</h2>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">Buy Data Bundle</h2>
                     <p class="text-slate-500 dark:text-slate-400 font-medium">Select a package and enter recipient details.
                     </p>
                 </div>
@@ -138,7 +138,7 @@
                 <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm h-full overflow-hidden transition-colors duration-500"
                     :class="getNetworkColor(selectedNetwork, 'border')">
                     <div class="p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
-                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Order Details</h3>
+                        <h3 class="text-lg font-bold text-blue-900 dark:text-white">Order Details</h3>
                         <p class="text-sm text-slate-500">Follow the steps to complete your purchase.</p>
                     </div>
                     <div class="p-6">
@@ -281,7 +281,7 @@
                                             <div class="flex-1">
                                                 <div class="flex justify-between items-start">
                                                     <div>
-                                                        <h4 class="font-bold text-slate-900 dark:text-white text-sm">My
+                                                        <h4 class="font-bold text-blue-900 dark:text-white text-sm">My
                                                             Wallet</h4>
                                                         <p
                                                             class="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">
@@ -342,7 +342,7 @@
                                             <div class="flex-1">
                                                 <div class="flex justify-between items-start">
                                                     <div>
-                                                        <h4 class="font-bold text-slate-900 dark:text-white text-sm">Pay
+                                                        <h4 class="font-bold text-blue-900 dark:text-white text-sm">Pay
                                                             Online</h4>
                                                         <p
                                                             class="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">

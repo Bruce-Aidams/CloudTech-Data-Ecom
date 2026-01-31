@@ -4,52 +4,62 @@
 
 @section('content')
     <div class="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700" x-data="{
-                                        modalOpen: false,
-                                        editMode: false,
-                                        searchTerm: '',
-                                        previewUrl: null,
-                                        productsUrl: '{{ route('admin.bundles.store') }}',
-                                        baseUrl: '{{ url('admin/bundles') }}',
-                                        bundle: { id: '', network: '', name: '', price: '', cost_price: '', data_amount: '', is_active: 1, role_prices: { dealer: '', super_agent: '' } },
-                                        resetForm() {
-                                            this.bundle = { id: '', network: '', name: '', price: '', cost_price: '', data_amount: '', is_active: 1, role_prices: { dealer: '', super_agent: '' } };
-                                            this.editMode = false;
-                                            this.previewUrl = null;
-                                        },
-                                        openAdd() {
-                                            this.resetForm();
-                                            this.modalOpen = true;
-                                        },
-                                        openEdit(b) {
-                                            this.bundle = JSON.parse(JSON.stringify(b));
-                                            if(!this.bundle.role_prices) this.bundle.role_prices = { dealer: '', super_agent: '' };
-                                            this.previewUrl = b.image_url;
-                                            this.editMode = true;
-                                            this.modalOpen = true;
-                                        },
-                                        updatePreview(event) {
-                                            const file = event.target.files[0];
-                                            if (file) {
-                                                this.previewUrl = URL.createObjectURL(file);
-                                            }
-                                        },
-                                        filteredBundles() {
-                                            const bundles = {{ Js::from($bundles->items()) }};
-                                            if (!this.searchTerm) return bundles;
-                                            const search = this.searchTerm.toLowerCase();
-                                            return bundles.filter(b => {
-                                                const name = String(b.name || '').toLowerCase();
-                                                const network = String(b.network || '').toLowerCase();
-                                                const dataAmount = String(b.data_amount || '').toLowerCase();
-                                                return name.includes(search) || network.includes(search) || dataAmount.includes(search);
-                                            });
-                                        }
-                                    }">
+                                                    modalOpen: false,
+                                                    editMode: false,
+                                                    searchTerm: '',
+                                                    previewUrl: null,
+                                                    productsUrl: '{{ route('admin.bundles.store') }}',
+                                                    baseUrl: '{{ url('admin/bundles') }}',
+                                                    bundle: { id: '', network: '', name: '', price: '', cost_price: '', data_amount: '', is_active: 1, role_prices: { dealer: '', super_agent: '' } },
+                                                    resetForm() {
+                                                        this.bundle = { id: '', network: '', name: '', price: '', cost_price: '', data_amount: '', is_active: 1, role_prices: { dealer: '', super_agent: '' } };
+                                                        this.editMode = false;
+                                                        this.previewUrl = null;
+                                                    },
+                                                    openAdd() {
+                                                        this.resetForm();
+                                                        this.modalOpen = true;
+                                                    },
+                                                    openEdit(b) {
+                                                        this.bundle = JSON.parse(JSON.stringify(b));
+                                                        if(!this.bundle.role_prices) this.bundle.role_prices = { dealer: '', super_agent: '' };
+                                                        this.previewUrl = b.image_url;
+                                                        this.editMode = true;
+                                                        this.modalOpen = true;
+                                                    },
+                                                    updatePreview(event) {
+                                                        const file = event.target.files[0];
+                                                        if (file) {
+                                                            this.previewUrl = URL.createObjectURL(file);
+                                                        }
+                                                    },
+                                                    filteredBundles() {
+                                                        const bundles = {{ Js::from($bundles->items()) }};
+                                                        if (!this.searchTerm) return bundles;
+                                                        const search = this.searchTerm.toLowerCase();
+                                                        return bundles.filter(b => {
+                                                            const name = String(b.name || '').toLowerCase();
+                                                            const network = String(b.network || '').toLowerCase();
+                                                            const dataAmount = String(b.data_amount || '').toLowerCase();
+                                                            return name.includes(search) || network.includes(search) || dataAmount.includes(search);
+                                                        });
+                                                    }
+                                                }">
         {{-- Header Section --}}
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Product Management</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage data bundles and pricing strategies</p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 ring-1 ring-purple-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">Product Management</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Configure data bundles, pricing, and
+                        availability.</p>
+                </div>
             </div>
 
             <div class="flex items-center gap-4 w-full md:w-auto">
@@ -62,6 +72,21 @@
                     </svg>
                     <input type="text" x-model="searchTerm" placeholder="Search products..."
                         class="w-full h-11 pl-10 pr-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-medium outline-none focus:ring-4 focus:ring-primary/10 transition-all">
+                </div>
+
+                <div class="relative min-w-[120px]">
+                    <form action="{{ route('admin.bundles') }}" method="GET" id="perPageForm">
+                        @if(request('network'))
+                            <input type="hidden" name="network" value="{{ request('network') }}">
+                        @endif
+                        <select name="per_page" onchange="this.form.submit()"
+                            class="h-11 w-full px-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold uppercase tracking-widest outline-none focus:ring-4 focus:ring-primary/10 transition-all dark:text-slate-400 appearance-none cursor-pointer">
+                            @foreach([10, 20, 50, 100, 200] as $val)
+                                <option value="{{ $val }}" {{ request('per_page', 10) == $val ? 'selected' : '' }}>{{ $val }} Per
+                                    Page</option>
+                            @endforeach
+                        </select>
+                    </form>
                 </div>
 
                 <button @click="openAdd()"
@@ -116,10 +141,10 @@
                             <span
                                 class="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider shadow-sm backdrop-blur-md"
                                 :class="{
-                                    'bg-yellow-400/90 text-yellow-950': b.network === 'MTN',
-                                    'bg-red-500/90 text-white': b.network === 'TELECEL',
-                                    'bg-blue-600/90 text-white': b.network !== 'MTN' && b.network !== 'TELECEL'
-                                }" x-text="b.network"></span>
+                                                'bg-yellow-400/90 text-yellow-950': b.network === 'MTN',
+                                                'bg-red-500/90 text-white': b.network === 'TELECEL',
+                                                'bg-blue-600/90 text-white': b.network !== 'MTN' && b.network !== 'TELECEL'
+                                            }" x-text="b.network"></span>
 
                             <template x-if="!b.is_active">
                                 <span

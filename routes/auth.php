@@ -163,6 +163,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/reseller-hub/store/prices', [\App\Http\Controllers\ResellerHubController::class, 'updatePrice'])->name('reseller.store.update-price');
     Route::post('/dashboard/reseller-hub/store/toggle', [\App\Http\Controllers\ResellerHubController::class, 'toggleStoreStatus'])->name('reseller.store.toggle');
     Route::post('/dashboard/reseller-hub/store/regenerate', [\App\Http\Controllers\ResellerHubController::class, 'regenerateStoreLink'])->name('reseller.store.regenerate');
+    Route::get('/dashboard/reseller-hub/customer-orders', [\App\Http\Controllers\ResellerHubController::class, 'customerOrders'])->name('reseller.customer-orders');
 
     Route::get('/dashboard/analytics', function (Request $request) {
         $user = Auth::user();

@@ -45,7 +45,7 @@ class ReferralController extends Controller
             });
         }
 
-        $referrals = $query->latest()->paginate(20);
+        $referrals = $query->latest()->paginate($request->input('per_page', 10));
 
         $stats = [
             'total_referrals' => User::whereNotNull('referred_by_id')->count(),

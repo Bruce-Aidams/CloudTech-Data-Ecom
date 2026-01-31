@@ -6,12 +6,20 @@
     <div class="space-y-4 md:space-y-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         {{-- Header Context --}}
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-6">
-            <div>
-                <h2 class="text-xl md:text-3xl font-black tracking-tight text-slate-900 dark:text-white">Dashboard Overview
-                </h2>
-                <p
-                    class="text-[9px] md:text-sm text-slate-500 dark:text-slate-400 mt-0.5 uppercase tracking-widest font-bold">
-                    Status overview</p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-500 ring-1 ring-indigo-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                        </path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">Dashboard
+                        Overview</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Status overview</p>
+                </div>
             </div>
             <div class="flex gap-2">
                 <a href="{{ route('transactions.index') }}"
@@ -265,9 +273,11 @@
                             <div class="flex items-end justify-between relative">
                                 <div class="space-y-0.5">
                                     <h4 class="text-[11px] font-black text-slate-900 dark:text-white uppercase">
-                                        {{ $order->bundle->name ?? 'Bundle' }}</h4>
+                                        {{ $order->bundle->name ?? 'Bundle' }}
+                                    </h4>
                                     <p class="text-[10px] font-bold text-slate-400 font-mono tracking-tighter">
-                                        {{ $order->recipient_phone }}</p>
+                                        {{ $order->recipient_phone }}
+                                    </p>
                                 </div>
                                 <span
                                     class="text-xs font-black text-slate-900 dark:text-white tabular-nums">₵{{ number_format($order->cost, 2) }}</span>

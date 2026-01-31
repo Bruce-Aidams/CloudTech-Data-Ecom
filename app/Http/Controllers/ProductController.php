@@ -34,7 +34,7 @@ class ProductController extends Controller
             $query->where('network', $request->network);
         }
 
-        $bundles = $query->paginate(20);
+        $bundles = $query->paginate($request->input('per_page', 10));
         $networks = Bundle::distinct()->pluck('network');
 
         return view('admin.bundles.index', compact('bundles', 'networks'));
@@ -54,6 +54,15 @@ class ProductController extends Controller
         ]);
 
         $data = $request->all();
+
+        // Uppercase bundle name and data amount
+        if (isset($data['name'])) {
+            $data['name'] = strtoupper($data['name']);
+        }
+        if (isset($data['data_amount'])) {
+            $data['data_amount'] = strtoupper($data['data_amount']);
+        }
+
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public');
             $data['image_path'] = $path;
@@ -76,6 +85,14 @@ class ProductController extends Controller
         ]);
 
         $data = $request->all();
+
+        // Uppercase bundle name and data amount
+        if (isset($data['name'])) {
+            $data['name'] = strtoupper($data['name']);
+        }
+        if (isset($data['data_amount'])) {
+            $data['data_amount'] = strtoupper($data['data_amount']);
+        }
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public');

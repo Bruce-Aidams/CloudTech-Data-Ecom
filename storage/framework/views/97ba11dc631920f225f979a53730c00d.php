@@ -5,10 +5,21 @@
 <?php $__env->startSection('content'); ?>
     <div class="max-w-7xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
         
-        <div>
-            <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white uppercase">Activity Analytics</h2>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Detailed statistics of your orders and usage
-                performance.</p>
+        <div class="flex items-center gap-4">
+            <div
+                class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-500 ring-1 ring-indigo-500/20">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z">
+                    </path>
+                </svg>
+            </div>
+            <div>
+                <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">Activity Analytics
+                </h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Detailed statistics of your orders
+                    and usage performance.</p>
+            </div>
         </div>
 
         

@@ -6,47 +6,55 @@
     <div class="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Order Management</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Coordinate logistics and monitor data deliveries.
-                </p>
-            </div>
-
-            <div class="flex items-center gap-3 w-full md:w-auto">
-                
-                <a href="<?php echo e(route('admin.orders.create')); ?>"
-                    class="h-11 px-6 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 active:scale-95 transition-all flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-                    </svg>
-                    New Order
-                </a>
-
-                
-                <a href="<?php echo e(route('admin.orders.export', request()->all())); ?>"
-                    class="h-11 px-6 bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-emerald-200/50 hover:bg-emerald-700 active:scale-95 transition-all flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 ring-1 ring-emerald-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z">
                         </path>
                     </svg>
-                    Export
-                </a>
-
-                
-                <div class="relative flex-1 md:w-80 group">
-                    <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <input type="text" id="searchInput" placeholder="Search reference, phone, customer..."
-                        value="<?php echo e(request('search')); ?>"
-                        class="h-11 w-full pl-10 pr-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-medium outline-none focus:ring-4 focus:ring-primary/10 transition-all">
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">Order Management</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Track and manage customer orders and
+                        transactions.</p>
                 </div>
             </div>
-        </div>
 
+            <!-- <div class="flex items-center gap-3 w-full md:w-auto">
+                                                                    
+                                                                    <a href="<?php echo e(route('admin.orders.create')); ?>"
+                                                                        class="h-11 px-6 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 active:scale-95 transition-all flex items-center gap-2">
+                                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                                                                        </svg>
+                                                                        New Order
+                                                                    </a> -->
+
+            
+            <a href="<?php echo e(route('admin.orders.export', request()->all())); ?>"
+                class="h-11 px-6 bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-emerald-200/50 hover:bg-emerald-700 active:scale-95 transition-all flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                    </path>
+                </svg>
+                Export
+            </a>
+
+            
+            <div class="relative flex-1 md:w-80 group">
+                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search reference, phone, customer..."
+                    value="<?php echo e(request('search')); ?>"
+                    class="h-11 w-full pl-10 pr-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-medium outline-none focus:ring-4 focus:ring-primary/10 transition-all">
+            </div>
+        </div>
         <?php if(request('user_id')): ?>
             <?php $filteredUser = \App\Models\User::find(request('user_id')); ?>
             <?php if($filteredUser): ?>
@@ -58,15 +66,45 @@
 
                     </div>
                     <div>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 leading-none">Filtering Protocol
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 leading-none">Activity Filter
                         </p>
-                        <p class="text-sm font-black text-slate-900 dark:text-white mt-1"><?php echo e($filteredUser->name); ?>'s Ledger</p>
+                        <p class="text-sm font-black text-slate-900 dark:text-white mt-1"><?php echo e($filteredUser->name); ?>'s History</p>
                     </div>
                     <a href="<?php echo e(route('admin.orders')); ?>"
                         class="ml-2 p-1.5 hover:bg-rose-50 dark:hover:bg-rose-900/20 text-slate-400 hover:text-rose-600 rounded-lg transition-all"
                         title="Clear Filter">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </a>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if(request('reseller_id')): ?>
+            <?php $filteredReseller = \App\Models\User::find(request('reseller_id')); ?>
+            <?php if($filteredReseller): ?>
+                <div
+                    class="flex items-center gap-3 bg-indigo-50 border border-indigo-100 dark:bg-slate-900/60 dark:border-indigo-900/30 px-4 py-2.5 rounded-2xl w-fit animate-in fade-in slide-in-from-left-4 duration-500 mb-6">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-black text-xs shadow-lg shadow-indigo-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-indigo-400 leading-none">Network Filter
+                            (Customers)
+                        </p>
+                        <p class="text-sm font-black text-slate-900 dark:text-white mt-1"><?php echo e($filteredReseller->name); ?>'s Customers
+                        </p>
+                    </div>
+                    <a href="<?php echo e(route('admin.orders')); ?>"
+                        class="ml-2 p-1.5 hover:bg-rose-50 dark:hover:bg-rose-900/20 text-slate-400 hover:text-rose-600 rounded-lg transition-all"
+                        title="Clear Filter">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </a>
                 </div>
@@ -81,48 +119,67 @@
                     $statusMap = ['all' => 'All Status', 'awaiting_transfer' => 'Awaiting Transfer', 'pending' => 'Validating', 'processing' => 'Processing', 'completed' => 'Delivered', 'failed' => 'Failed'];
                 ?>
                 <?php $__currentLoopData = ['all', 'awaiting_transfer', 'pending', 'processing', 'completed', 'failed']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <button onclick="filterBy('status', '<?php echo e($s); ?>')" class="px-4 py-2 rounded-lg text-xs font-bold capitalize transition-all whitespace-nowrap
-                                                                                                                                                            <?php echo e(request('status', 'all') == $s
-                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'); ?>">
-                            <?php echo e($statusMap[$s]); ?>
+                    <button onclick="filterBy('status', '<?php echo e($s); ?>')"
+                        class="px-4 py-2 rounded-lg text-xs font-bold capitalize transition-all whitespace-nowrap
+                                                                                                                                                                                                                                                                                            <?php echo e(request('status', 'all') == $s ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'); ?>">
+                        <?php echo e($statusMap[$s]); ?>
 
-                        </button>
+                    </button>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
             
-            <div class="flex items-center gap-3">
-                
-                <div
-                    class="flex gap-2 p-1 bg-slate-100 dark:bg-slate-800/50 rounded-xl w-fit overflow-x-auto scrollbar-hide">
-                    <button onclick="filterBy('network', 'all')" class="px-4 py-2 rounded-lg text-xs font-bold capitalize transition-all whitespace-nowrap
-                                                                                    <?php echo e(request('network', 'all') == 'all'
-        ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
-        : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'); ?>">
-                        All Networks
-                    </button>
-                    <?php $__currentLoopData = $networks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $network): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <button onclick="filterBy('network', '<?php echo e($network); ?>')" class="px-4 py-2 rounded-lg text-xs font-bold uppercase transition-all whitespace-nowrap
-                                                                                                                                                                        <?php echo e(request('network') == $network
-                        ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
-                        : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'); ?>">
-                                    <?php echo e($network); ?>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="relative min-w-[140px]">
+                        <select onchange="filterBy('per_page', this.value)"
+                            class="h-10 w-full px-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold uppercase tracking-widest outline-none transition-all dark:text-slate-400">
+                            <?php $__currentLoopData = [10, 15, 40, 100, 500]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($val); ?>" <?php echo e(request('per_page', 10) == $val ? 'selected' : ''); ?>>
+                                    <?php echo e($val); ?> Per Page
+                                </option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </select>
+                    </div>
 
-                                </button>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    
+                    <div
+                        class="flex gap-2 p-1 bg-slate-100 dark:bg-slate-800/50 rounded-xl w-fit overflow-x-auto scrollbar-hide">
+                        <button onclick="filterBy('network', 'all')"
+                            class="px-4 py-2 rounded-lg text-xs font-bold capitalize transition-all whitespace-nowrap <?php echo e(request('network', 'all') == 'all' ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'); ?>">
+                            All Networks
+                        </button>
+                        <?php $__currentLoopData = $networks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $network): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <button onclick="filterBy('network', '<?php echo e($network); ?>')"
+                                class="px-4 py-2 rounded-lg text-xs font-bold uppercase transition-all whitespace-nowrap <?php echo e(request('network') == $network ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'); ?>">
+                                <?php echo e($network); ?>
+
+                            </button>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </div>
+
+                    <?php if(request()->anyFilled(['status', 'network', 'user_id', 'search'])): ?>
+                        <a href="<?php echo e(route('admin.orders')); ?>"
+                            class="px-4 py-2 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-rose-100 transition-all flex items-center gap-2">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Clear
+                        </a>
+                    <?php endif; ?>
                 </div>
 
-                <?php if(request()->anyFilled(['status', 'network', 'user_id', 'search'])): ?>
-                    <a href="<?php echo e(route('admin.orders')); ?>"
-                        class="px-4 py-2 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-rose-100 transition-all flex items-center gap-2">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12">
-                            </path>
-                        </svg>
-                        Clear All
-                    </a>
-                <?php endif; ?>
+                <div class="flex items-center gap-4">
+                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden lg:block">
+                        Showing <?php echo e($orders->firstItem() ?? 0); ?>-<?php echo e($orders->lastItem() ?? 0); ?> of <?php echo e($orders->total()); ?>
+
+                    </div>
+                    <div class="admin-pagination-top">
+                        <?php echo e($orders->links('pagination::simple-tailwind')); ?>
+
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -132,7 +189,7 @@
             <div class="p-4 rounded-2xl border border-primary/20 bg-primary/5 shadow-sm flex items-center justify-between group transition-all cursor-pointer hover:bg-primary/10 hover:scale-[1.02] active:scale-95"
                 onclick="window.location.href='<?php echo e(route('admin.orders')); ?>'">
                 <div>
-                    <p class="text-[11px] font-black uppercase tracking-widest text-primary/60">Global Stream</p>
+                    <p class="text-[11px] font-black uppercase tracking-widest text-primary/60">Total Orders</p>
                     <p class="text-2xl font-black tabular-nums text-primary"><?php echo e($totalFilteredOrders); ?></p>
                 </div>
                 <div
@@ -230,16 +287,26 @@
                                         <div class="flex items-center gap-3">
                                             <div
                                                 class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 font-bold text-[10px]">
-                                                <?php echo e(strtoupper(substr($order->user->name, 0, 1))); ?>
+                                                <?php if($order->source === 'storefront' && $order->guest_email): ?>
+                                                    <?php echo e(strtoupper(substr($order->guest_email, 0, 1))); ?>
 
+                                                <?php else: ?>
+                                                    <?php echo e(strtoupper(substr($order->user->name, 0, 1))); ?>
+
+                                                <?php endif; ?>
                                             </div>
                                             <div>
                                                 <p class="font-bold text-sm text-slate-900 dark:text-white leading-none">
-                                                    <?php echo e($order->user->name); ?>
+                                                    <?php if($order->source === 'storefront' && $order->guest_email): ?>
+                                                        <?php echo e($order->guest_email); ?>
 
+                                                    <?php else: ?>
+                                                        <?php echo e($order->user->name); ?>
+
+                                                    <?php endif; ?>
                                                 </p>
                                                 <p class="text-[10px] text-slate-500 dark:text-slate-500 mt-1">
-                                                    <?php echo e($order->user->phone); ?>
+                                                    <?php echo e($order->recipient_phone); ?>
 
                                                 </p>
                                             </div>
@@ -296,141 +363,150 @@
 
                                                 <div x-show="open" x-cloak
                                                     class="absolute right-0 mt-2 w-52 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 z-10 p-1 animate-in slide-in-from-top-2 duration-200">
-                                                            <div class="px-3 py-2 border-b border-slate-50 dark:border-slate-800 mb-1">
-                                                                <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">Status Protocol</p>
-                                                            </div>
-                                                            <?php $__currentLoopData = ['pending', 'processing', 'completed', 'failed']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $st): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                <button onclick="updateStatus(<?php echo e($order->id); ?>, '<?php echo e($st); ?>')"
-                                                                    class="w-full text-left px-3 py-2 rounded-lg text-xs font-bold capitalize hover:bg-slate-50 dark:hover:bg-slate-800 border-none <?php echo e($order->status === $st ? 'text-primary' : 'text-slate-600 dark:text-slate-400'); ?>">
-                                                                    Mark as <?php echo e($statusLabels[$st] ?? $st); ?>
-
-                                                                </button>
-                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-                                                            <div class="my-1 border-t border-slate-50 dark:border-slate-800"></div>
-
-                                                            <a href="<?php echo e(route('admin.orders.edit', $order->id)); ?>"
-                                                                class="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                                </svg>
-                                                                Edit Order
-                                                            </a>
-
-                                                            <button onclick="deleteOrder(<?php echo e($order->id); ?>)"
-                                                                class="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/10 transition-colors border-none">
-                                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                                </svg>
-                                                                Delete Order
-                                                            </button>
-                                                        </div>
+                                                    <div class="px-3 py-2 border-b border-slate-50 dark:border-slate-800 mb-1">
+                                                        <p
+                                                            class="text-[9px] font-black uppercase tracking-widest text-slate-400">
+                                                            Update Status</p>
                                                     </div>
+                                                    <?php $__currentLoopData = ['pending', 'processing', 'completed', 'failed']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $st): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <button onclick="updateStatus(<?php echo e($order->id); ?>, '<?php echo e($st); ?>')"
+                                                            class="w-full text-left px-3 py-2 rounded-lg text-xs font-bold capitalize hover:bg-slate-50 dark:hover:bg-slate-800 border-none <?php echo e($order->status === $st ? 'text-primary' : 'text-slate-600 dark:text-slate-400'); ?>">
+                                                            Mark as <?php echo e($statusLabels[$st] ?? $st); ?>
+
+                                                        </button>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                                    <div class="my-1 border-t border-slate-50 dark:border-slate-800"></div>
+
+                                                    <a href="<?php echo e(route('admin.orders.edit', $order->id)); ?>"
+                                                        class="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                        </svg>
+                                                        Edit Order
+                                                    </a>
+
+                                                    <button onclick="deleteOrder(<?php echo e($order->id); ?>)"
+                                                        class="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/10 transition-colors border-none">
+                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                        Delete Order
+                                                    </button>
                                                 </div>
-                                            </td>
-                                        </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                    <tr>
-                                        <td colspan="6" class="px-6 py-24 text-center">
-                                            <div class="flex flex-col items-center gap-3 text-slate-400 dark:text-slate-600">
-                                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                                </svg>
-                                                <p class="font-medium">No order activity recorded</p>
                                             </div>
-                                        </td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                <tr>
+                                    <td colspan="6" class="px-6 py-24 text-center">
+                                        <div class="flex flex-col items-center gap-3 text-slate-400 dark:text-slate-600">
+                                            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                            </svg>
+                                            <p class="font-medium">No order activity recorded</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
 
-            <?php if($orders->isNotEmpty()): ?>
-                <div
-                    class="px-6 py-4 border-t border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20 flex items-center justify-between">
-                    <div class="text-xs font-bold text-slate-500 dark:text-slate-500 uppercase tracking-widest italic">Global
-                        Stream: <?php echo e($orders->total()); ?> Records</div>
-                    <div><?php echo e($orders->links()); ?></div>
+        <?php if($orders->isNotEmpty()): ?>
+            <div
+                class="px-6 py-4 border-t border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20 flex items-center justify-between">
+                <div class="text-xs font-bold text-slate-500 dark:text-slate-500 uppercase tracking-widest italic">
+                    Records: <?php echo e($orders->firstItem()); ?>-<?php echo e($orders->lastItem()); ?> of <?php echo e($orders->total()); ?>
+
                 </div>
-            <?php endif; ?>
-        </div>
-        </div>
+                <div><?php echo e($orders->links()); ?></div>
+            </div>
+        <?php endif; ?>
+    </div>
 
-        <?php $__env->startPush('scripts'); ?>
-            <script>
-                function filterBy(key, value) {
-                    const url = new URL(window.location.href);
-                    if (value === 'all') {
-                        url.searchParams.delete(key);
+    <?php $__env->startPush('scripts'); ?>
+        <script>
+            function filterBy(key, value) {
+                const url = new URL(window.location.href);
+                if (value === 'all') {
+                    url.searchParams.delete(key);
+                } else {
+                    url.searchParams.set(key, value);
+                }
+                // Reset page on filter change
+                url.searchParams.delete('page');
+                window.location.href = url.href;
+            }
+
+            async function updateStatus(orderId, status) {
+                if (!confirm(`Update order #${orderId} to ${status}?`)) return;
+
+                try {
+                    const response = await fetch(`<?php echo e(url('admin/orders')); ?>/${orderId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ status })
+                    });
+
+                    if (response.ok) {
+                        window.location.reload();
                     } else {
-                        url.searchParams.set(key, value);
+                        const data = await response.json();
+                        alert(data.message || 'Verification Error');
                     }
-                    // Reset page on filter change
-                    url.searchParams.delete('page');
+                } catch (e) {
+                    alert('Network Communication Error');
+                }
+            }
+
+            async function deleteOrder(orderId) {
+                if (!confirm('Are you absolutely sure you want to delete this order? This action cannot be undone and will delete associated transactions.')) return;
+
+                try {
+                    const response = await fetch(`<?php echo e(url('admin/orders')); ?>/${orderId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        // Instead of alert, maybe we could use a toast if available, but for now:
+                        window.location.reload();
+                    } else {
+                        const data = await response.json();
+                        alert(data.message || 'Deletion Error');
+                    }
+                } catch (e) {
+                    alert('Network Communication Error');
+                }
+            }
+
+            document.getElementById('searchInput').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('search', this.value);
                     window.location.href = url.href;
                 }
-
-                async function updateStatus(orderId, status) {
-                    if (!confirm(`Update order #${orderId} to ${status}?`)) return;
-
-                    try {
-                        const response = await fetch(`<?php echo e(url('admin/orders')); ?>/${orderId}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
-                                'Accept': 'application/json'
-                            },
-                            body: JSON.stringify({ status })
-                        });
-
-                        if (response.ok) {
-                            window.location.reload();
-                        } else {
-                            const data = await response.json();
-                            alert(data.message || 'Verification Error');
-                        }
-                    } catch (e) {
-                        alert('Network Communication Error');
-                    }
-                }
-
-                async function deleteOrder(orderId) {
-                    if (!confirm('Are you absolutely sure you want to delete this order? This action cannot be undone and will delete associated transactions.')) return;
-
-                    try {
-                        const response = await fetch(`<?php echo e(url('admin/orders')); ?>/${orderId}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
-                                'Accept': 'application/json'
-                            }
-                        });
-
-                        if (response.ok) {
-                            const data = await response.json();
-                            // Instead of alert, maybe we could use a toast if available, but for now:
-                            window.location.reload();
-                        } else {
-                            const data = await response.json();
-                            alert(data.message || 'Deletion Error');
-                        }
-                    } catch (e) {
-                        alert('Network Communication Error');
-                    }
-                }
-
-                document.getElementById('searchInput').addEventListener('keypress', function (e) {
-                    if (e.key === 'Enter') {
-                        const url = new URL(window.location.href);
-                        url.searchParams.set('search', this.value);
-                        window.location.href = url.href;
-                    }
-                });
-            </script>
-        <?php $__env->stopPush(); ?>
+            });
+        </script>
+    <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Bruce\Desktop\Projects\Megaai2\Megaai\cloudtech\resources\views/admin/orders/index.blade.php ENDPATH**/ ?>

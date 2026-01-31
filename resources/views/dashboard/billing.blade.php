@@ -5,12 +5,14 @@
 @section('content')
     <div class="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h2
-                    class="text-3xl font-black tracking-tight text-foreground bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-500">
-                    Billing & history</h2>
-                <p class="text-muted-foreground font-medium text-sm">Manage your financial history and export tax-ready
-                    invoices.</p>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 ring-1 ring-emerald-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">Billing & History</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Manage your financial history and export tax-ready invoices.</p>
+                </div>
             </div>
             <div class="flex items-center gap-2">
                 <a href="{{ route('wallet.index') }}"

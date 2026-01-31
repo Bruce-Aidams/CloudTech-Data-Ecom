@@ -6,9 +6,16 @@
     <div class="space-y-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Capital Disbursement</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Review and process user withdrawal requests.</p>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-500 ring-1 ring-teal-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">Capital Disbursement</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Review and process user withdrawal requests.</p>
+                </div>
             </div>
             <div
                 class="flex items-center gap-2 bg-amber-50 dark:bg-amber-900/20 px-3 py-1.5 rounded-full border border-amber-100 dark:border-amber-800/50">
@@ -80,6 +87,37 @@
                     <h3 class="text-3xl font-black tabular-nums">GHC {{ number_format($stats['total_amount'], 2) }}</h3>
                     <p class="text-[9px] text-white/40 font-bold uppercase">Cumulative disbursement volume</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex gap-2 p-1 bg-slate-100 dark:bg-slate-800/50 rounded-xl w-fit overflow-x-auto">
+                <a href="{{ route('admin.payouts') }}"
+                    class="px-4 py-2 rounded-lg text-xs font-bold transition-all {{ !request('status') ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300' }}">
+                    All Requests
+                </a>
+                @foreach(['pending', 'processing', 'completed', 'rejected'] as $status)
+                    <a href="{{ route('admin.payouts', ['status' => $status]) }}"
+                        class="px-4 py-2 rounded-lg text-xs font-bold capitalize transition-all {{ request('status') === $status ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300' }}">
+                        {{ $status }}
+                    </a>
+                @endforeach
+            </div>
+
+            <div class="relative min-w-[140px]">
+                <form action="{{ route('admin.payouts') }}" method="GET">
+                    @if(request('status'))
+                        <input type="hidden" name="status" value="{{ request('status') }}">
+                    @endif
+                    <select name="per_page" onchange="this.form.submit()"
+                        class="h-11 w-full px-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold uppercase tracking-widest outline-none focus:ring-4 focus:ring-primary/10 transition-all dark:text-slate-400 appearance-none cursor-pointer">
+                        @foreach([10, 20, 50, 100, 200] as $val)
+                            <option value="{{ $val }}" {{ request('per_page', 10) == $val ? 'selected' : '' }}>{{ $val }} Per
+                                Page</option>
+                        @endforeach
+                    </select>
+                </form>
             </div>
         </div>
 

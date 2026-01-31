@@ -6,11 +6,21 @@
     <div class="max-w-7xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700"
         x-data="{ withdrawOpen: false }">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-                <h2
-                    class="text-3xl font-black tracking-tight text-foreground bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-500">
-                    Earnings Center</h2>
-                <p class="text-muted-foreground font-medium">Earn commissions by referring new users to the platform.</p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 ring-1 ring-amber-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                        </path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">Earnings Center
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Earn commissions by referring new
+                        users to the platform.</p>
+                </div>
             </div>
 
             <button @click="withdrawOpen = true"
@@ -114,7 +124,9 @@
                 class="group relative rounded-[2.5rem] bg-gradient-to-br from-emerald-600 to-teal-500 p-8 shadow-xl transition-all hover:scale-[1.02] overflow-hidden text-white">
                 <p class="text-[10px] font-black uppercase tracking-[0.3em] text-white/50 mb-1">Total Earned</p>
                 <p class="text-4xl font-black text-white tracking-tighter">GHS
-                    <?php echo e(number_format($stats['total_earned'], 2)); ?></p>
+                    <?php echo e(number_format($stats['total_earned'], 2)); ?>
+
+                </p>
             </div>
 
             <!-- Active Referrals -->
@@ -161,9 +173,13 @@
                                 <div class="space-y-1">
                                     <p
                                         class="text-[9px] font-black text-slate-900 dark:text-white uppercase truncate tracking-tight leading-none">
-                                        <?php echo e($commission->referredUser->name ?? 'Order #' . $commission->order_id); ?></p>
+                                        <?php echo e($commission->referredUser->name ?? 'Order #' . $commission->order_id); ?>
+
+                                    </p>
                                     <p class="text-sm font-black text-emerald-600 tracking-tighter">+ GHS
-                                        <?php echo e(number_format($commission->amount, 2)); ?></p>
+                                        <?php echo e(number_format($commission->amount, 2)); ?>
+
+                                    </p>
                                 </div>
                             </div>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -191,15 +207,21 @@
                                     <tr class="group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-all">
                                         <td class="px-8 py-6">
                                             <p class="text-sm font-black text-foreground">
-                                                <?php echo e($commission->referredUser->name ?? 'Order #' . $commission->order_id); ?></p>
+                                                <?php echo e($commission->referredUser->name ?? 'Order #' . $commission->order_id); ?>
+
+                                            </p>
                                         </td>
                                         <td class="px-8 py-6">
                                             <p class="text-lg font-black text-emerald-600 tracking-tighter">+ GHS
-                                                <?php echo e(number_format($commission->amount, 2)); ?></p>
+                                                <?php echo e(number_format($commission->amount, 2)); ?>
+
+                                            </p>
                                         </td>
                                         <td class="px-8 py-6 text-right">
                                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                                <?php echo e($commission->created_at->format('M d, Y')); ?></p>
+                                                <?php echo e($commission->created_at->format('M d, Y')); ?>
+
+                                            </p>
                                         </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -251,7 +273,9 @@
                                 </div>
                                 <div class="space-y-2">
                                     <p class="text-sm font-black text-slate-900 dark:text-white tracking-tighter">GHS
-                                        <?php echo e(number_format($payout->amount, 2)); ?></p>
+                                        <?php echo e(number_format($payout->amount, 2)); ?>
+
+                                    </p>
 
                                     <?php if($payout->status === 'completed'): ?>
                                         <div

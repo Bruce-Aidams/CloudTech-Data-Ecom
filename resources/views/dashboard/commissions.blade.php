@@ -6,11 +6,20 @@
     <div class="max-w-7xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700"
         x-data="{ withdrawOpen: false }">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-                <h2
-                    class="text-3xl font-black tracking-tight text-foreground bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-500">
-                    Earnings Center</h2>
-                <p class="text-muted-foreground font-medium">Earn commissions by referring new users to the platform.</p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 ring-1 ring-amber-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">Earnings Center
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Earn commissions by referring new
+                        users to the platform.</p>
+                </div>
             </div>
 
             <button @click="withdrawOpen = true"
@@ -114,7 +123,8 @@
                 class="group relative rounded-[2.5rem] bg-gradient-to-br from-emerald-600 to-teal-500 p-8 shadow-xl transition-all hover:scale-[1.02] overflow-hidden text-white">
                 <p class="text-[10px] font-black uppercase tracking-[0.3em] text-white/50 mb-1">Total Earned</p>
                 <p class="text-4xl font-black text-white tracking-tighter">GHS
-                    {{ number_format($stats['total_earned'], 2) }}</p>
+                    {{ number_format($stats['total_earned'], 2) }}
+                </p>
             </div>
 
             <!-- Active Referrals -->
@@ -161,9 +171,11 @@
                                 <div class="space-y-1">
                                     <p
                                         class="text-[9px] font-black text-slate-900 dark:text-white uppercase truncate tracking-tight leading-none">
-                                        {{ $commission->referredUser->name ?? 'Order #' . $commission->order_id }}</p>
+                                        {{ $commission->referredUser->name ?? 'Order #' . $commission->order_id }}
+                                    </p>
                                     <p class="text-sm font-black text-emerald-600 tracking-tighter">+ GHS
-                                        {{ number_format($commission->amount, 2) }}</p>
+                                        {{ number_format($commission->amount, 2) }}
+                                    </p>
                                 </div>
                             </div>
                         @empty
@@ -191,15 +203,18 @@
                                     <tr class="group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-all">
                                         <td class="px-8 py-6">
                                             <p class="text-sm font-black text-foreground">
-                                                {{ $commission->referredUser->name ?? 'Order #' . $commission->order_id }}</p>
+                                                {{ $commission->referredUser->name ?? 'Order #' . $commission->order_id }}
+                                            </p>
                                         </td>
                                         <td class="px-8 py-6">
                                             <p class="text-lg font-black text-emerald-600 tracking-tighter">+ GHS
-                                                {{ number_format($commission->amount, 2) }}</p>
+                                                {{ number_format($commission->amount, 2) }}
+                                            </p>
                                         </td>
                                         <td class="px-8 py-6 text-right">
                                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                                {{ $commission->created_at->format('M d, Y') }}</p>
+                                                {{ $commission->created_at->format('M d, Y') }}
+                                            </p>
                                         </td>
                                     </tr>
                                 @empty
@@ -250,7 +265,8 @@
                                 </div>
                                 <div class="space-y-2">
                                     <p class="text-sm font-black text-slate-900 dark:text-white tracking-tighter">GHS
-                                        {{ number_format($payout->amount, 2) }}</p>
+                                        {{ number_format($payout->amount, 2) }}
+                                    </p>
 
                                     @if($payout->status === 'completed')
                                         <div

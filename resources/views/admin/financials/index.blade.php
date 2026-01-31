@@ -6,11 +6,19 @@
     <div class="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Financial Reports</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">System-wide financial statistics and revenue
-                    analysis.
-                </p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-green-500 ring-1 ring-green-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">Financial Reports</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Revenue analysis and profit margins.</p>
+                </div>
             </div>
             <div
                 class="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5 rounded-full border border-emerald-100 dark:border-emerald-800/50">
@@ -21,55 +29,74 @@
         </div>
 
         <!-- Stats Cards -->
-        <div class="grid gap-6 md:grid-cols-3">
-            <!-- Total Revenue -->
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <!-- Gross Revenue -->
             <div
-                class="relative overflow-hidden bg-slate-900 border border-slate-800 rounded-3xl shadow-lg shadow-slate-900/10 group p-8">
+                class="relative overflow-hidden bg-slate-900 border border-slate-800 rounded-3xl shadow-lg shadow-slate-900/10 group p-6">
                 <div
-                    class="absolute -right-4 -bottom-4 w-32 h-32 bg-primary/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
+                    class="absolute -right-4 -bottom-4 w-24 h-24 bg-primary/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
                 </div>
                 <div class="relative z-10">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Total Revenue</p>
-                    <h3 class="text-3xl font-black text-white mb-4">GHC {{ number_format($stats['total_revenue'], 2) }}</h3>
+                    <p class="text-[8px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2">Gross Revenue</p>
+                    <h3 class="text-2xl font-black text-white mb-3">GHC {{ number_format($stats['total_revenue'], 2) }}</h3>
                     <div
-                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path d="M5 10l7-7 7 7M5 14l7 7 7-7" stroke-width="3"></path>
-                        </svg>
-                        Gross Revenue
+                        class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[8px] font-bold uppercase">
+                        Total Sales
                     </div>
                 </div>
             </div>
 
-            <!-- Total Expenses -->
+            <!-- Transaction Charges -->
             <div
-                class="relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-md transition-all group p-8">
+                class="relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-md transition-all group p-6">
                 <div
-                    class="absolute -right-4 -bottom-4 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
+                    class="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
                 </div>
                 <div class="relative z-10">
-                    <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2">
-                        Operating Expenses</p>
-                    <h3 class="text-3xl font-black text-slate-900 dark:text-white mb-4">GHC
-                        {{ number_format($stats['total_expenses'], 2) }}
+                    <p class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-2">
+                        Gateway Charges</p>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-3">GHC
+                        {{ number_format($stats['total_charges'], 2) }}
                     </h3>
                     <div
-                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 text-[10px] font-bold uppercase">
-                        Operating Cost
+                        class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[8px] font-bold uppercase">
+                        Platform Fees
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referral Commissions -->
+            <div
+                class="relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-md transition-all group p-6">
+                <div
+                    class="absolute -right-4 -bottom-4 w-24 h-24 bg-rose-500/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
+                </div>
+                <div class="relative z-10">
+                    <p class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-2">
+                        Paid Commissions</p>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-3">GHC
+                        {{ number_format($stats['total_commissions'], 2) }}
+                    </h3>
+                    <div
+                        class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 text-[8px] font-bold uppercase">
+                        Referral Payouts
                     </div>
                 </div>
             </div>
 
             <!-- Net Profit -->
             <div
-                class="relative overflow-hidden bg-gradient-to-br from-emerald-600 to-emerald-700 dark:from-emerald-500 dark:to-emerald-600 rounded-3xl shadow-lg shadow-emerald-500/20 group p-8">
+                class="relative overflow-hidden bg-gradient-to-br from-emerald-600 to-emerald-700 dark:from-emerald-500 dark:to-emerald-600 rounded-3xl shadow-lg shadow-emerald-500/20 group p-6">
                 <div
-                    class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
+                    class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700">
                 </div>
                 <div class="relative z-10">
-                    <p class="text-[10px] font-bold text-emerald-100 uppercase tracking-widest mb-2">Net Profit</p>
-                    <h3 class="text-3xl font-black text-white mb-4">GHC {{ number_format($stats['net_profit'], 2) }}</h3>
-                    <p class="text-[10px] text-emerald-100/70 font-bold uppercase tracking-tighter">Performance</p>
+                    <p class="text-[8px] font-bold text-emerald-100 uppercase tracking-[0.2em] mb-2">Net Platform Gain</p>
+                    <h3 class="text-2xl font-black text-white mb-3">GHC {{ number_format($stats['net_profit'], 2) }}</h3>
+                    <div
+                        class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-white/10 text-white text-[8px] font-bold uppercase">
+                        Net Earnings
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,6 +127,9 @@
                             Revenue (GHS)</th>
                         <th
                             class="px-6 py-4 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest text-right">
+                            Profit (GHS)</th>
+                        <th
+                            class="px-6 py-4 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest text-right">
                             Trend</th>
                     </tr>
                 </thead>
@@ -124,6 +154,11 @@
                             <td class="px-6 py-5 text-right">
                                 <span class="text-base font-black text-slate-900 dark:text-white">
                                     {{ number_format($data->revenue, 2) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-5 text-right">
+                                <span class="text-base font-black text-emerald-600 dark:text-emerald-400">
+                                    {{ number_format($data->profit, 2) }}
                                 </span>
                             </td>
                             <td class="px-6 py-5 text-right">

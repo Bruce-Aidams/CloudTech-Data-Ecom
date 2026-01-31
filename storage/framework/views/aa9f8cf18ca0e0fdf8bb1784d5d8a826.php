@@ -1,6 +1,7 @@
 <?php
     $unreadNotifications = auth()->user()->notifications()->where('is_read', false)->latest()->take(5)->get();
-    $unreadCount = auth()->user()->notifications()->where('is_read', false)->count();
+    // Cache the count from the collection to avoid another DB hit
+    $unreadCount = $unreadNotifications->count();
 ?>
 
 <header
@@ -86,26 +87,28 @@
                 fetch(`/notifications/${id}/read`, {
                     method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name=" csrf-token"]').content, 'Content-Type'
-            : 'application/json' , 'Accept' : 'application/json' } }).then(response=> {
-            if (response.ok) {
-            // Reactively remove from list and decrement count
-            this.notifications = this.notifications.filter(n => n.id !== id);
-            this.unreadCount = Math.max(0, this.unreadCount - 1);
-            }
-            });
+                        'X-CSRF-TOKEN': document.querySelector('meta[name=&quot;csrf-token&quot;]').content,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        this.notifications = this.notifications.filter(n => n.id !== id);
+                        this.unreadCount = Math.max(0, this.unreadCount - 1);
+                    }
+                });
             },
             init() {
-            setInterval(() => {
-            fetch('<?php echo e(route('notifications.poll')); ?>')
-            .then(response => response.json())
-            .then(data => {
-            this.unreadCount = data.unreadCount;
-            this.notifications = data.notifications;
-            });
-            }, 30000); // Poll every 30 seconds
+                setInterval(() => {
+                    fetch('<?php echo e(route('notifications.poll')); ?>')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.unreadCount = data.unreadCount;
+                            this.notifications = data.notifications;
+                        });
+                }, 30000);
             }
-            }">
+        }">
             <button @click="open = !open" @click.outside="open = false"
                 class="p-2.5 bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 hover:text-primary rounded-xl transition-all relative group">
                 <svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor"

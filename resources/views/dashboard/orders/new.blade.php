@@ -115,17 +115,16 @@
         {{-- Header --}}
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-500 shadow-sm"
-                    :class="getNetworkColor(selectedNetwork, 'bg')">
-                    <svg class="w-6 h-6" :class="getNetworkColor(selectedNetwork, 'text')" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
+                <div
+                    class="w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-500 shadow-sm bg-orange-500/10">
+                    <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
                         </path>
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Buy Data Bundle</h2>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">Buy Data Bundle</h2>
                     <p class="text-slate-500 dark:text-slate-400 font-medium">Select a package and enter recipient details.
                     </p>
                 </div>
@@ -138,7 +137,7 @@
                 <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm h-full overflow-hidden transition-colors duration-500"
                     :class="getNetworkColor(selectedNetwork, 'border')">
                     <div class="p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
-                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Order Details</h3>
+                        <h3 class="text-lg font-bold text-blue-900 dark:text-white">Order Details</h3>
                         <p class="text-sm text-slate-500">Follow the steps to complete your purchase.</p>
                     </div>
                     <div class="p-6">
@@ -281,7 +280,7 @@
                                             <div class="flex-1">
                                                 <div class="flex justify-between items-start">
                                                     <div>
-                                                        <h4 class="font-bold text-slate-900 dark:text-white text-sm">My
+                                                        <h4 class="font-bold text-blue-900 dark:text-white text-sm">My
                                                             Wallet</h4>
                                                         <p
                                                             class="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">
@@ -342,7 +341,7 @@
                                             <div class="flex-1">
                                                 <div class="flex justify-between items-start">
                                                     <div>
-                                                        <h4 class="font-bold text-slate-900 dark:text-white text-sm">Pay
+                                                        <h4 class="font-bold text-blue-900 dark:text-white text-sm">Pay
                                                             Online</h4>
                                                         <p
                                                             class="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">

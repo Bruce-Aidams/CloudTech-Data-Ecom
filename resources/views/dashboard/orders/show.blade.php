@@ -15,7 +15,7 @@
                 </a>
                 <div>
                     <div class="flex items-center gap-3">
-                        <h2 class="text-3xl font-black tracking-tight text-foreground">Order <span
+                        <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">Order <span
                                 class="text-primary">#{{ $order->reference }}</span></h2>
                         @if($order->status === 'completed')
                             <span
@@ -134,7 +134,8 @@
                     <div class="text-right flex flex-col items-end">
                         <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Bundle Detail</p>
                         <p class="text-xl font-black text-foreground tracking-tighter">
-                            {{ $order->bundle->data_amount ?? 'N/A' }}</p>
+                            {{ $order->bundle->data_amount ?? 'N/A' }}
+                        </p>
                     </div>
                 </div>
             </div>

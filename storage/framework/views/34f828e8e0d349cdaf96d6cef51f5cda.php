@@ -3,88 +3,108 @@
 <?php $__env->startSection('title', 'User Management'); ?>
 
 <?php $__env->startSection('content'); ?>
-    <div class="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700" <div
-        class="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700" x-data="{
-                    modalOpen: false,
-                    editMode: false,
-                    walletModalOpen: false,
-                    walletUser: { id: '', name: '', balance: 0 },
-                    walletData: { type: 'credit', amount: '', note: '', isSubmitting: false },
-                    user: { id: '', name: '', email: '', phone: '', role: 'user', is_active: true, password: '' },
-                    resetForm() {
-                        this.user = { id: '', name: '', email: '', phone: '', role: 'user', is_active: true, password: '' };
-                        this.editMode = false;
-                    },
-                    openAdd() {
-                        this.resetForm();
-                        this.modalOpen = true;
-                    },
-                    openEdit(u) {
-                        this.user = JSON.parse(JSON.stringify(u));
-                        this.user.is_active = !!this.user.is_active;
-                        this.user.password = '';
-                        this.editMode = true;
-                        this.modalOpen = true;
-                    },
-                    openWallet(u) {
-                        this.walletUser = { id: u.id, name: u.name, balance: u.wallet_balance };
-                        this.walletData = { type: 'credit', amount: '', note: '', isSubmitting: false };
-                        this.walletModalOpen = true;
-                    },
-                    async submitWalletAdjustment() {
-                        if (this.walletData.isSubmitting) return;
-                        this.walletData.isSubmitting = true;
+    <div class="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700" x-data="{
+                                    modalOpen: false,
+                                    editMode: false,
+                                    walletModalOpen: false,
+                                    walletUser: { id: '', name: '', balance: 0 },
+                                    walletData: { type: 'credit', amount: '', note: '', isSubmitting: false },
+                                    user: { id: '', name: '', email: '', phone: '', role: 'user', is_active: true, password: '' },
+                                    resetForm() {
+                                        this.user = { id: '', name: '', email: '', phone: '', role: 'user', is_active: true, password: '' };
+                                        this.editMode = false;
+                                    },
+                                    openAdd() {
+                                        this.resetForm();
+                                        this.modalOpen = true;
+                                    },
+                                    openEdit(u) {
+                                        this.user = JSON.parse(JSON.stringify(u));
+                                        this.user.is_active = !!this.user.is_active;
+                                        this.user.password = '';
+                                        this.editMode = true;
+                                        this.modalOpen = true;
+                                    },
+                                    openWallet(u) {
+                                        this.walletUser = { id: u.id, name: u.name, balance: u.wallet_balance };
+                                        this.walletData = { type: 'credit', amount: '', note: '', isSubmitting: false };
+                                        this.walletModalOpen = true;
+                                    },
+                                    async submitWalletAdjustment() {
+                                        if (this.walletData.isSubmitting) return;
+                                        this.walletData.isSubmitting = true;
 
-                        try {
-                            const response = await fetch(`/admin/users/${this.walletUser.id}/wallet`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Accept': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').getAttribute('content')
-                                },
-                                body: JSON.stringify({
-                                    type: this.walletData.type,
-                                    amount: this.walletData.amount,
-                                    note: this.walletData.note
-                                })
-                            });
+                                        try {
+                                            const response = await fetch(`/admin/users/${this.walletUser.id}/wallet`, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'Accept': 'application/json',
+                                                    'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').getAttribute('content')
+                                                },
+                                                body: JSON.stringify({
+                                                    type: this.walletData.type,
+                                                    amount: this.walletData.amount,
+                                                    note: this.walletData.note
+                                                })
+                                            });
 
-                            const data = await response.json();
+                                            const data = await response.json();
 
-                            if (response.ok) {
-                                alert(data.message + '\nNew Balance: GHS ' + parseFloat(data.new_balance).toFixed(2));
-                                this.walletModalOpen = false;
-                                window.location.reload();
-                            } else {
-                                alert(data.message || 'Failed to adjust wallet');
-                            }
-                        } catch (error) {
-                            alert('An error occurred. Please try again.');
-                            console.error(error);
-                        } finally {
-                            this.walletData.isSubmitting = false;
-                        }
-                    }
-                }">
+                                            if (response.ok) {
+                                                alert(data.message + '\nNew Balance: GHS ' + parseFloat(data.new_balance).toFixed(2));
+                                                this.walletModalOpen = false;
+                                                window.location.reload();
+                                            } else {
+                                                alert(data.message || 'Failed to adjust wallet');
+                                            }
+                                        } catch (error) {
+                                            alert('An error occurred. Please try again.');
+                                            console.error(error);
+                                        } finally {
+                                            this.walletData.isSubmitting = false;
+                                        }
+                                    }
+                                }">
         
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">User Management</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage platform users, roles and access controls.
-                </p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 ring-1 ring-blue-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">User Management</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage user accounts, roles, and permissions.
+                    </p>
+                </div>
             </div>
 
             <div class="flex items-center gap-4 w-full md:w-auto">
                 
-                <form action="<?php echo e(route('admin.users')); ?>" method="GET" class="relative flex-1 md:w-64 group">
-                    <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <input type="text" name="search" value="<?php echo e(request('search')); ?>" placeholder="Search users..."
-                        class="w-full h-11 pl-10 pr-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-medium outline-none focus:ring-4 focus:ring-primary/10 transition-all">
+                <form action="<?php echo e(route('admin.users')); ?>" method="GET" class="flex gap-4 items-center flex-1">
+                    <div class="relative flex-1 md:w-64 group">
+                        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" name="search" value="<?php echo e(request('search')); ?>" placeholder="Search users..."
+                            class="w-full h-11 pl-10 pr-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-medium outline-none focus:ring-4 focus:ring-primary/10 transition-all">
+                    </div>
+                    <div class="relative min-w-[120px]">
+                        <select name="per_page" onchange="this.form.submit()"
+                            class="h-11 px-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold uppercase tracking-widest outline-none focus:ring-4 focus:ring-primary/10 transition-all dark:text-slate-400 appearance-none cursor-pointer">
+                            <?php $__currentLoopData = [10, 20, 50, 100, 200]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($val); ?>" <?php echo e(request('per_page', 10) == $val ? 'selected' : ''); ?>><?php echo e($val); ?> Per
+                                    Page</option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </select>
+                    </div>
                 </form>
 
                 <button @click="openAdd()"
@@ -185,7 +205,7 @@
                                 <td class="px-6 py-4 text-center">
                                     <span
                                         class="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-bold
-                                                                                                                                                             <?php echo e($u->is_active ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600' : 'bg-rose-50 dark:bg-rose-900/20 text-rose-600'); ?>">
+                                                                                                                                                                                             <?php echo e($u->is_active ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600' : 'bg-rose-50 dark:bg-rose-900/20 text-rose-600'); ?>">
                                         <span
                                             class="w-1 h-1 rounded-full <?php echo e($u->is_active ? 'bg-emerald-500' : 'bg-rose-500'); ?>"></span>
                                         <?php echo e($u->is_active ? 'Active' : 'Suspended'); ?>
@@ -341,7 +361,7 @@
                             <label
                                 class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">User
                                 Role</label>
-                            <select name="role" x-model="bundle.role" required
+                            <select name="role" x-model="user.role" required
                                 class="w-full h-11 px-4 bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20 dark:text-white">
                                 <option value="user">Retail User</option>
                                 <option value="agent">Agent</option>

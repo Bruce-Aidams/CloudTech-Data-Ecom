@@ -17,7 +17,7 @@ class ApiController extends Controller
             return $providers;
         }
 
-        $logs = ApiLog::with('provider')->latest()->paginate(20);
+        $logs = ApiLog::with('provider')->latest()->paginate($request->input('per_page', 10));
 
         return view('admin.api.index', compact('providers', 'logs'));
     }
@@ -84,8 +84,8 @@ class ApiController extends Controller
     }
 
     // Get API Error Logs
-    public function logs()
+    public function logs(Request $request)
     {
-        return ApiLog::with('provider')->latest()->paginate(20);
+        return ApiLog::with('provider')->latest()->paginate($request->input('per_page', 10));
     }
 }

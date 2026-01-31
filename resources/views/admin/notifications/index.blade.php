@@ -5,13 +5,17 @@
 @section('content')
     <div class="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <!-- Header -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Notification Center</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Broadcast alerts and direct messages to the user
-                    base.</p>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 ring-1 ring-amber-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">Notification Center</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Broadcast alerts and direct messages to the user base.</p>
+                </div>
             </div>
-        </div>
 
         @if(session('success'))
             <div
@@ -122,6 +126,18 @@
                                 class="text-[10px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-widest mt-0.5">
                                 Communication Ledger</p>
                         </div>
+
+                        <div class="relative min-w-[140px]">
+                            <form action="{{ route('admin.notifications') }}" method="GET">
+                                <select name="per_page" onchange="this.form.submit()"
+                                    class="h-10 w-full px-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold uppercase tracking-widest outline-none focus:ring-4 focus:ring-primary/10 transition-all dark:text-slate-400 appearance-none cursor-pointer">
+                                    @foreach([10, 20, 50, 100, 200] as $val)
+                                        <option value="{{ $val }}" {{ request('per_page', 10) == $val ? 'selected' : '' }}>{{ $val }}
+                                            Per Page</option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </div>
                     </div>
 
                     <div class="flex-1 overflow-y-auto divide-y divide-slate-50 dark:divide-slate-800 custom-scrollbar">
@@ -204,6 +220,12 @@
                             </div>
                         @endforelse
                     </div>
+
+                    @if($notifications->hasPages())
+                        <div class="p-6 border-t border-slate-50 dark:border-slate-800">
+                            {{ $notifications->links() }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

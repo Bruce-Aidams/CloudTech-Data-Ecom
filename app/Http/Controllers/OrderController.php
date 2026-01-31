@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Bundle;
+use App\Models\User;
 use App\Jobs\ProcessOrder;
 use App\Rules\GhanaPhoneValidation;
 use Illuminate\Http\Request;
@@ -60,7 +61,7 @@ class OrderController extends Controller
                 }
             ])
             ->latest()
-            ->paginate(15)
+            ->paginate($request->input('per_page', 10))
             ->withQueryString();
 
         $networks = Bundle::distinct()->pluck('network');
@@ -91,61 +92,65 @@ class OrderController extends Controller
     public function adminIndex(Request $request)
     {
         $query = Order::with(['user', 'bundle']);
+        $summaryQuery = Order::query();
 
         // Search Filter
-        if ($request->has('search')) {
+        if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function ($q) use ($search) {
+            $searchFilter = function ($q) use ($search) {
                 $q->where('reference', 'like', "%$search%")
                     ->orWhere('recipient_phone', 'like', "%$search%")
                     ->orWhereHas('user', function ($qu) use ($search) {
                         $qu->where('name', 'like', "%$search%")
                             ->orWhere('email', 'like', "%$search%");
                     });
-            });
+            };
+            $query->where($searchFilter);
+            $summaryQuery->where($searchFilter);
         }
 
         // User Filter
         if ($request->filled('user_id')) {
             $query->where('user_id', $request->user_id);
+            $summaryQuery->where('user_id', $request->user_id);
         }
 
         // Status Filter
         if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
+            $summaryQuery->where('status', $request->status);
         }
 
-        // Network Filter
+        // Reseller Filter (Storefront Customers Only)
+        if ($request->filled('reseller_id')) {
+            $resellerId = $request->reseller_id;
+
+            // Only show storefront orders (guest purchases on reseller's store)
+            $resellerFilter = function ($q) use ($resellerId) {
+                $q->where('user_id', $resellerId)
+                    ->where('source', 'storefront');
+            };
+
+            $query->where($resellerFilter);
+            $summaryQuery->where($resellerFilter);
+        }
+
+        // Date Range Filter
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $range = [$request->start_date . ' 00:00:00', $request->end_date . ' 23:59:59'];
+            $query->whereBetween('created_at', $range);
+            $summaryQuery->whereBetween('created_at', $range);
+        }
+
+        // Final query for listing (including network if filtered)
         if ($request->filled('network') && $request->network !== 'all') {
             $query->whereHas('bundle', function ($q) use ($request) {
                 $q->where('network', $request->network);
             });
         }
 
-        // Date Range Filter
-        if ($request->filled('start_date') && $request->filled('end_date')) {
-            $query->whereBetween('created_at', [$request->start_date . ' 00:00:00', $request->end_date . ' 23:59:59']);
-        }
-
-        $orders = $query->latest()->paginate(40);
+        $orders = $query->latest()->paginate($request->input('per_page', 10));
         $networks = Bundle::distinct()->pluck('network');
-
-        // Global counts for the dashboard summary (respecting filters except network itself)
-        $summaryQuery = Order::query();
-        if ($request->has('search')) {
-            $search = $request->search;
-            $summaryQuery->where(function ($q) use ($search) {
-                $q->where('reference', 'like', "%$search%")
-                    ->orWhere('recipient_phone', 'like', "%$search%")
-                    ->orWhereHas('user', function ($qu) use ($search) {
-                        $qu->where('name', 'like', "%$search%")
-                            ->orWhere('email', 'like', "%$search%");
-                    });
-            });
-        }
-        if ($request->filled('status') && $request->status !== 'all') {
-            $summaryQuery->where('status', $request->status);
-        }
 
         $networkCounts = [];
         foreach ($networks as $net) {
@@ -554,7 +559,7 @@ class OrderController extends Controller
      */
     public function adminCreate()
     {
-        $users = \App\Models\User::orderBy('name')->get();
+        $users = User::orderBy('name')->get();
         $bundles = Bundle::with('network')->get()->groupBy('network');
         return view('admin.orders.create', compact('users', 'bundles'));
     }
@@ -571,7 +576,7 @@ class OrderController extends Controller
             'status' => 'required|in:pending,processing,completed,failed',
         ]);
 
-        $user = \App\Models\User::findOrFail($request->user_id);
+        $user = User::findOrFail($request->user_id);
         $bundle = Bundle::findOrFail($request->bundle_id);
         $price = $this->getPriceForUser($bundle, $user);
 

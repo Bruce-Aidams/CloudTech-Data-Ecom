@@ -6,10 +6,20 @@
     <div class="space-y-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Full System Ledger</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">A complete history of all financial activities on
-                    the platform.</p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-500 ring-1 ring-sky-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                        </path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">Full System Ledger</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">A complete history of all financial
+                        activities on the platform.</p>
+                </div>
             </div>
             <div
                 class="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5 rounded-full border border-emerald-100 dark:border-emerald-800/50">

@@ -77,7 +77,7 @@
                     <div class="p-4 md:p-5 space-y-4">
                         <div>
                             <h3
-                                class="text-sm md:text-base font-black text-slate-900 dark:text-white leading-tight uppercase tracking-tight line-clamp-2">
+                                class="text-lg font-black text-blue-900 dark:text-white leading-tight group-hover:text-primary transition-colors">
                                 {{ $bundle->name }}
                             </h3>
                             <p class="text-[9px] font-bold text-slate-400 mt-1 uppercase tracking-widest">
@@ -170,19 +170,23 @@
                             {{-- Step 1: Input --}}
                             <div x-show="step === 'input'" class="space-y-4">
                                 <div class="space-y-1.5">
-                                    <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 ml-1">Email Address</label>
+                                    <label
+                                        class="text-[9px] font-black uppercase tracking-widest text-slate-500 ml-1">Email
+                                        Address</label>
                                     <input type="email" x-model="email" placeholder="customer@example.com"
                                         class="w-full h-12 px-5 bg-white dark:bg-slate-950 border-none rounded-xl text-sm font-bold text-slate-900 dark:text-white shadow-sm focus:ring-2 focus:ring-primary/20 transition-all placeholder:font-normal placeholder:text-slate-400">
                                 </div>
 
                                 <div class="space-y-1.5">
-                                    <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 ml-1">Recipient Number</label>
+                                    <label
+                                        class="text-[9px] font-black uppercase tracking-widest text-slate-500 ml-1">Recipient
+                                        Number</label>
                                     <input type="tel" x-model="phone" maxlength="10" placeholder="024XXXXXXX"
                                         @input="phone = phone.replace(/\D/g, '')"
                                         :class="phone.length > 0 && !isValidPhone ? 'ring-2 ring-red-500' : ''"
                                         class="w-full h-12 px-5 bg-white dark:bg-slate-950 border-none rounded-xl text-sm font-bold text-slate-900 dark:text-white shadow-sm focus:ring-2 focus:ring-primary/20 transition-all placeholder:font-normal placeholder:text-slate-400 font-mono tracking-wide">
-                                    <p x-show="phone.length > 0 && !isValidPhone" 
-                                       class="text-[9px] font-bold text-red-500 mt-1 ml-1 uppercase tracking-tight">
+                                    <p x-show="phone.length > 0 && !isValidPhone"
+                                        class="text-[9px] font-bold text-red-500 mt-1 ml-1 uppercase tracking-tight">
                                         Enter a valid 10-digit Ghana number (e.g. 024...)
                                     </p>
                                 </div>
@@ -192,8 +196,10 @@
                                         :class="isValidPhone && isValidEmail ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-primary dark:hover:bg-primary dark:hover:text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed'"
                                         class="w-full h-14 rounded-xl font-black text-[11px] uppercase tracking-widest transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2 group/pay">
                                         <span>Continue to Verify</span>
-                                        <svg class="w-4 h-4 transition-transform group-hover/pay:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        <svg class="w-4 h-4 transition-transform group-hover/pay:translate-x-1"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                         </svg>
                                     </button>
                                 </div>
@@ -307,26 +313,24 @@
                     this.show = true;
                     setTimeout(() => { this.show = false }, 5000);
                 }
-            }" 
-            x-show="show" 
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 translate-y-4"
-            x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100 translate-y-0"
+            }" x-show="show" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 translate-y-4"
-            class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[120] min-w-[300px]"
-            x-cloak>
+            class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[120] min-w-[300px]" x-cloak>
             <div :class="type === 'success' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900' : 'bg-red-500 text-white'"
-                 class="px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/10">
-                <div x-show="type === 'success'" class="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
+                class="px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/10">
+                <div x-show="type === 'success'"
+                    class="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
                     <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
-                <div x-show="type === 'error'" class="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                <div x-show="type === 'error'"
+                    class="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                            d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </div>
                 <p class="text-[11px] font-black uppercase tracking-widest" x-text="message"></p>

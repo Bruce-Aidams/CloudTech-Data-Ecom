@@ -66,13 +66,19 @@ class StorefrontPaymentController extends Controller
         $rolePrices = $bundle->role_prices ?: [];
         $costToReseller = (float) ($rolePrices[$reseller->role] ?? $bundle->price);
 
-        // 3. Calculate Profit
+        // 3. Ensure reseller has enough balance to facilitate this sale
+        if ($reseller->wallet_balance < $costToReseller) {
+            return back()->with('error', 'This store is temporarily unable to process orders due to insufficient balance. Please contact the store owner.');
+        }
+
+        // 4. Calculate Profit
         $profit = max(0, $amount - $costToReseller);
 
         // 4. Pre-create Order (Status: pending_payment)
         $order = Order::create([
             'user_id' => $reseller->id,
             'bundle_id' => $bundle->id,
+            'guest_email' => $email,
             'recipient_phone' => $request->phone,
             'cost' => $amount,
             'cost_price' => $costToReseller,
@@ -195,33 +201,41 @@ class StorefrontPaymentController extends Controller
             ]);
 
             $reseller = User::findOrFail($meta['reseller_id']);
-            $profit = $order->profit;
+            // 2. Business Logic: Deduct Wholesale Cost from Reseller Wallet
+            if ($order->cost_price > 0) {
+                if ($reseller->wallet_balance >= $order->cost_price) {
+                    $reseller->decrement('wallet_balance', $order->cost_price);
 
-            // 2. Credit Reseller Commission
-            if ($profit > 0) {
-                $reseller->increment('commission_balance', $profit);
-
-                Transaction::create([
-                    'user_id' => $reseller->id,
-                    'type' => 'credit',
-                    'amount' => $profit,
-                    'status' => 'success',
-                    'reference' => 'COM-' . Str::random(10),
-                    'description' => "Commission for Order #{$order->id} (Storefront Guest Purchase)",
-                    'metadata' => ['order_id' => $order->id]
-                ]);
+                    Transaction::create([
+                        'user_id' => $reseller->id,
+                        'type' => 'debit',
+                        'amount' => $order->cost_price,
+                        'status' => 'success',
+                        'reference' => 'WHS-' . Str::random(10),
+                        'description' => "Wholesale Cost for Order #{$order->id} (Storefront)",
+                        'metadata' => ['order_id' => $order->id]
+                    ]);
+                } else {
+                    Log::error("Storefront Critical: Reseller {$reseller->id} balance low during callback for order #{$order->id}");
+                    // We continue since the customer already paid, but this is a configuration/timing issue
+                }
             }
 
-            // 3. Log the Main Payment Transaction
+            // 3. Credit Full Storefront Payment to Reseller Wallet (Covers Cost + Profit)
+            $reseller->increment('wallet_balance', $order->cost);
+
             Transaction::create([
                 'user_id' => $reseller->id,
                 'type' => 'credit',
-                'amount' => $data['amount'] / 100,
+                'amount' => $order->cost,
                 'status' => 'success',
                 'reference' => $reference,
-                'description' => "Storefront Payment Received for Order #{$order->id}",
+                'description' => "Storefront Revenue for Order #{$order->id}",
                 'metadata' => $data
             ]);
+
+            // 4. (Old logic replaced) We no longer credit commission_balance for storefront 
+            // as it is now handled as wallet profit (Revenue - Cost).
 
             DB::commit();
 

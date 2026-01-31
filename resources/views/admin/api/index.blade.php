@@ -4,30 +4,39 @@
 
 @section('content')
     <div class="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700" x-data="{ 
-                                                                tab: 'providers',
-                                                                modalOpen: false, 
-                                                                editMode: false,
-                                                                provider: { id: '', name: '', base_url: '', webhook_url: '', api_key: '', secret_key: '', is_active: true },
-                                                                resetForm() {
-                                                                    this.provider = { id: '', name: '', base_url: '', webhook_url: '', api_key: '', secret_key: '', is_active: true };
-                                                                    this.editMode = false;
-                                                                },
-                                                                openAdd() {
-                                                                    this.resetForm();
-                                                                    this.modalOpen = true;
-                                                                },
-                                                                openEdit(p) {
-                                                                    this.provider = JSON.parse(JSON.stringify(p));
-                                                                    this.editMode = true;
-                                                                    this.modalOpen = true;
-                                                                }
-                                                            }">
+                                                                                                        tab: 'providers',
+                                                                                                        modalOpen: false, 
+                                                                                                        editMode: false,
+                                                                                                        provider: { id: '', name: '', base_url: '', webhook_url: '', api_key: '', secret_key: '', is_active: true },
+                                                                                                        resetForm() {
+                                                                                                            this.provider = { id: '', name: '', base_url: '', webhook_url: '', api_key: '', secret_key: '', is_active: true };
+                                                                                                            this.editMode = false;
+                                                                                                        },
+                                                                                                        openAdd() {
+                                                                                                            this.resetForm();
+                                                                                                            this.modalOpen = true;
+                                                                                                        },
+                                                                                                        openEdit(p) {
+                                                                                                            this.provider = JSON.parse(JSON.stringify(p));
+                                                                                                            this.editMode = true;
+                                                                                                            this.modalOpen = true;
+                                                                                                        }
+                                                                                                    }">
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">API Infrastructure</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage external provider connections and
-                    transmission logs.</p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-500 ring-1 ring-cyan-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">API Infrastructure</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage external provider connections and
+                        transmission logs.</p>
+                </div>
             </div>
 
             <button x-show="tab === 'providers'" @click="openAdd()"
@@ -55,6 +64,11 @@
                 :class="tab === 'logs' ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
                 class="px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap">
                 System Logs
+            </button>
+            <button @click="tab = 'docs'"
+                :class="tab === 'docs' ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
+                class="px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap">
+                Documentation
             </button>
         </div>
 
@@ -121,16 +135,16 @@
 
                     <div class="pt-4">
                         <button type="button" @click="async () => {
-                                                            const url = document.getElementById('webhook_url').value;
-                                                            const secret = document.getElementById('webhook_secret').value;
-                                                            const response = await fetch('{{ route('admin.settings.update') }}', {
-                                                                method: 'PUT',
-                                                                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                                                                body: JSON.stringify({ settings: { webhook_url: url, webhook_secret: secret } })
-                                                            });
-                                                            if(response.ok) alert('Webhook configuration synchronized!');
-                                                            else alert('Failed to save webhook settings.');
-                                                        }"
+                                                                                                    const url = document.getElementById('webhook_url').value;
+                                                                                                    const secret = document.getElementById('webhook_secret').value;
+                                                                                                    const response = await fetch('{{ route('admin.settings.update') }}', {
+                                                                                                        method: 'PUT',
+                                                                                                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                                                                                                        body: JSON.stringify({ settings: { webhook_url: url, webhook_secret: secret } })
+                                                                                                    });
+                                                                                                    if(response.ok) alert('Webhook configuration synchronized!');
+                                                                                                    else alert('Failed to save webhook settings.');
+                                                                                                }"
                             class="h-12 px-8 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-bold text-xs uppercase shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center gap-3">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
@@ -218,10 +232,27 @@
         <div x-show="tab === 'logs'" class="space-y-6">
             <div
                 class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm">
-                <div class="px-8 py-6 border-b border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20">
-                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Traffic Logs</h3>
-                    <p class="text-[10px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-widest mt-0.5">
-                        Real-time Traffic Analysis</p>
+                <div
+                    class="px-8 py-6 border-b border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Traffic Logs</h3>
+                        <p
+                            class="text-[10px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-widest mt-0.5">
+                            Real-time Traffic Analysis</p>
+                    </div>
+
+                    <div class="relative min-w-[140px]">
+                        <form action="{{ route('admin.api') }}" method="GET">
+                            <input type="hidden" name="tab" value="logs">
+                            <select name="per_page" onchange="this.form.submit()"
+                                class="h-10 w-full px-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold uppercase tracking-widest outline-none focus:ring-4 focus:ring-primary/10 transition-all dark:text-slate-400 appearance-none cursor-pointer">
+                                @foreach([10, 20, 50, 100, 200] as $val)
+                                    <option value="{{ $val }}" {{ request('per_page', 10) == $val ? 'selected' : '' }}>{{ $val }}
+                                        Per Page</option>
+                                @endforeach
+                            </select>
+                        </form>
+                    </div>
                 </div>
 
 
@@ -489,6 +520,268 @@
                 </div>
             </div>
         </div>
-    </div>
+        <!-- CloudTech API Documentation View -->
+        <div x-show="tab === 'docs'" class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div
+                class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 md:p-12 border border-slate-100 dark:border-slate-800 shadow-sm relative overflow-hidden">
+
+                <!-- Documentation Header -->
+                <div class="flex items-center gap-6 mb-12">
+                    <div
+                        class="w-14 h-14 bg-cyan-500/10 rounded-2xl flex items-center justify-center text-cyan-600 dark:text-cyan-400 ring-1 ring-cyan-500/20">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">CloudTech
+                            API Documentation</h4>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-500 mt-1 uppercase tracking-widest font-black">
+                            Technical Integration & Management Guide</p>
+                    </div>
+                </div>
+
+                <div class="space-y-16">
+                    <!-- Getting Started -->
+                    <div class="space-y-4">
+                        <h5 class="text-xs font-black uppercase tracking-[.2em] text-cyan-600">Getting Started</h5>
+                        <p class="text-sm font-medium text-slate-500 dark:text-slate-400 leading-relaxed max-w-3xl">
+                            This guide provides comprehensive instructions for both Admin and Agents to connect their
+                            systems to the CloudTech platform. Utilize these endpoints to automate orders, manage users, and
+                            synchronize data across your infrastructure.
+                        </p>
+                    </div>
+
+                    <!-- Connectivity Details -->
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <!-- Base URL -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-black">01</span>
+                                <h4 class="text-[10px] font-black uppercase tracking-[.2em] text-slate-400">Endpoint Access
+                                </h4>
+                            </div>
+                            <div
+                                class="bg-slate-950 rounded-2xl p-6 font-mono text-xs text-emerald-400 border border-slate-800 flex items-center justify-between group">
+                                <span>{{ url('/api') }}</span>
+                                <button onclick="navigator.clipboard.writeText('{{ url('/api') }}')"
+                                    class="opacity-0 group-hover:opacity-100 transition-opacity text-slate-500 hover:text-white">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Auth -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-black">02</span>
+                                <h4 class="text-[10px] font-black uppercase tracking-[.2em] text-slate-400">Authentication
+                                </h4>
+                            </div>
+                            <div
+                                class="bg-slate-950 rounded-2xl p-6 font-mono text-xs text-slate-300 border border-slate-800">
+                                <div class="text-purple-400 mb-1">headers: <span class="text-white">{</span></div>
+                                <div class="pl-4"><span class="text-sky-400">"Authorization"</span>: <span
+                                        class="text-emerald-400">"Bearer YOUR_KEY"</span></div>
+                                <div class="text-white mt-1">}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- API Routes Grid -->
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-4">
+                            <span
+                                class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-black">03</span>
+                            <h4 class="text-sm font-black uppercase tracking-[.2em] text-slate-400">Core API Routes</h4>
+                        </div>
+
+                        <div class="grid xl:grid-cols-2 gap-12">
+                            <!-- Agent Section -->
+                            <div class="space-y-6">
+                                <h5
+                                    class="text-[10px] font-black uppercase tracking-[.3em] text-indigo-500 border-b border-indigo-500/10 pb-2">
+                                    Agent / Reseller API</h5>
+                                <div class="space-y-3">
+                                    <div
+                                        class="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                                        <span
+                                            class="px-2 py-0.5 bg-sky-500/10 text-sky-500 text-[9px] font-black uppercase rounded">GET</span>
+                                        <code class="text-xs font-bold text-slate-700 dark:text-slate-200">/networks</code>
+                                        <span
+                                            class="text-[10px] text-slate-400 ml-auto uppercase font-bold tracking-tight">Public
+                                            networks</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                                        <span
+                                            class="px-2 py-0.5 bg-sky-500/10 text-sky-500 text-[9px] font-black uppercase rounded">GET</span>
+                                        <code class="text-xs font-bold text-slate-700 dark:text-slate-200">/products</code>
+                                        <span
+                                            class="text-[10px] text-slate-400 ml-auto uppercase font-bold tracking-tight">Active
+                                            Bundles</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-4 p-4 rounded-xl bg-emerald-500/10 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30">
+                                        <span
+                                            class="px-2 py-0.5 bg-emerald-500/20 text-emerald-600 text-[9px] font-black uppercase rounded">POST</span>
+                                        <code class="text-xs font-bold text-slate-700 dark:text-slate-200">/orders</code>
+                                        <span
+                                            class="text-[10px] text-slate-400 ml-auto uppercase font-bold tracking-tight">Place
+                                            Order</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-4 p-4 rounded-xl bg-emerald-500/10 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30">
+                                        <span
+                                            class="px-2 py-0.5 bg-emerald-500/20 text-emerald-600 text-[9px] font-black uppercase rounded">POST</span>
+                                        <code
+                                            class="text-xs font-bold text-slate-700 dark:text-slate-200">/orders/bulk</code>
+                                        <span
+                                            class="text-[10px] text-slate-400 ml-auto uppercase font-bold tracking-tight">Bulk
+                                            Upload</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Admin Section -->
+                            <div class="space-y-6">
+                                <h5
+                                    class="text-[10px] font-black uppercase tracking-[.3em] text-rose-500 border-b border-rose-500/10 pb-2">
+                                    System Management (Admin Only)</h5>
+                                <div class="space-y-3">
+                                    <div
+                                        class="flex items-center gap-4 p-4 rounded-xl bg-rose-50/30 dark:bg-rose-950/10 border border-rose-100/50 dark:border-rose-900/30">
+                                        <span
+                                            class="px-2 py-0.5 bg-sky-500/10 text-sky-500 text-[9px] font-black uppercase rounded">GET</span>
+                                        <code
+                                            class="text-xs font-bold text-slate-700 dark:text-slate-200">/admin/users</code>
+                                        <span
+                                            class="text-[10px] text-slate-400 ml-auto uppercase font-bold tracking-tight">User
+                                            List</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-4 p-4 rounded-xl bg-rose-50/30 dark:bg-rose-950/10 border border-rose-100/50 dark:border-rose-900/30">
+                                        <span
+                                            class="px-2 py-0.5 bg-sky-500/10 text-sky-500 text-[9px] font-black uppercase rounded">GET</span>
+                                        <code
+                                            class="text-xs font-bold text-slate-700 dark:text-slate-200">/admin/analytics</code>
+                                        <span
+                                            class="text-[10px] text-slate-400 ml-auto uppercase font-bold tracking-tight">Platform
+                                            Stats</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-4 p-4 rounded-xl bg-rose-50/30 dark:bg-rose-950/10 border border-rose-100/50 dark:border-rose-900/30">
+                                        <span
+                                            class="px-2 py-0.5 bg-sky-500/10 text-sky-500 text-[9px] font-black uppercase rounded">GET</span>
+                                        <code
+                                            class="text-xs font-bold text-slate-700 dark:text-slate-200">/admin/api-logs</code>
+                                        <span
+                                            class="text-[10px] text-slate-400 ml-auto uppercase font-bold tracking-tight">Traffic
+                                            Logs</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-4 p-4 rounded-xl bg-rose-50/30 dark:bg-rose-950/10 border border-rose-100/50 dark:border-rose-900/30">
+                                        <span
+                                            class="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 text-[9px] font-black uppercase rounded">POST</span>
+                                        <code
+                                            class="text-xs font-bold text-slate-700 dark:text-slate-200">/admin/products</code>
+                                        <span
+                                            class="text-[10px] text-slate-400 ml-auto uppercase font-bold tracking-tight">Create
+                                            Bundle</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Webhooks -->
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-4">
+                            <span
+                                class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-black">04</span>
+                            <h4 class="text-sm font-black uppercase tracking-[.2em] text-slate-400">Webhook Sync</h4>
+                        </div>
+                        <div class="grid lg:grid-cols-2 gap-8">
+                            <div
+                                class="p-8 rounded-3xl bg-indigo-50/30 dark:bg-indigo-950/10 border border-indigo-100/50 dark:border-indigo-900/30 space-y-4">
+                                <h5 class="text-[10px] font-black uppercase text-indigo-600 tracking-widest">Outgoing Events
+                                </h5>
+                                <p class="text-xs text-slate-500 font-medium leading-relaxed">External systems receive
+                                    real-time updates for order completions and failure events.</p>
+                                <div
+                                    class="bg-slate-950 rounded-2xl p-6 font-mono text-[10px] text-slate-300 border border-slate-800">
+                                    <span class="text-purple-400">{</span><br>
+                                    <span class="pl-4">"event": <span
+                                            class="text-emerald-400">"order.completed"</span>,</span><br>
+                                    <span class="pl-4">"data": { "status": "success" }</span><br>
+                                    <span class="text-purple-400">}</span>
+                                </div>
+                            </div>
+
+                            <div
+                                class="p-8 rounded-3xl bg-emerald-50/30 dark:bg-emerald-950/10 border border-emerald-100/50 dark:border-emerald-900/30 space-y-4">
+                                <h5 class="text-[10px] font-black uppercase text-emerald-600 tracking-widest">Incoming
+                                    Webhooks</h5>
+                                <p class="text-xs text-slate-500 font-medium leading-relaxed">Providers push transaction
+                                    status updates to your system via: <code>/api/webhooks/incoming</code></p>
+                                <div class="pt-2">
+                                    <span
+                                        class="inline-flex px-3 py-1 bg-emerald-500 text-white rounded-lg text-[9px] font-black uppercase">Active
+                                        Endpoint</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status Codes -->
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-4">
+                            <span
+                                class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-black">05</span>
+                            <h4 class="text-sm font-black uppercase tracking-[.2em] text-slate-400">Infrastructure Result
+                                Codes</h4>
+                        </div>
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div
+                                class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center">
+                                <p class="text-[9px] font-black text-indigo-500 mb-1">200</p>
+                                <p
+                                    class="text-[10px] font-black text-slate-700 dark:text-slate-300 uppercase tracking-tighter">
+                                    Success</p>
+                            </div>
+                            <div
+                                class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center">
+                                <p class="text-[9px] font-black text-rose-500 mb-1">401</p>
+                                <p
+                                    class="text-[10px] font-black text-slate-700 dark:text-slate-300 uppercase tracking-tighter">
+                                    Unauthorized</p>
+                            </div>
+                            <div
+                                class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center">
+                                <p class="text-[9px] font-black text-amber-500 mb-1">422</p>
+                                <p
+                                    class="text-[10px] font-black text-slate-700 dark:text-slate-300 uppercase tracking-tighter">
+                                    Validation</p>
+                            </div>
+                            <div
+                                class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center">
+                                <p class="text-[9px] font-black text-slate-400 mb-1">500</p>
+                                <p
+                                    class="text-[10px] font-black text-slate-700 dark:text-slate-300 uppercase tracking-tighter">
+                                    Server Error</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

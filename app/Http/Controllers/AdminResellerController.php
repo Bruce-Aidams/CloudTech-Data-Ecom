@@ -16,7 +16,7 @@ class AdminResellerController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::whereIn('role', ['agent', 'dealer', 'super_agent']);
+        $query = User::whereIn('role', ['retail_seller', 'dealer', 'super_agent']);
 
         if ($request->search) {
             $query->where(function ($q) use ($request) {
@@ -27,13 +27,23 @@ class AdminResellerController extends Controller
             });
         }
 
+        $query->addSelect([
+            '*',
+            'storefront_profit' => \App\Models\Order::selectRaw('COALESCE(sum(profit), 0)')
+                ->whereColumn('user_id', 'users.id')
+                ->where('source', 'storefront')
+                ->where('status', 'completed'),
+            'referral_earnings' => \App\Models\Commission::selectRaw('COALESCE(sum(amount), 0)')
+                ->whereColumn('user_id', 'users.id')
+        ]);
+
         $resellers = $query->withCount('referrals')
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate($request->input('per_page', 10));
 
         // Calculate Overview Stats
         $stats = [
-            'total_resellers' => User::whereIn('role', ['agent', 'dealer', 'super_agent'])->count(),
+            'total_resellers' => User::whereIn('role', ['retail_seller', 'dealer', 'super_agent'])->count(),
             'total_commission_paid' => Transaction::where('description', 'like', '%Commission%')->sum('amount'), // Approximate
             // 'active_stores' => ... (Requires a store_active column on users)
         ];
@@ -73,12 +83,12 @@ class AdminResellerController extends Controller
         DB::beginTransaction();
         try {
             if ($request->type === 'credit') {
-                $user->commission_balance += $amount;
+                $user->wallet_balance += $amount;
             } else {
-                if ($user->commission_balance < $amount) {
-                    return back()->with('error', 'Insufficient commission balance');
+                if ($user->wallet_balance < $amount) {
+                    return back()->with('error', 'Insufficient wallet balance');
                 }
-                $user->commission_balance -= $amount;
+                $user->wallet_balance -= $amount;
             }
             $user->save();
 

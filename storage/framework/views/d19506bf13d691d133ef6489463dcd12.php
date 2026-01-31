@@ -7,9 +7,20 @@
         x-init="setTimeout(() => loading = false, 800)">
 
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight text-primary">Order History</h2>
-                <p class="text-muted-foreground font-medium">View and manage your recent data bundle purchases.</p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 ring-1 ring-blue-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">Order History
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">View and manage your recent data
+                        bundle purchases.</p>
+                </div>
             </div>
             <a href="<?php echo e(route('orders.new')); ?>"
                 class="inline-flex items-center justify-center rounded-xl text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 shadow-sm">
@@ -23,95 +34,140 @@
         <div class="rounded-2xl md:rounded-[2.5rem] border border-slate-100 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 shadow-sm overflow-hidden"
             x-data="{ showFilters: false }">
             <!-- Filter Section -->
-            <div class="p-4 md:p-8 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
-                <div class="flex items-center justify-between mb-4 md:hidden">
+            
+            <div
+                class="px-6 py-6 border-b border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4 bg-slate-50/30 dark:bg-slate-950/20">
+                <div class="flex items-center gap-3">
                     <button @click="showFilters = !showFilters"
-                        class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary">
+                        class="h-10 px-5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400 hover:border-primary/50 transition-all flex items-center gap-2 shadow-sm">
                         <svg class="w-4 h-4 transition-transform duration-300" :class="{'rotate-180': showFilters}"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7">
-                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                         </svg>
-                        <span x-text="showFilters ? 'Hide Protocols' : 'Filter Protocols'"></span>
+                        <span x-text="showFilters ? 'Hide Filters' : 'Filters'"></span>
                     </button>
+
                     <?php if(request()->anyFilled(['search', 'status', 'network', 'start_date', 'end_date'])): ?>
                         <a href="<?php echo e(route('orders.index')); ?>"
-                            class="text-[9px] font-black text-rose-500 uppercase tracking-widest bg-rose-50 dark:bg-rose-900/20 px-3 py-1.5 rounded-lg border border-rose-100 dark:border-rose-900/20">Reset
-                            System</a>
+                            class="h-10 px-4 rounded-xl bg-rose-50 dark:bg-rose-900/10 text-rose-600 dark:text-rose-400 text-[10px] font-bold uppercase tracking-widest hover:bg-rose-100 transition-all flex items-center gap-2 border border-rose-100 dark:border-rose-900/20">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Clear
+                        </a>
                     <?php endif; ?>
                 </div>
 
-                <form action="<?php echo e(route('orders.index')); ?>" method="GET"
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 items-end"
-                    x-show="window.innerWidth > 768 || showFilters" x-cloak x-transition>
-                    <!-- Search -->
-                    <div class="space-y-2">
-                        <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Search
-                            ID/Phone</label>
-                        <div class="relative group">
-                            <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                            <input type="text" name="search" value="<?php echo e(request('search')); ?>" placeholder="Reference code..."
-                                class="w-full h-11 md:h-12 pl-11 pr-4 rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary/20 transition-all">
-                        </div>
-                    </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden lg:block text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        Records: <?php echo e($orders->firstItem() ?? 0); ?>-<?php echo e($orders->lastItem() ?? 0); ?> of <?php echo e($orders->total()); ?>
 
-                    <!-- Status -->
-                    <div class="space-y-2">
-                        <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Lifecycle
-                            Status</label>
-                        <select name="status"
-                            class="w-full h-11 md:h-12 px-4 rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer">
-                            <option value="all">System: All</option>
-                            <option value="completed" <?php echo e(request('status') == 'completed' ? 'selected' : ''); ?>>Delivered
-                            </option>
-                            <option value="pending" <?php echo e(request('status') == 'pending' ? 'selected' : ''); ?>>Validating</option>
-                            <option value="processing" <?php echo e(request('status') == 'processing' ? 'selected' : ''); ?>>Processing
-                            </option>
-                            <option value="failed" <?php echo e(request('status') == 'failed' ? 'selected' : ''); ?>>Failed</option>
-                        </select>
                     </div>
+                    <div class="flex items-center gap-2">
+                        <?php echo e($orders->appends(request()->query())->links('pagination::simple-tailwind')); ?>
 
-                    <!-- Network -->
-                    <div class="space-y-2">
-                        <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Network
-                            Protocol</label>
-                        <select name="network"
-                            class="w-full h-11 md:h-12 px-4 rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer">
-                            <option value="all">Carrier: All</option>
-                            <?php $__currentLoopData = $networks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $network): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($network); ?>" <?php echo e(request('network') == $network ? 'selected' : ''); ?>>
-                                    <?php echo e(strtoupper($network)); ?></option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </select>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Date Range -->
-                    <div class="lg:col-span-2 grid grid-cols-2 gap-3 items-end">
-                        <div class="space-y-2 text-left">
-                            <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">From</label>
-                            <input type="date" name="start_date" value="<?php echo e(request('start_date')); ?>"
-                                class="w-full h-11 md:h-12 px-4 rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary/20 transition-all">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">To</label>
-                            <div class="flex gap-2">
-                                <input type="date" name="end_date" value="<?php echo e(request('end_date')); ?>"
-                                    class="flex-1 h-11 md:h-12 px-4 rounded-xl border-none bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary/20 transition-all">
-                                <button type="submit"
-                                    class="h-11 md:h-12 w-11 md:w-12 shrink-0 flex items-center justify-center rounded-xl bg-primary text-white hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-primary/20">
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            
+            <div x-show="showFilters" x-collapse x-cloak
+                class="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
+                <div class="p-6 md:p-8">
+                    <form action="<?php echo e(route('orders.index')); ?>" method="GET" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <!-- Search -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Search
+                                    ID/Phone</label>
+                                <div class="relative group">
+                                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
+                                    <input type="text" name="search" value="<?php echo e(request('search')); ?>"
+                                        placeholder="Reference code..."
+                                        class="w-full h-11 pl-11 pr-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 transition-all outline-none">
+                                </div>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Status</label>
+                                <select name="status"
+                                    class="w-full h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none cursor-pointer">
+                                    <option value="all">All Status</option>
+                                    <option value="completed" <?php echo e(request('status') == 'completed' ? 'selected' : ''); ?>>
+                                        Delivered</option>
+                                    <option value="pending" <?php echo e(request('status') == 'pending' ? 'selected' : ''); ?>>Validating
+                                    </option>
+                                    <option value="processing" <?php echo e(request('status') == 'processing' ? 'selected' : ''); ?>>
+                                        Processing</option>
+                                    <option value="failed" <?php echo e(request('status') == 'failed' ? 'selected' : ''); ?>>Failed
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Network -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Network</label>
+                                <select name="network"
+                                    class="w-full h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none cursor-pointer">
+                                    <option value="all">All Networks</option>
+                                    <?php $__currentLoopData = $networks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $network): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($network); ?>" <?php echo e(request('network') == $network ? 'selected' : ''); ?>>
+                                            <?php echo e(strtoupper($network)); ?>
+
+                                        </option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                            </div>
+
+                            <!-- Per Page -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">View
+                                    Count</label>
+                                <select name="per_page"
+                                    class="w-full h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none cursor-pointer">
+                                    <?php $__currentLoopData = [10, 15, 30, 50, 100]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($val); ?>" <?php echo e(request('per_page', 10) == $val ? 'selected' : ''); ?>>
+                                            <?php echo e($val); ?> Per Page
+                                        </option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                            </div>
+
+                            <!-- Date Range -->
+                            <div class="lg:col-span-2 grid grid-cols-2 gap-4">
+                                <div class="space-y-2 text-left">
+                                    <label
+                                        class="text-[10px] font-bold uppercase tracking-wider text-slate-400">From</label>
+                                    <input type="date" name="start_date" value="<?php echo e(request('start_date')); ?>"
+                                        class="w-full h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-bold text-slate-900 dark:text-white outline-none">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">To</label>
+                                    <input type="date" name="end_date" value="<?php echo e(request('end_date')); ?>"
+                                        class="w-full h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-bold text-slate-900 dark:text-white outline-none">
+                                </div>
+                            </div>
+
+                            <div class="lg:col-span-2 flex items-end gap-3">
+                                <button type="submit"
+                                    class="flex-1 h-11 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:opacity-90 active:scale-95 transition-all">
+                                    Apply Filters
                                 </button>
+                                <a href="<?php echo e(route('orders.index')); ?>"
+                                    class="h-11 px-6 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-xl font-bold text-sm hover:bg-slate-200 transition-all flex items-center justify-center">
+                                    Reset
+                                </a>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
 
             <!-- Dashboard Optimized Layouts -->
@@ -209,8 +265,8 @@
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
                                     <td colspan="7" class="px-8 py-24 text-center">
-                                        <p class="text-[11px] font-black uppercase tracking-[0.3em] text-slate-300">Zero
-                                            Transmission History</p>
+                                        <p class="text-[11px] font-black uppercase tracking-[0.3em] text-slate-300">No order
+                                            activity recorded</p>
                                     </td>
                                 </tr>
                             <?php endif; ?>
@@ -249,9 +305,13 @@
                                         <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Data Package
                                         </p>
                                         <h4 class="text-sm font-black text-slate-900 dark:text-white">
-                                            <?php echo e($order->bundle->name ?? 'Bundle'); ?></h4>
+                                            <?php echo e($order->bundle->name ?? 'Bundle'); ?>
+
+                                        </h4>
                                         <p class="text-[9px] font-bold text-primary uppercase tracking-wider">
-                                            <?php echo e($order->bundle->network ?? 'GSM'); ?></p>
+                                            <?php echo e($order->bundle->network ?? 'GSM'); ?>
+
+                                        </p>
                                     </div>
                                     <div class="text-right">
                                         <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Cost</p>
@@ -302,12 +362,13 @@
             </div>
 
             <?php if($orders->hasPages()): ?>
-                <div class="px-6 py-8 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02]">
-                    <div class="md:hidden">
-                        <?php echo e($orders->links('pagination::simple-tailwind')); ?>
+                <div
+                    class="px-6 py-6 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02] flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        Records: <?php echo e($orders->firstItem() ?? 0); ?>-<?php echo e($orders->lastItem() ?? 0); ?> of <?php echo e($orders->total()); ?>
 
                     </div>
-                    <div class="hidden md:block">
+                    <div class="flex-1 md:flex-none">
                         <?php echo e($orders->appends(request()->query())->links()); ?>
 
                     </div>

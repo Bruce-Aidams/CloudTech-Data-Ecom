@@ -14,12 +14,23 @@
 
         <div class="relative z-10 space-y-8 md:space-y-12">
             {{-- Header --}}
+            {{-- Header --}}
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100 uppercase">My Wallet
-                    </h2>
-                    <p class="text-sm text-muted-foreground font-medium mt-1">Manage your funds and view transaction
-                        history.</p>
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 ring-1 ring-emerald-500/20">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-black tracking-tight text-blue-900 dark:text-white uppercase">My Wallet
+                        </h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Manage your funds and view
+                            transaction history.</p>
+                    </div>
                 </div>
             </div>
 

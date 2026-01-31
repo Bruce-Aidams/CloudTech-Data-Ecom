@@ -1,5 +1,6 @@
 <?php
-    $notifications = auth()->check() ? auth()->user()->notifications()->where('is_read', false)->orderBy('created_at', 'desc')->take(5)->get() : collect();
+    // Only fetch if authenticated and only fetch what we need
+    $notifications = auth()->check() ? auth()->user()->notifications()->where('is_read', false)->latest()->take(3)->get() : collect();
 ?>
 
 <?php if($notifications->count() > 0): ?>

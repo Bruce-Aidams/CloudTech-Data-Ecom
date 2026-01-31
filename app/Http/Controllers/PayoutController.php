@@ -32,13 +32,13 @@ class PayoutController extends Controller
 
         $user = $request->user();
 
-        if ($user->commission_balance < $request->amount) {
-            return response()->json(['message' => 'Insufficient commission balance.'], 422);
+        if ($user->wallet_balance < $request->amount) {
+            return response()->json(['message' => 'Insufficient wallet balance.'], 422);
         }
 
         $payout = DB::transaction(function () use ($user, $request) {
-            // Deduct from commission balance
-            $user->decrement('commission_balance', $request->amount);
+            // Deduct from wallet balance
+            $user->decrement('wallet_balance', $request->amount);
 
             // Create Payout record
             return Payout::create([
@@ -76,7 +76,7 @@ class PayoutController extends Controller
             $query->where('status', $request->status);
         }
 
-        $payouts = $query->latest()->paginate(20);
+        $payouts = $query->latest()->paginate($request->input('per_page', 10));
 
         if ($request->expectsJson() || $request->is('api/*')) {
             return $payouts;
@@ -109,8 +109,8 @@ class PayoutController extends Controller
 
         DB::transaction(function () use ($payout, $request) {
             if ($request->status === 'rejected') {
-                // Refund the amount to commission balance
-                $payout->user->increment('commission_balance', $payout->amount);
+                // Refund the amount to wallet balance
+                $payout->user->increment('wallet_balance', $payout->amount);
             }
 
             $payout->update([

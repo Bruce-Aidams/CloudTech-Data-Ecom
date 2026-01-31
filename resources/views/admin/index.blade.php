@@ -6,9 +6,16 @@
     <div class="space-y-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         {{-- Header Section --}}
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Admin Dashboard</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Platform overview and real-time business metrics.</p>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-500 ring-1 ring-indigo-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 dark:text-white">Admin Dashboard</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Platform overview and real-time business metrics.</p>
+                </div>
             </div>
             <div class="flex items-center gap-3">
                 <div class="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-500 flex items-center gap-2">

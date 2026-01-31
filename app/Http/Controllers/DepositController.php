@@ -23,7 +23,7 @@ class DepositController extends Controller
             })->orWhere('amount', 'like', "%$search%");
         }
 
-        $deposits = $query->paginate(15);
+        $deposits = $query->paginate($request->input('per_page', 10));
         if ($request->expectsJson() || $request->is('api/*')) {
             return $deposits;
         }
